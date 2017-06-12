@@ -13,7 +13,5 @@ public class MusicEditor {
     GuiViewFrame view = new GuiViewFrame();
     MidiViewImpl midiView = new MidiViewImpl();
     // You probably need to connect these views to your model, too...
-    // hello world
-    // jeremy was here
   }
 }
