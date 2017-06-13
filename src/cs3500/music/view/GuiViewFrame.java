@@ -18,7 +18,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
    */
   public GuiViewFrame() {
     super();
-    this.displayPanel = new PianoPanel();
+    this.displayPanel = new ScorePanel();
     this.setTitle("Piano");
     this.displayPanel.setPreferredSize(new Dimension(500, 500));
     this.setSize(500, 500);
