@@ -91,8 +91,8 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   }
 
   /**
-   * Takes the notes from the other cs3500.music.model.MusicEditorModel and overlays them over the notes of this
-   * cs3500.music.model.MusicEditorModel so that they are simultaneous.
+   * Takes the notes from the other cs3500.music.model.MusicEditorModel and overlays them over the
+   * notes of this cs3500.music.model.MusicEditorModel so that they are simultaneous.
    *
    * @param other the cs3500.music.model.MusicEditorModel to get notes from.
    */
@@ -202,7 +202,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
    * Gets the range of notes that comprise the piece, from the lowest to the highest note.
    *
    * @return a sublist of notes where the first item is the lowest note and the last item is the
-   *         highest note.
+   * highest note.
    */
   private List<Note> getNoteRange() {
     int lowestNoteIndex = getLowestNoteIndex();

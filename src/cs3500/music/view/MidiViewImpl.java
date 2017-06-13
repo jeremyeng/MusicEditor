@@ -70,4 +70,14 @@ public class MidiViewImpl implements IMusicEditorView {
     */
     this.receiver.close(); // Only call this once you're done playing *all* notes
   }
+
+  @Override
+  public void showText() {
+
+  }
+
+  @Override
+  public void showVisual() {
+
+  }
 }
