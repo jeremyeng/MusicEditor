@@ -1,19 +1,28 @@
 package cs3500.music.view;
 
+import java.awt.event.ActionListener;
+import java.util.List;
+
 import javax.sound.midi.InvalidMidiDataException;
 
 /**
  * Defines the behavior for.
  */
-public interface IMusicEditorView {
+public interface IMusicEditorView<K> {
 
   void initialize();
 
   void playNote() throws InvalidMidiDataException;
 
-  void showText();
+  void makeVisible();
 
-  void showVisual();
+  void setCommandButtonListener(ActionListener actionEvent);
 
+  void setNoteRange(List<K> noteRange);
 
+  void setDuration(int duration);
+
+  void showErrorMessage();
+
+  void refresh();
 }

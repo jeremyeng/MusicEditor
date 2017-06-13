@@ -90,6 +90,11 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     this.overlayNotes(other);
   }
 
+  @Override
+  public int getDuration() {
+    return this.duration;
+  }
+
   /**
    * Takes the notes from the other cs3500.music.model.MusicEditorModel and overlays them over the
    * notes of this cs3500.music.model.MusicEditorModel so that they are simultaneous.
@@ -204,7 +209,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
    * @return a sublist of notes where the first item is the lowest note and the last item is the
    * highest note.
    */
-  private List<Note> getNoteRange() {
+  public List<Note> getNoteRange() {
     int lowestNoteIndex = getLowestNoteIndex();
 
     int highestNoteIndex = getHighestNoteIndex();
