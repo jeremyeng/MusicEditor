@@ -59,6 +59,16 @@ public interface IMusicEditor<K> {
    */
   List<K> getNoteRange();
 
+
+  /**
+   * Retrieves the state of a given note at a given beatNumber.
+   * A note state will either be "Start", "Continue", or "Rest"
+   * @param note the note to get the state of.
+   * @param beatNumber the number of the beat in the piece.
+   * @return a string representing the state of the note at the given beat.
+   */
+  String getNoteState(K note, int beatNumber) throws IllegalArgumentException;
+
   /**
    * Displays the notes in the model that are played. The rows represent the beat numbers of the
    * piece and the columns represent each note in the piece as well as during which beats they

@@ -222,6 +222,14 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     return new ArrayList<Note>(this.noteMap.keySet()).subList(lowestNoteIndex, highestNoteIndex);
   }
 
+  @Override
+  public String getNoteState(Note note, int beatNumber) throws IllegalArgumentException {
+    if (beatNumber > this.duration) {
+      throw new IllegalArgumentException("No note exists at that beat number");
+    }
+    return this.noteMap.get(note).get(beatNumber).name().toLowerCase();
+  }
+
   /**
    * Get the highest note that is not completely at rest.
    *
