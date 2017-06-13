@@ -260,4 +260,13 @@ public class MusicEditorModelTest {
             "5          \n", this.model.getState());
   }
 
+  @Test
+  public void getNoteState() {
+    this.model.addNote(new Note(Pitch.C, 0), 0, 4);
+    assertEquals("start", this.model.getNoteState(new Note(Pitch.C, 0), 0));
+    assertEquals("continue", this.model.getNoteState(new Note(Pitch.C, 0), 1));
+    assertEquals("rest", this.model.getNoteState(new Note(Pitch.C, 0), 5));
+
+  }
+
 }
