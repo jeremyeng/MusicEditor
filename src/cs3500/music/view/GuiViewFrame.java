@@ -1,8 +1,8 @@
 package cs3500.music.view;
 
 import java.awt.*;
-import java.awt.event.MouseListener; // Possibly of interest for handling mouse events
 
+import javax.imageio.plugins.jpeg.JPEGHuffmanTable;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.*;
 
@@ -11,20 +11,35 @@ import javax.swing.*;
  */
 public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView {
 
-  private final JPanel displayPanel; // You may want to refine this to a subtype of JPanel
+  private final JPanel musicEditorPanel;
+  private final JPanel scorePanel; // You may want to refine this to a subtype of JPanel
+  private final JPanel pianoPanel;
 
   /**
    * Creates new GuiView
    */
   public GuiViewFrame() {
     super();
-    this.displayPanel = new ScorePanel();
-    this.setTitle("Piano");
-    this.displayPanel.setPreferredSize(new Dimension(500, 500));
-    this.setSize(500, 500);
+    this.setTitle("Music Editor");
+
+    this.musicEditorPanel = new JPanel();
+    this.musicEditorPanel.setLayout(new BoxLayout(this.musicEditorPanel, BoxLayout.Y_AXIS));
+
+    this.scorePanel = new ScorePanel();
+
+    this.pianoPanel = new PianoPanel();
+
+    this.setSize(2000, 700);
+
+    this.musicEditorPanel.add(scorePanel);
+    this.musicEditorPanel.add(pianoPanel);
+
+
+
+    this.setContentPane(this.musicEditorPanel);
+
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-    this.getContentPane().add(displayPanel);
-    this.pack();
+//    this.pack();
   }
 
   @Override
