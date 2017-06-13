@@ -4,6 +4,7 @@ import java.util.Objects;
 
 /**
  * Represents a single musical note, including octave.
+ * Changes made on 6/13/17: Added method makeNote
  */
 public class Note implements Comparable<Note> {
 
@@ -75,4 +76,18 @@ public class Note implements Comparable<Note> {
   public int getOctave() {
     return this.octave;
   }
+
+//  /**
+//   * Construct a note base on the given pitch and octave.
+//   * @param pitch the pitch of the note that is to be created
+//   * @param octave the octave of the note that is to be created
+//   * @return the note with the given pitch and octave.
+//   */
+//  public static Note makeNote(int pitch, int octave) {
+//    if (octave < 0) {
+//      throw new IllegalArgumentException("Invalid octave parameter!");
+//    }
+//    return new Note(Pitch.makePitch(pitch),octave);
+//  }
+
 }

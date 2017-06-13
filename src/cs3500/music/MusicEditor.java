@@ -5,6 +5,7 @@ import cs3500.music.controller.MusicEditorController;
 import cs3500.music.model.IMusicEditor;
 import cs3500.music.model.MusicEditorModel;
 import cs3500.music.model.Note;
+import cs3500.music.model.Pitch;
 import cs3500.music.view.GuiViewFrame;
 import cs3500.music.view.IMusicEditorView;
 import cs3500.music.view.MidiViewImpl;
@@ -21,6 +22,7 @@ public class MusicEditor {
     IMusicEditorView view = new GuiViewFrame();
     MidiViewImpl midiView = new MidiViewImpl();
     IMusicEditor<Note> model = new MusicEditorModel(30);
+    model.addNote(new Note(Pitch.C, 3), 0, 10);
     IMusicEditorController controller = new MusicEditorController<Note>(model, view);
     controller.go();
   }

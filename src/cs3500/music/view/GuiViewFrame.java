@@ -17,8 +17,8 @@ import cs3500.music.model.Note;
 public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView {
 
   private final JPanel musicEditorPanel;
-  private final JPanel scorePanel; // You may want to refine this to a subtype of JPanel
-  private final JPanel pianoPanel;
+  private final ScorePanel scorePanel; // You may want to refine this to a subtype of JPanel
+  private final PianoPanel pianoPanel;
 
   private List<Note> noteRange;
   private int duration;
@@ -70,12 +70,12 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
 
   @Override
   public void setNoteRange(List noteRange) {
-
+    this.scorePanel.setNoteRange(noteRange);
   }
 
   @Override
   public void setDuration(int duration) {
-
+    this.scorePanel.setDuration(duration);
   }
 
   @Override

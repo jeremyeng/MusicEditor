@@ -30,6 +30,8 @@ public class MusicEditorController<K> implements IMusicEditorController, ActionL
   @Override
   public void go() {
     this.view.setCommandButtonListener(this);
+    this.view.setDuration(model.getDuration());
+    this.view.setNoteRange(model.getNoteRange());
     this.view.makeVisible();
   }
 
