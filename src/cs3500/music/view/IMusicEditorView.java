@@ -10,4 +10,10 @@ public interface IMusicEditorView {
   void initialize();
 
   void playNote() throws InvalidMidiDataException;
+
+  void showText();
+
+  void showVisual();
+
+
 }

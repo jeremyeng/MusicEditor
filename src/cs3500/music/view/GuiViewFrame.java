@@ -17,7 +17,11 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
    * Creates new GuiView
    */
   public GuiViewFrame() {
-    this.displayPanel = new ConcreteGuiViewPanel();
+    super();
+    this.displayPanel = new PianoPanel();
+    this.setTitle("Piano");
+    this.displayPanel.setPreferredSize(new Dimension(500, 500));
+    this.setSize(500, 500);
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     this.getContentPane().add(displayPanel);
     this.pack();
@@ -30,6 +34,16 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
 
   @Override
   public void playNote() throws InvalidMidiDataException {
+
+  }
+
+  @Override
+  public void showText() {
+
+  }
+
+  @Override
+  public void showVisual() {
 
   }
 
