@@ -10,6 +10,7 @@ import cs3500.music.model.Pitch;
  * Represents the region where the keys of the piano are drawn.
  */
 public class PianoPanel extends JPanel {
+
   private final int WHITE_KEY_LENGTH = 300;
   private final int BLACK_KEY_LENGTH = 130;
   private final int WHITE_KEY_WIDTH = 20;
@@ -34,6 +35,12 @@ public class PianoPanel extends JPanel {
 
   }
 
+  /**
+   * Draws the black keys on the piano.
+   * @param x the x-position in which the key is drawn
+   * @param y the y-position in which the ket is drawn
+   * @param g2d the image in which the key is going to be drawn
+   */
   private void drawBlackKeys(int x, int y, Graphics2D g2d) {
     int curX = x;
     for (int i = 0; i < 6; i++) {
@@ -47,7 +54,12 @@ public class PianoPanel extends JPanel {
     }
   }
 
-
+  /**
+   * Draws the white kets on the piano
+   * @param x the x-position in which the key is drawn
+   * @param y the y-position in which the ket is drawn
+   * @param g2d the image in which the key is going to be drawn
+   */
   private void drawWhiteKeys(int x, int y, Graphics2D g2d) {
     int curX = x;
     for (int i = 0; i < 7; i++) {

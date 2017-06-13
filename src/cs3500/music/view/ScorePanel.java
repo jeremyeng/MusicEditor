@@ -18,7 +18,8 @@ public class ScorePanel extends JPanel {
   private final int SINGLE_NOTE_HEIGHT = 20;
   private final int SCORE_X_POSITION = 50;
   private final int LOWEST_NOTE_Y_POSITION = 300;
-  private final int GAP_BETWEEN_NOTE_AND_BLOCKS = 30;
+  private final int GAP_BETWEEN_NOTE_AND_BLOCKS_X = 30;
+  private final int GAP_BETWEEN_NOTE_AND_BLOCKS_Y = 15;
   private List<Note> noteRange = new ArrayList<>();
   private int duration = 0;
 
@@ -32,11 +33,13 @@ public class ScorePanel extends JPanel {
     }
     for (int i = 0; i < SINGLE_NOTE_WIDTH * duration + 1; i += 4 * SINGLE_NOTE_WIDTH) {
       g2d.drawString(Integer.toString(i / SINGLE_NOTE_WIDTH),
-              SCORE_X_POSITION + i, LOWEST_NOTE_Y_POSITION - noteRange.size() * SINGLE_NOTE_HEIGHT);
+              SCORE_X_POSITION + i,
+              LOWEST_NOTE_Y_POSITION - noteRange.size() * SINGLE_NOTE_HEIGHT);
     }
     for (int i = 0; i < noteRange.size(); i++) {
       g2d.drawString(this.noteRange.get(i).toString(),
-              SCORE_X_POSITION - GAP_BETWEEN_NOTE_AND_BLOCKS, LOWEST_NOTE_Y_POSITION - i * SINGLE_NOTE_HEIGHT + 15 );
+              SCORE_X_POSITION - GAP_BETWEEN_NOTE_AND_BLOCKS_X,
+              LOWEST_NOTE_Y_POSITION - i * SINGLE_NOTE_HEIGHT + GAP_BETWEEN_NOTE_AND_BLOCKS_Y );
     }
 
   }
