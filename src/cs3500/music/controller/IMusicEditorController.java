@@ -4,7 +4,7 @@ package cs3500.music.controller;
  * The controller interface for a Music Editor program.
  * The functions process commands, and get information form the model to give to the view.
  */
-public interface IMusicEditorController {
+public interface IMusicEditorController<K> {
   /**
    * Process a given string command and return status or error message as a string.
    * @param command the command given, plus any parameters.
