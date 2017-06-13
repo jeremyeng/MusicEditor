@@ -1,5 +1,7 @@
 package cs3500.music.model;
 
+import java.util.List;
+
 /**
  * This is the interface that defines behavior for a Music Editor.
  * It is parameterized over K, so any implementation of a cs3500.music.model.Note can be used.
@@ -43,6 +45,19 @@ public interface IMusicEditor<K> {
    * @throws IllegalArgumentException if different implementation is attempted to be combined.
    */
   void addPieceSimultaneously(IMusicEditor<K> piece) throws IllegalArgumentException;
+
+  /**
+   * Gets how long the piece is in number of beats.
+   * @return the
+   */
+  int getDuration();
+
+  /**
+   * Gets the range of notes that make up the piece, from the lowest to highest.
+   * @return a list of notes where the first element is the lowest note and the last element is
+   *         the highest note.
+   */
+  List<K> getNoteRange();
 
   /**
    * Displays the notes in the model that are played. The rows represent the beat numbers of the

@@ -1,5 +1,8 @@
 package cs3500.music.view;
 
+import java.awt.event.ActionListener;
+import java.util.List;
+
 import javax.sound.midi.*;
 
 /**
@@ -72,12 +75,33 @@ public class MidiViewImpl implements IMusicEditorView {
   }
 
   @Override
-  public void showText() {
+  public void makeVisible() {
 
   }
 
   @Override
-  public void showVisual() {
+  public void setCommandButtonListener(ActionListener actionEvent) {
 
   }
+
+  @Override
+  public void setNoteRange(List noteRange) {
+
+  }
+
+  @Override
+  public void setDuration(int duration) {
+
+  }
+
+  @Override
+  public void showErrorMessage() {
+
+  }
+
+  @Override
+  public void refresh() {
+
+  }
+
 }
