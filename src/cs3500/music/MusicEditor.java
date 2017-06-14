@@ -21,7 +21,7 @@ public class MusicEditor {
   public static void main(String[] args) throws IOException, InvalidMidiDataException, MidiUnavailableException {
     IMusicEditorView view = new GuiViewFrame();
     MidiViewImpl midiView = new MidiViewImpl();
-    IMusicEditor<Note> model = new MusicEditorModel(30);
+    IMusicEditor<Note> model = new MusicEditorModel(50);
     model.addNote(new Note(Pitch.C, 3), 0, 10);
     model.addNote(new Note(Pitch.C,4),0,10);
     model.addNote(new Note(Pitch.F, 3), 10, 20);
