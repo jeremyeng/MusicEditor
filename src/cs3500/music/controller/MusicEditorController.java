@@ -43,6 +43,7 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
       noteMap.put(note,stateList);
     }
     this.view.setNoteMap(noteMap);
+    //this.view.setCurrentBeat();
     this.view.makeVisible();
   }
 

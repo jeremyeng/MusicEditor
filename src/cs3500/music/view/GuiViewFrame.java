@@ -84,6 +84,11 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
   }
 
   @Override
+  public void setCurrentBeat(int beat) {
+    this.scorePanel.setCurrentBeat(beat);
+  }
+
+  @Override
   public void showErrorMessage() {
 
   }

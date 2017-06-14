@@ -101,6 +101,11 @@ public class MidiViewImpl implements IMusicEditorView {
   }
 
   @Override
+  public void setCurrentBeat(int beat) {
+
+  }
+
+  @Override
   public void showErrorMessage() {
 
   }

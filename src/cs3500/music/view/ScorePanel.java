@@ -1,18 +1,12 @@
 package cs3500.music.view;
 
-import com.sun.deploy.util.StringUtils;
-
 import java.awt.*;
-
 import javax.swing.*;
-
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import cs3500.music.model.MusicStates;
 import cs3500.music.model.Note;
 
 
@@ -24,12 +18,14 @@ public class ScorePanel extends JPanel {
   private final int SINGLE_NOTE_WIDTH = 25;
   private final int SINGLE_NOTE_HEIGHT = 20;
   private final int SCORE_X_POSITION = 50;
-  private final int LOWEST_NOTE_Y_POSITION = 300;
+  private final int HIGHEST_NOTE_Y_POSITION =50;
   private final int GAP_BETWEEN_NOTE_AND_BLOCKS_X = 30;
-  private final int GAP_BETWEEN_NOTE_AND_BLOCKS_Y = 15;
+  private final int GAP_BETWEEN_NOTE_AND_BLOCKS_Y = 5;
+  private final int GAP_BETWEEN_BEAT_AND_SCORE = 10;
   private List<Note> noteRange = new ArrayList<>();
   private Map<Note, List<String>> noteMap = new TreeMap<>();
   private int duration = 0;
+  private int currentBeat = 0;
 
   @Override
   protected void paintComponent(Graphics g) {
@@ -40,19 +36,22 @@ public class ScorePanel extends JPanel {
     for (Map.Entry<Note, List<String>> entry : noteMap.entrySet()) {
       notesToRender.add(entry.getValue());
     }
-    for (int i = 0; i < noteRange.size(); i++) {
-      drawBlock(notesToRender.get(i), SCORE_X_POSITION, LOWEST_NOTE_Y_POSITION - i * SINGLE_NOTE_HEIGHT, g2d);
+    Collections.reverse(notesToRender);
+    for (int i = noteRange.size() - 1; i >= 0; i--) {
+      drawBlock(notesToRender.get(i), SCORE_X_POSITION, HIGHEST_NOTE_Y_POSITION + i * SINGLE_NOTE_HEIGHT, g2d);
     }
     for (int i = 0; i < SINGLE_NOTE_WIDTH * duration + 1; i += 4 * SINGLE_NOTE_WIDTH) {
       g2d.drawString(Integer.toString(i / SINGLE_NOTE_WIDTH),
               SCORE_X_POSITION + i,
-              LOWEST_NOTE_Y_POSITION - noteRange.size() * SINGLE_NOTE_HEIGHT);
+              HIGHEST_NOTE_Y_POSITION - GAP_BETWEEN_BEAT_AND_SCORE);
     }
-    for (int i = 0; i < noteRange.size(); i++) {
+    for (int i = noteRange.size() - 1; i >= 0; i--) {
       g2d.drawString(this.noteRange.get(i).toString(),
               SCORE_X_POSITION - GAP_BETWEEN_NOTE_AND_BLOCKS_X,
-              LOWEST_NOTE_Y_POSITION - i * SINGLE_NOTE_HEIGHT + GAP_BETWEEN_NOTE_AND_BLOCKS_Y );
+              HIGHEST_NOTE_Y_POSITION + (noteRange.size() - i) * SINGLE_NOTE_HEIGHT - GAP_BETWEEN_NOTE_AND_BLOCKS_Y );
     }
+    drawRedLine(SCORE_X_POSITION + currentBeat * SINGLE_NOTE_WIDTH,
+            HIGHEST_NOTE_Y_POSITION, g2d);
 
   }
 
@@ -82,16 +81,25 @@ public class ScorePanel extends JPanel {
   protected void renderNoteState(String state,int x, int y, Graphics2D g2d) {
     switch (state) {
       case "start": g2d.setColor(Color.BLACK);
-      g2d.fillRect(x,y,SINGLE_NOTE_WIDTH,SINGLE_NOTE_HEIGHT);
+      g2d.fillRect(x,y,SINGLE_NOTE_WIDTH - 1,SINGLE_NOTE_HEIGHT - 1);
       break;
       case "continue": g2d.setColor(Color.GREEN);
-      g2d.fillRect(x,y,SINGLE_NOTE_WIDTH,SINGLE_NOTE_HEIGHT);
+      g2d.fillRect(x,y,SINGLE_NOTE_WIDTH - 1,SINGLE_NOTE_HEIGHT - 1);
       break;
       case "rest": g2d.setColor(Color.WHITE);
-      g2d.fillRect(x,y,SINGLE_NOTE_WIDTH,SINGLE_NOTE_HEIGHT);
+      g2d.fillRect(x,y,SINGLE_NOTE_WIDTH - 1,SINGLE_NOTE_HEIGHT - 1);
       break;
       default: throw new IllegalArgumentException("Unsupported note state to render!");
     }
+  }
+
+  protected void drawRedLine(int x, int y, Graphics2D g2d) {
+    g2d.setColor(Color.RED);
+    g2d.drawLine(x,y,x,y + this.noteRange.size() * SINGLE_NOTE_HEIGHT);
+  }
+
+  protected void setCurrentBeat(int beat) {
+    this.currentBeat = beat;
   }
 
 }

@@ -40,7 +40,13 @@ public interface IMusicEditorView<K> {
    */
   void setDuration(int duration);
 
+  /**
+   * Sets a note map for the music editor that maps a note to its state on every beat.
+   * @param notes the note map that describe the behavior of each note at every beat
+   */
   void setNoteMap(Map<K, List<String>> notes);
+
+  void setCurrentBeat(int beat);
 
   void showErrorMessage();
 
