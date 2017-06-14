@@ -2,6 +2,7 @@ package cs3500.music.view;
 
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Map;
 
 import javax.sound.midi.*;
 
@@ -91,6 +92,11 @@ public class MidiViewImpl implements IMusicEditorView {
 
   @Override
   public void setDuration(int duration) {
+
+  }
+
+  @Override
+  public void setNoteMap(Map notes) {
 
   }
 

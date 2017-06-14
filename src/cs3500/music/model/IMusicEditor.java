@@ -62,7 +62,7 @@ public interface IMusicEditor<K> {
 
   /**
    * Retrieves the state of a given note at a given beatNumber.
-   * A note state will either be "Start", "Continue", or "Rest"
+   * A note state will either be "start", "continue", or "rest"
    * @param note the note to get the state of.
    * @param beatNumber the number of the beat in the piece.
    * @return a string representing the state of the note at the given beat.

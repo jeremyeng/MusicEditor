@@ -1,7 +1,9 @@
 package cs3500.music.view;
 
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sound.midi.InvalidMidiDataException;
 
@@ -37,6 +39,8 @@ public interface IMusicEditorView<K> {
    * @param duration the total duration of the music editor
    */
   void setDuration(int duration);
+
+  void setNoteMap(Map<K, List<String>> notes);
 
   void showErrorMessage();
 

@@ -23,6 +23,10 @@ public class MusicEditor {
     MidiViewImpl midiView = new MidiViewImpl();
     IMusicEditor<Note> model = new MusicEditorModel(30);
     model.addNote(new Note(Pitch.C, 3), 0, 10);
+    model.addNote(new Note(Pitch.C,4),0,10);
+    model.addNote(new Note(Pitch.F, 3), 10, 20);
+    model.addNote(new Note(Pitch.C,3),8,22);
+    model.addNote(new Note(Pitch.CSharp, 3),10,15);
     IMusicEditorController controller = new MusicEditorController(model, view);
     controller.go();
   }

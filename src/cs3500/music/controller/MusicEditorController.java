@@ -2,6 +2,10 @@ package cs3500.music.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.TreeMap;
 
 import cs3500.music.model.IMusicEditor;
 import cs3500.music.model.Note;
@@ -30,6 +34,15 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
     this.view.setCommandButtonListener(this);
     this.view.setDuration(model.getDuration());
     this.view.setNoteRange(model.getNoteRange());
+    TreeMap<Note, List<String>> noteMap = new TreeMap<>();
+    for (Note note : model.getNoteRange()) {
+      List<String> stateList = new ArrayList<>();
+      for (int i = 0; i < model.getDuration(); i++) {
+        stateList.add(model.getNoteState(note,i));
+      }
+      noteMap.put(note,stateList);
+    }
+    this.view.setNoteMap(noteMap);
     this.view.makeVisible();
   }
 
