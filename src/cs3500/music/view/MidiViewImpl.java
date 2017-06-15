@@ -20,10 +20,6 @@ public class MidiViewImpl implements IMusicEditorView {
     this.synth.open();
   }
 
-  @Override
-  public void initialize() {
-
-  }
 
   /**
    * Relevant classes and methods from the javax.sound.midi library:

@@ -19,6 +19,8 @@ public interface IMusicEditorView<K> {
    */
   void makeVisible();
 
+  void playNote() throws InvalidMidiDataException;
+
 
   /**
    * Sets the range of note of the music editor.

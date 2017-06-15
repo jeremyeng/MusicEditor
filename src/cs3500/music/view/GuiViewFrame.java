@@ -47,10 +47,6 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
 //    this.pack();
   }
 
-  @Override
-  public void initialize(){
-    this.setVisible(true);
-  }
 
   @Override
   public void playNote() throws InvalidMidiDataException {
