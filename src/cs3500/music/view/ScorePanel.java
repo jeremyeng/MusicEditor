@@ -2,6 +2,7 @@ package cs3500.music.view;
 
 import java.awt.*;
 import javax.swing.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +13,12 @@ import cs3500.music.model.Note;
 
 /**
  * Created by Hoyin on 6/12/2017.
+ */
+
+/**
+ * A class that represents a panel of a music score. The panel consist of
+ * beat numbers, name of the notes, note's action on each beat, and is seperated
+ * by a line every 4 beats.
  */
 public class ScorePanel extends JPanel {
 
@@ -52,7 +59,6 @@ public class ScorePanel extends JPanel {
     }
     drawRedLine(SCORE_X_POSITION + currentBeat * SINGLE_NOTE_WIDTH,
             HIGHEST_NOTE_Y_POSITION, g2d);
-
   }
 
   protected void drawBlock(List<String> states, int x, int y, Graphics2D g2d) {
@@ -98,8 +104,22 @@ public class ScorePanel extends JPanel {
     g2d.drawLine(x,y,x,y + this.noteRange.size() * SINGLE_NOTE_HEIGHT);
   }
 
+  protected void updateCurrentBeat(int beat) {
+    if (! (this.currentBeat + beat < 0 || this.currentBeat + beat > this.duration)) {
+      this.currentBeat += beat;
+      this.repaint();
+    }
+
+  }
+
   protected void setCurrentBeat(int beat) {
     this.currentBeat = beat;
+  }
+
+
+  @Override
+  public boolean isFocusable() {
+    return true;
   }
 
 }

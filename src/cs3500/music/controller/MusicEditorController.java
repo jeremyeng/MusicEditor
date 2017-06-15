@@ -2,6 +2,8 @@ package cs3500.music.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +17,7 @@ import cs3500.music.view.IMusicEditorView;
  * Implements the IMusicEditorController interface and facilitates interaction between the model
  * and the view.
  */
-public class MusicEditorController implements IMusicEditorController<Note>, ActionListener{
+public class MusicEditorController implements IMusicEditorController<Note>, ActionListener, KeyListener{
   private IMusicEditor<Note> model;
   private IMusicEditorView view;
 
@@ -31,7 +33,7 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
 
   @Override
   public void go() {
-    this.view.setCommandButtonListener(this);
+    this.view.setListener(this,this);
     this.view.setDuration(model.getDuration());
     this.view.setNoteRange(model.getNoteRange());
     TreeMap<Note, List<String>> noteMap = new TreeMap<>();
@@ -49,6 +51,27 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
 
   @Override
   public void actionPerformed(ActionEvent e) {
+    System.out.println("some action performed!");
+  }
+
+  @Override
+  public void keyTyped(KeyEvent e) {
+    System.out.print("key typed!");
+  }
+
+  @Override
+  public void keyPressed(KeyEvent e) {
+    switch (e.getKeyCode()) {
+      case KeyEvent.VK_LEFT:
+        this.view.updateCurrentBeat(-1);
+      break;
+      case KeyEvent.VK_RIGHT: this.view.updateCurrentBeat(1); break;
+      default: throw new IllegalArgumentException("Unsupported Key!");
+    }
+  }
+
+  @Override
+  public void keyReleased(KeyEvent e) {
 
   }
 }

@@ -1,11 +1,13 @@
 package cs3500.music.view;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.sound.midi.InvalidMidiDataException;
+import javax.swing.*;
 
 /**
  * Defines the behavior for the music editor.
@@ -21,12 +23,6 @@ public interface IMusicEditorView<K> {
    */
   void makeVisible();
 
-  /**
-   * Sets the view with an action listener so when the user interacts with the
-   * view the controller knows what to do.
-   * @param actionEvent
-   */
-  void setCommandButtonListener(ActionListener actionEvent);
 
   /**
    * Sets the range of note of the music editor.
@@ -46,7 +42,11 @@ public interface IMusicEditorView<K> {
    */
   void setNoteMap(Map<K, List<String>> notes);
 
-  void setCurrentBeat(int beat);
+  void setListener(ActionListener action,KeyListener key);
+
+  void resetFocus();
+
+  void updateCurrentBeat(int beat);
 
   void showErrorMessage();
 

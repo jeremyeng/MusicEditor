@@ -1,6 +1,7 @@
 package cs3500.music.view;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.util.List;
 import java.util.Map;
 
@@ -80,10 +81,6 @@ public class MidiViewImpl implements IMusicEditorView {
 
   }
 
-  @Override
-  public void setCommandButtonListener(ActionListener actionEvent) {
-
-  }
 
   @Override
   public void setNoteRange(List noteRange) {
@@ -101,9 +98,20 @@ public class MidiViewImpl implements IMusicEditorView {
   }
 
   @Override
-  public void setCurrentBeat(int beat) {
+  public void setListener(ActionListener action, KeyListener key) {
 
   }
+
+  @Override
+  public void resetFocus() {
+
+  }
+
+  @Override
+  public void updateCurrentBeat(int beat) {
+
+  }
+
 
   @Override
   public void showErrorMessage() {
