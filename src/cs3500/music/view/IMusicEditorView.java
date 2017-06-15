@@ -14,10 +14,6 @@ import javax.swing.*;
  */
 public interface IMusicEditorView<K> {
 
-  void initialize();
-
-  void playNote() throws InvalidMidiDataException;
-
   /**
    * Makes the music editor visible to the user.
    */

@@ -26,7 +26,7 @@ public class ScorePanel extends JPanel {
   private final int SINGLE_NOTE_HEIGHT = 20;
   private final int SCORE_X_POSITION = 50;
   private final int HIGHEST_NOTE_Y_POSITION =50;
-  private final int GAP_BETWEEN_NOTE_AND_BLOCKS_X = 30;
+  private final int GAP_BETWEEN_NOTE_AND_BLOCKS_X = 50;
   private final int GAP_BETWEEN_NOTE_AND_BLOCKS_Y = 5;
   private final int GAP_BETWEEN_BEAT_AND_SCORE = 10;
   private List<Note> noteRange = new ArrayList<>();
