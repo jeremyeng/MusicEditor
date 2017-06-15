@@ -88,6 +88,28 @@ public class Note implements Comparable<Note> {
     return instrument;
   }
 
+  /**
+   * Checks if the note is sharp
+   * @return true if note is sharp and false otherwise.
+   */
+  public boolean isSharp() {
+    switch (this.pitch) {
+      case C: return false;
+      case CSharp: return true;
+      case D: return false;
+      case DSharp: return true;
+      case E: return false;
+      case F: return false;
+      case FSharp: return true;
+      case G: return false;
+      case GSharp: return true;
+      case A: return false;
+      case ASharp: return true;
+      case B: return false;
+      default: throw new IllegalArgumentException("Invalid sharp!");
+    }
+  }
+
 //  /**
 //   * Construct a note base on the given pitch and octave.
 //   * @param pitch the pitch of the note that is to be created
