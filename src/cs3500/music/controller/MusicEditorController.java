@@ -19,9 +19,9 @@ import cs3500.music.view.IMusicEditorView;
  */
 public class MusicEditorController implements IMusicEditorController<Note>, ActionListener, KeyListener{
   private IMusicEditor<Note> model;
-  private IMusicEditorView view;
+  private IMusicEditorView<Note> view;
 
-  public MusicEditorController(IMusicEditor<Note> model, IMusicEditorView view) {
+  public MusicEditorController(IMusicEditor<Note> model, IMusicEditorView<Note> view) {
     this.model = model;
     this.view = view;
   }
@@ -45,7 +45,6 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
       noteMap.put(note,stateList);
     }
     this.view.setNoteMap(noteMap);
-    //this.view.setCurrentBeat();
     this.view.makeVisible();
   }
 

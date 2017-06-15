@@ -3,7 +3,7 @@ package cs3500.music.model;
 import java.util.Objects;
 
 /**
- * Represents a single musical note, including octave.
+ * Represents a single musical note, including octave and instrument.
  */
 public class Note implements Comparable<Note> {
 
@@ -27,6 +27,16 @@ public class Note implements Comparable<Note> {
     this.pitch = pitch;
     this.octave = octave;
     this.instrument = instrument;
+  }
+
+  /**
+   * Allows construction of a note from the a note number represented as an integer.
+   * @param noteNumber the integer reprsentation of a note
+   * @param instrument the number of the midi instrument.
+   */
+  public Note(int noteNumber, int instrument) {
+    this.octave = (noteNumber / 12) - 1;
+    this.pitch = Pitch.pitchFromNumber(noteNumber - (this.octave * 12));
   }
 
   @Override
@@ -86,6 +96,10 @@ public class Note implements Comparable<Note> {
 
   public int getInstrument() {
     return instrument;
+  }
+
+  public int getNoteNumber() {
+    return this.octave * 12 + pitch.getPitchNumber();
   }
 
 //  /**

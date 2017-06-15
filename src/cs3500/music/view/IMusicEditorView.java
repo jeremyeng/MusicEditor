@@ -19,8 +19,7 @@ public interface IMusicEditorView<K> {
    */
   void makeVisible();
 
-  void playNote() throws InvalidMidiDataException;
-
+  void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException;
 
   /**
    * Sets the range of note of the music editor.
