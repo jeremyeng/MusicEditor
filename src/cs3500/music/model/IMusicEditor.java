@@ -15,7 +15,7 @@ public interface IMusicEditor<K> {
    * @param length the length of the note to be added.
    * @throws IllegalArgumentException if the note cannot be added.
    */
-  void addNote(K note, int beatNumber, int length) throws IllegalArgumentException;
+  void addNote(K note, int beatNumber, int length, int volume) throws IllegalArgumentException;
 
   /**
    * Removes the specified note from the Music Editor.
@@ -45,6 +45,12 @@ public interface IMusicEditor<K> {
    * @throws IllegalArgumentException if different implementation is attempted to be combined.
    */
   void addPieceSimultaneously(IMusicEditor<K> piece) throws IllegalArgumentException;
+
+  /**
+   * Sets the tempo of the model in microseconds per beat.
+   * @param tempo
+   */
+  void setTempo(int tempo);
 
   /**
    * Gets how long the piece is in number of beats.

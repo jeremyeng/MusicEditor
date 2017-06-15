@@ -5,8 +5,8 @@ package cs3500.music.model;
  * Changes 6/13/17: Added method makePitch
  */
 public enum Pitch {
-  C(1), CSharp(2), D(3), DSharp(4), E(5), F(6), FSharp(7), G(8), GSharp(9), A(10), ASharp(11),
-  B(12);
+  C(12), CSharp(13), D(14), DSharp(15), E(16), F(17), FSharp(18), G(19), GSharp(20), A(21), ASharp(22),
+  B(23);
 
   private final int pitchNumber;
 

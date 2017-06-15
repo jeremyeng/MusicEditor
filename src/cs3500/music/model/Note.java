@@ -4,25 +4,29 @@ import java.util.Objects;
 
 /**
  * Represents a single musical note, including octave.
- * Changes made on 6/13/17: Added method makeNote
  */
 public class Note implements Comparable<Note> {
 
   private Pitch pitch;
   private int octave;
+  private int instrument;
+
 
   /**
    * Assigns the length of the element in beats.
    *
    * @param pitch  the pitch of the note, must be one of the twelve commonly used in western music.
    * @param octave the octave the note is in, must be hearable by humans.
+   * @param instrument an integer representing the instrument that plays the note.
    */
-  public Note(Pitch pitch, int octave) {
+  public Note(Pitch pitch, int octave, int instrument) {
     if (octave < 0 || octave > 10) {
       throw new IllegalArgumentException("octave must be between 0 and 10 (inclusive)");
     }
+
     this.pitch = pitch;
     this.octave = octave;
+    this.instrument = instrument;
   }
 
   @Override
@@ -32,7 +36,8 @@ public class Note implements Comparable<Note> {
     } else if (this.octave > note.octave) {
       return 1;
     }
-    return this.pitch.getPitchNumber() - note.pitch.getPitchNumber();
+    return (this.pitch.getPitchNumber() + this.instrument * 1000)
+            - (note.pitch.getPitchNumber() + note.instrument * 1000);
   }
 
   @Override
@@ -43,7 +48,9 @@ public class Note implements Comparable<Note> {
 
     if (o instanceof Note) {
       Note that = (Note) o;
-      return this.pitch == that.pitch && this.octave == that.octave;
+      return this.pitch.getPitchNumber() == that.pitch.getPitchNumber()
+              && this.octave == that.octave
+              && this.instrument == that.instrument;
     }
 
     return false;
@@ -51,12 +58,12 @@ public class Note implements Comparable<Note> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.pitch, this.octave);
+    return Objects.hash(this.pitch, this.octave, this.instrument);
   }
 
   @Override
   public String toString() {
-    return this.pitch.toString() + this.octave;
+    return this.pitch.toString() + this.octave +"(" + this.instrument + ")" ;
   }
 
   /**
@@ -75,6 +82,10 @@ public class Note implements Comparable<Note> {
    */
   public int getOctave() {
     return this.octave;
+  }
+
+  public int getInstrument() {
+    return instrument;
   }
 
 //  /**
