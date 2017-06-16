@@ -44,12 +44,32 @@ public class MusicEditorModelTest {
             "5\n", this.model.getState());
   }
 
-//  @Test
-//  public void testAddNoteLongerThanDuration() {
-//    this.model.addNote(new Note(Pitch.C, 0, 0), 0, 10, 64);
-//    assertEquals("", this.model.getState());
-//  }
-//
+  @Test
+  public void testAddNoteLongerThanDuration() {
+    this.model.addNote(new Note(Pitch.C, 0, 0), 0, 10, 64);
+    assertEquals("      C0(0)\n" +
+            " 0       X  \n" +
+            " 1       |  \n" +
+            " 2       |  \n" +
+            " 3       |  \n" +
+            " 4       |  \n" +
+            " 5       |  \n" +
+            " 6       |  \n" +
+            " 7       |  \n" +
+            " 8       |  \n" +
+            " 9       |  \n" +
+            "10       |  \n" +
+            "11       |  \n" +
+            "12       |  \n" +
+            "13       |  \n" +
+            "14       |  \n" +
+            "15       |  \n" +
+            "16       |  \n" +
+            "17       |  \n" +
+            "18       |  \n" +
+            "19       |  \n", this.model.getState());
+  }
+
   @Test(expected = IllegalArgumentException.class)
   public void testAddNoteInvalidLength() {
     this.model.addNote(new Note(Pitch.C, 0, 0), 0, -1, 64);
@@ -59,7 +79,6 @@ public class MusicEditorModelTest {
   public void testAddOneNote() {
 
     this.model.addNote(new Note(Pitch.C, 0, 0), 0, 4, 60);
-    System.out.println(this.model.noteMap.get(new Note(Pitch.C, 0, 0)));
     assertEquals("      C0(0)\n" +
             "0       X  \n" +
             "1       |  \n" +
@@ -283,12 +302,20 @@ public class MusicEditorModelTest {
   }
 
   @Test
-  public void getNoteState() {
+  public void testGetNoteState() {
     this.model.addNote(new Note(Pitch.C, 0, 0), 0, 4, 10);
     assertEquals("start", this.model.getNoteState(new Note(Pitch.C, 0, 0), 0));
     assertEquals("continue", this.model.getNoteState(new Note(Pitch.C, 0, 0), 1));
     assertEquals("rest", this.model.getNoteState(new Note(Pitch.C, 0, 0), 5));
 
+  }
+
+  @Test
+  public void testGetCombinedNoteMap() {
+    this.model.addNote(new Note(Pitch.C, 0, 0), 0, 4, 10);
+    this.model.addNote(new Note(Pitch.C, 0, 1), 1, 4, 10);
+    assertEquals("[start, start, continue, continue, continue, rest]",
+            this.model.getCombinedNoteMap().get(12).toString());
   }
 
 }

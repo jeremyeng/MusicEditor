@@ -21,7 +21,7 @@ import cs3500.music.util.CompositionBuilder;
 public class MusicEditorModel implements IMusicEditor<Note> {
   private int duration;
   private long tempo;
-  public Map<Note, ArrayList<PlaybackInfo>> noteMap;
+  private Map<Note, ArrayList<PlaybackInfo>> noteMap;
 
 
   /**
@@ -98,7 +98,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   }
 
   @Override
-  public void setTempo(int tempo) {
+  public void setTempo(long tempo) {
     this.tempo = tempo;
   }
 
@@ -111,6 +111,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   public long getTempo() {
     return this.tempo;
   }
+
 
   /**
    * Takes the notes from the other cs3500.music.model.MusicEditorModel and overlays them over the
@@ -171,7 +172,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     }
 
     if (beatNumber + length > this.noteMap.get(note).size()) {
-      throw new IllegalArgumentException("note is too long.");
+      this.expand((beatNumber + length) - this.duration);
     }
 
     if (volume < 0 || volume > 127) {
@@ -179,7 +180,21 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     }
 
     if (length < 1) {
-      throw new IllegalArgumentException("note must be at least one beat long.");
+//      throw new IllegalArgumentException("note must be at least one beat long.");
+    }
+  }
+
+  /**
+   * Expands the size of the noteMap to hold more notes.
+   * @param expandSize the amount to expand the notemap by
+   */
+  private void expand(int expandSize) {
+    this.duration += expandSize;
+    PlaybackInfo[] initial = new PlaybackInfo[expandSize];
+    List<PlaybackInfo> initalList = new ArrayList<>(Arrays.asList(initial));
+    Collections.fill(initalList, new PlaybackInfo(MusicStates.REST, 0));
+    for (Note note : this.noteMap.keySet()) {
+      this.noteMap.get(note).addAll(initalList);
     }
   }
 
@@ -273,6 +288,33 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     return info;
   }
 
+  @Override
+  public Map<Integer, List<String>> getCombinedNoteMap() {
+    Map<Integer, List<String>> combined = new TreeMap<>();
+
+    String[] initial = new String[this.duration];
+    List<String> initalList = new ArrayList<>(Arrays.asList(initial));
+    Collections.fill(initalList, "rest");
+
+    for (int i = 12; i <= 143; i++) {
+      combined.put(i, new ArrayList<>(initalList));
+    }
+
+    for (Note note : this.noteMap.keySet()) {
+      for (int i = 0; i < this.duration; i++) {
+        String storedState = combined.get(note.getNoteNumber()).get(i);
+        String currentState = this.noteMap.get(note).get(i).getState().name().toLowerCase();
+        if (!storedState.equals(currentState) && !currentState.equals("rest")) {
+          combined.get(note.getNoteNumber()).set(i, currentState);
+        }
+
+      }
+    }
+
+    return combined;
+
+  }
+
   /**
    * Gets the length of a note starting at a given beat.
    * @param note the Note to get the length of.
@@ -281,7 +323,8 @@ public class MusicEditorModel implements IMusicEditor<Note> {
    */
   private int getLength(Note note, int start) {
     int length = 0;
-    for (int beat = start; this.noteMap.get(note).get(beat).getState() != MusicStates.REST; beat++) {
+    for (int beat = start; beat < this.duration
+            && this.noteMap.get(note).get(beat).getState() != MusicStates.REST; beat++) {
       length += 1;
     }
     return length;
@@ -341,7 +384,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
    */
   public static class Builder implements CompositionBuilder<IMusicEditor<Note>> {
 
-    private IMusicEditor<Note> model = new MusicEditorModel(10000);
+    private IMusicEditor<Note> model = new MusicEditorModel(1000);
 
     @Override
     public IMusicEditor<Note> build() {
