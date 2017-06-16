@@ -27,10 +27,11 @@ public class ScorePanel extends JPanel {
   private final int SCORE_X_POSITION = 50;
   private final int HIGHEST_NOTE_Y_POSITION =50;
   private final int GAP_BETWEEN_NOTE_AND_BLOCKS_X = 50;
-  private final int GAP_BETWEEN_NOTE_AND_BLOCKS_Y = 5;
+  private final int GAP_BETWEEN_NOTE_AND_BLOCKS_Y = -15;
   private final int GAP_BETWEEN_BEAT_AND_SCORE = 10;
   private List<Note> noteRange = new ArrayList<>();
   private Map<Note, List<String>> noteMap = new TreeMap<>();
+  private Map<Integer, List<String>> combineNoteMap = new TreeMap<>();
   private int duration = 0;
   private int currentBeat = 0;
 
@@ -40,11 +41,11 @@ public class ScorePanel extends JPanel {
     Graphics2D g2d = (Graphics2D) g;
     g2d.setColor(Color.BLACK);
     ArrayList<List<String>> notesToRender = new ArrayList<>();
-    for (Map.Entry<Note, List<String>> entry : noteMap.entrySet()) {
+    for (Map.Entry<Integer, List<String>> entry : combineNoteMap.entrySet()) {
       notesToRender.add(entry.getValue());
     }
     Collections.reverse(notesToRender);
-    for (int i = noteRange.size() - 1; i >= 0; i--) {
+    for (int i = 0; i < notesToRender.size(); i++) {
       drawBlock(notesToRender.get(i), SCORE_X_POSITION, HIGHEST_NOTE_Y_POSITION + i * SINGLE_NOTE_HEIGHT, g2d);
     }
     for (int i = 0; i < SINGLE_NOTE_WIDTH * duration + 1; i += 4 * SINGLE_NOTE_WIDTH) {
@@ -52,10 +53,10 @@ public class ScorePanel extends JPanel {
               SCORE_X_POSITION + i,
               HIGHEST_NOTE_Y_POSITION - GAP_BETWEEN_BEAT_AND_SCORE);
     }
-    for (int i = noteRange.size() - 1; i >= 0; i--) {
-      g2d.drawString(this.noteRange.get(i).toString(),
+    for (int i = 0; i < notesToRender.size(); i++) {
+      g2d.drawString(new Note(143 - i, 0).toString(),
               SCORE_X_POSITION - GAP_BETWEEN_NOTE_AND_BLOCKS_X,
-              HIGHEST_NOTE_Y_POSITION + (noteRange.size() - i) * SINGLE_NOTE_HEIGHT - GAP_BETWEEN_NOTE_AND_BLOCKS_Y );
+              HIGHEST_NOTE_Y_POSITION + i * SINGLE_NOTE_HEIGHT - GAP_BETWEEN_NOTE_AND_BLOCKS_Y );
     }
     drawRedLine(SCORE_X_POSITION + currentBeat * SINGLE_NOTE_WIDTH,
             HIGHEST_NOTE_Y_POSITION, g2d);
@@ -74,6 +75,10 @@ public class ScorePanel extends JPanel {
 
   protected void setNoteRange(List<Note> notes) {
     this.noteRange = notes;
+  }
+
+  protected void setCombineNoteMap(Map<Integer, List<String>> combineNoteMap) {
+    this.combineNoteMap = combineNoteMap;
   }
 
   protected void setDuration(int duration) {
@@ -101,7 +106,7 @@ public class ScorePanel extends JPanel {
 
   protected void drawRedLine(int x, int y, Graphics2D g2d) {
     g2d.setColor(Color.RED);
-    g2d.drawLine(x,y,x,y + this.noteRange.size() * SINGLE_NOTE_HEIGHT);
+    g2d.drawLine(x,y,x,y + this.combineNoteMap.size() * SINGLE_NOTE_HEIGHT);
   }
 
   protected void updateCurrentBeat(int beat) {

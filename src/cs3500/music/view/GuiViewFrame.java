@@ -92,6 +92,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
   @Override
   public void setCombineNoteMap(Map <Integer, List<String>> notes) {
     this.pianoPanel.setCombineNoteMap(notes);
+    this.scorePanel.setCombineNoteMap(notes);
   }
 
   @Override

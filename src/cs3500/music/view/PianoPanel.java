@@ -21,7 +21,7 @@ public class PianoPanel extends JPanel {
   private final int WHITE_KEY_WIDTH = 20;
   private final int BLACK_KEY_WIDTH = (WHITE_KEY_WIDTH / 2);
   private final Color WHITE_KEY_DISPLAY_COLOR = Color.YELLOW;
-  private final Color BLACK_KEY_DISPLAY_COLOR = Color.YELLOW;
+  private final Color BLACK_KEY_DISPLAY_COLOR = Color.ORANGE;
 
   private List<Note> noteRange = new ArrayList<>();
   private Map<Integer, List<String>> noteMap = new TreeMap<>();
@@ -126,6 +126,6 @@ public class PianoPanel extends JPanel {
   protected void setDuration(int duration) {
     this.duration = duration;
   }
-  
+
 
 }

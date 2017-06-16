@@ -44,6 +44,7 @@ public class MusicEditor {
     model.addNote(new Note(Pitch.C,3, 0),0,10, 10);
     model.addNote(new Note(Pitch.F, 3, 0), 10, 20, 10);
     model.addNote(new Note(Pitch.C,3, 0),8,22, 10);
+    model.addNote(new Note(Pitch.C,10,0),5,15,10);
     model.addNote(new Note(Pitch.CSharp, 3, 1),10,15, 10);
     IMusicEditorController controller = new MusicEditorController(model, view);
     System.out.println(model.getMidiInfo());
