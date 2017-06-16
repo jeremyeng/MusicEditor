@@ -9,12 +9,15 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import cs3500.music.util.CompositionBuilder;
+
 /**
  * Represents the notes contained in a piece of music.
  */
 public class MusicEditorModel implements IMusicEditor<Note> {
   private int duration;
-  private Map<Note, ArrayList<MusicStates>> noteMap;
+  private long tempo;
+  private Map<Note, ArrayList<PlaybackInfo>> noteMap;
 
 
   /**
@@ -25,31 +28,30 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   public MusicEditorModel(int duration) {
     this.duration = duration;
     this.noteMap = new TreeMap<>();
-    this.initializeStates();
   }
 
   /**
    * Initializes all possible notes in all octaves to be at rest for the initial duration.
    */
-  private void initializeStates() {
-    MusicStates[] initial = new MusicStates[this.duration];
-    List<MusicStates> initalList = new ArrayList<>(Arrays.asList(initial));
-    Collections.fill(initalList, MusicStates.REST);
+  private void initializeStates(int instrument) {
+    PlaybackInfo[] initial = new PlaybackInfo[this.duration];
+    List<PlaybackInfo> initalList = new ArrayList<>(Arrays.asList(initial));
+    Collections.fill(initalList, new PlaybackInfo(MusicStates.REST, 0));
     for (int i = 0; i <= 10; i++) {
       for (Pitch p : Pitch.values()) {
-        this.noteMap.put(new Note(p, i), new ArrayList<>(initalList));
+        this.noteMap.put(new Note(p, i, instrument), new ArrayList<>(initalList));
       }
     }
   }
 
 
   @Override
-  public void addNote(Note note, int beatNumber, int length) throws IllegalArgumentException {
-    this.checkCanAdd(note, beatNumber, length);
+  public void addNote(Note note, int beatNumber, int length, int volume) throws IllegalArgumentException {
+    this.checkCanAdd(note, beatNumber, length, volume);
 
-    this.noteMap.get(note).set(beatNumber, MusicStates.START);
+    this.noteMap.get(note).set(beatNumber, new PlaybackInfo(MusicStates.START, volume));
     for (int i = beatNumber + 1; i < beatNumber + length; i++) {
-      this.noteMap.get(note).set(i, MusicStates.CONTINUE);
+      this.noteMap.get(note).set(i, new PlaybackInfo(MusicStates.CONTINUE, volume));
     }
   }
 
@@ -57,11 +59,11 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   public void removeNote(Note note, int beatNumber) throws IllegalArgumentException {
     this.checkCanRemove(note, beatNumber);
 
-    this.noteMap.get(note).set(beatNumber, MusicStates.REST);
+    this.noteMap.get(note).set(beatNumber, new PlaybackInfo(MusicStates.REST, 0));
     int index = beatNumber;
     while (index < this.noteMap.get(note).size() &&
-            this.noteMap.get(note).get(index) != MusicStates.START) {
-      this.noteMap.get(note).set(index, MusicStates.REST);
+            this.noteMap.get(note).get(index).getState() != MusicStates.START) {
+      this.noteMap.get(note).set(index, new PlaybackInfo(MusicStates.REST, 0));
       index += 1;
     }
   }
@@ -90,17 +92,34 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     this.overlayNotes(other);
   }
 
+  @Override
+  public void setTempo(long tempo) {
+    this.tempo = tempo;
+  }
+
+  @Override
+  public int getDuration() {
+    return this.duration;
+  }
+
+  @Override
+  public long getTempo() {
+    return this.tempo;
+  }
+
+
   /**
-   * Takes the notes from the other cs3500.music.model.MusicEditorModel and overlays them over the notes of this
-   * cs3500.music.model.MusicEditorModel so that they are simultaneous.
+   * Takes the notes from the other cs3500.music.model.MusicEditorModel and overlays them over the
+   * notes of this cs3500.music.model.MusicEditorModel so that they are simultaneous.
    *
    * @param other the cs3500.music.model.MusicEditorModel to get notes from.
    */
   private void overlayNotes(MusicEditorModel other) {
-    for (Note note : this.noteMap.keySet()) {
+    for (Note note : other.noteMap.keySet()) {
+      this.checkCanAdd(note, 0, 1, 1);
       for (int i = 0; i < this.duration; i++) {
-        if (other.noteMap.get(note).get(i) != MusicStates.REST
-                && this.noteMap.get(note).get(i) != other.noteMap.get(note).get(i)) {
+        if (other.noteMap.get(note).get(i).getState() != MusicStates.REST
+                && !this.noteMap.get(note).get(i).equals(other.noteMap.get(note).get(i))) {
           this.noteMap.get(note).set(i, other.noteMap.get(note).get(i));
         }
       }
@@ -130,7 +149,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     if (beatNumber >= this.noteMap.get(note).size()) {
       throw new IllegalArgumentException("beatNumber is out of range");
     }
-    if (this.noteMap.get(note).get(beatNumber) != MusicStates.START) {
+    if (this.noteMap.get(note).get(beatNumber).getState() != MusicStates.START) {
       throw new IllegalArgumentException("no note starts at that beatNumber");
     }
   }
@@ -142,41 +161,72 @@ public class MusicEditorModel implements IMusicEditor<Note> {
    * @param beatNumber the number of the beat at which the note starts
    * @param length     the number of beats long the note is
    */
-  private void checkCanAdd(Note note, int beatNumber, int length) {
-    if (beatNumber + length > this.noteMap.get(note).size()) {
-      throw new IllegalArgumentException("note is too long.");
+  private void checkCanAdd(Note note, int beatNumber, int length, int volume) {
+    if (!this.noteMap.containsKey(note)) {
+      this.initializeStates(note.getInstrument());
     }
 
-    if (length < 1) {
-      throw new IllegalArgumentException("note must be at least one beat long.");
+    if (beatNumber + length > this.noteMap.get(note).size()) {
+      this.expand((beatNumber + length) - this.duration);
+    }
+
+    if (volume < 0 || volume > 127) {
+      throw new IllegalArgumentException("volume must be between 0 and 127 (inclusive)");
+    }
+
+    if (length < 0) {
+      throw new IllegalArgumentException("cannot have negative beats.");
+    }
+
+  }
+
+  /**
+   * Expands the size of the noteMap to hold more notes.
+   *
+   * @param expandSize the amount to expand the notemap by
+   */
+  private void expand(int expandSize) {
+    this.duration += expandSize;
+    PlaybackInfo[] initial = new PlaybackInfo[expandSize];
+    List<PlaybackInfo> initalList = new ArrayList<>(Arrays.asList(initial));
+    Collections.fill(initalList, new PlaybackInfo(MusicStates.REST, 0));
+    for (Note note : this.noteMap.keySet()) {
+      this.noteMap.get(note).addAll(initalList);
     }
   }
 
   @Override
   public String getState() {
-    String state = " ";
+    String state = "";
     List<Note> noteRange = this.getNoteRange();
+    Map<Integer, List<String>> combined = this.getCombinedNoteMap();
 
-    state += getColumnHeaders(noteRange) + "\n";
-    state += getRowStates(noteRange);
+    int lowNote = this.getLowNote();
+    int highNote = this.getHighNote();
+
+    state += getColumnHeaders(lowNote, highNote, combined) + "\n";
+    state += getRowStates(lowNote, highNote, combined);
 
     return state;
   }
 
   /**
-   * Gets the status of all the beats in the noteMap.
+   * Gets the status of all the beats in the noteMap ("X", "|", or " ").
    *
-   * @param noteRange the range of notes that comprise the piece
+   * @param lowNote the range of notes that comprise the piece
+   * @param highNote the lowest pitch-octave in the piece
+   * @param combined the map of notes where all instrument's notes are combined.
    * @return a String representing the MusicState of the notes for each beat of the piece.
    */
-  private String getRowStates(List<Note> noteRange) {
-    System.out.println(this.duration);
+  private String getRowStates(int lowNote, int highNote, Map<Integer, List<String>> combined) {
     String rowStates = "";
-    int beatColumnWidth = Integer.toString(this.duration).length();
+    int beatColumnWidth = Integer.toString(this.duration - 1).length();
     for (int i = 0; i < this.duration; i++) {
       rowStates += String.format("%1$" + beatColumnWidth + "s", i);
-      for (Note note : noteRange) {
-        rowStates += this.noteMap.get(note).get(i).toString();
+      for (int j = lowNote; j <= highNote; j++) {
+
+        rowStates += String.format("%1$" + Integer.toString(5) + "s", this.convertState(combined.get(j).get(i)));
+//        rowStates += this.convertState(combined.get(j).get(i));
       }
       rowStates += "\n";
     }
@@ -184,17 +234,41 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   }
 
   /**
-   * Gets the column headers for the state.
+   * Converts the state of a note in string form to a symbol for the console view.
    *
-   * @param noteRange the range of notes that comprise the piece
-   * @return a String representing all the notes that make up the piece, from the lowest to highest
+   * @param s the state of the note.
+   * @return the corresponding state symbol
    */
-  private String getColumnHeaders(List<Note> noteRange) {
-    String columnHeaders = " ";
-    for (Note note : noteRange) {
-      String noteColumn = " " + note.toString() + "   ";
-      columnHeaders += noteColumn.substring(0, 5);
+  private String convertState(String s) {
+    switch (s) {
+      case "start":
+        return "X";
+      case "continue":
+        return "|";
+      case "rest":
+        return " ";
+      default:
+        throw new IllegalArgumentException("Invalid string state");
     }
+  }
+
+  /**
+   * Gets the columns of the text view showing the range of pitch-octaves in the piece.
+   *
+   * @param lowNote the range of notes that comprise the piece
+   * @param highNote the lowest pitch-octave in the piece
+   * @param combined the map of notes where all instrument's notes are combined.
+   * @return a String representing the MusicState of the notes for each beat of the piece.
+   */
+  private String getColumnHeaders(int lowNote, int highNote, Map<Integer, List<String>> combined) {
+    int beatColumnWidth = Integer.toString(this.duration - 1).length();
+    String columnHeaders = String.format("%1$" + beatColumnWidth + "s", "");
+    for (int j = lowNote; j <= highNote; j++) {
+      columnHeaders += String.format("%1$" + Integer.toString(5) + "s", new Note(j, 0).toString());
+//      String column = "   " + new Note(j, 0).toString() + "   ";
+//      columnHeaders = columnHeaders + column.substring(0, 5);
+    }
+
     return columnHeaders;
   }
 
@@ -202,9 +276,9 @@ public class MusicEditorModel implements IMusicEditor<Note> {
    * Gets the range of notes that comprise the piece, from the lowest to the highest note.
    *
    * @return a sublist of notes where the first item is the lowest note and the last item is the
-   *         highest note.
+   * highest note.
    */
-  private List<Note> getNoteRange() {
+  public List<Note> getNoteRange() {
     int lowestNoteIndex = getLowestNoteIndex();
 
     int highestNoteIndex = getHighestNoteIndex();
@@ -215,6 +289,72 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     }
 
     return new ArrayList<Note>(this.noteMap.keySet()).subList(lowestNoteIndex, highestNoteIndex);
+  }
+
+  @Override
+  public String getNoteState(Note note, int beatNumber) throws IllegalArgumentException {
+    if (beatNumber > this.duration) {
+      throw new IllegalArgumentException("No note exists at that beat number");
+    }
+    return this.noteMap.get(note).get(beatNumber).getState().name().toLowerCase();
+  }
+
+  @Override
+  public List<List<List<Integer>>> getMidiInfo() {
+    List<List<List<Integer>>> info = new ArrayList<>();
+    for (int i = 0; i < this.duration; i++) {
+      info.add(i, new ArrayList<>());
+    }
+
+    for (Note note : this.noteMap.keySet()) {
+      for (int i = 0; i < this.duration; i++) {
+        if (this.noteMap.get(note).get(i).getState() == MusicStates.START) {
+          int volume = this.noteMap.get(note).get(i).getVolume();
+          info.get(i).add(new ArrayList<Integer>(Arrays.asList(1, note.getInstrument() - 1, note.getNoteNumber(), volume, this.getLength(note, i))));
+        }
+      }
+    }
+    return info;
+  }
+
+  @Override
+  public Map<Integer, List<String>> getCombinedNoteMap() {
+    Map<Integer, List<String>> combined = new TreeMap<>();
+
+    String[] initial = new String[this.duration];
+    List<String> initalList = new ArrayList<>(Arrays.asList(initial));
+    Collections.fill(initalList, "rest");
+    for (int i = 12; i <= 143; i++) {
+      combined.put(i, new ArrayList<>(initalList));
+    }
+
+    for (Note note : this.noteMap.keySet()) {
+      for (int i = 0; i < this.duration; i++) {
+        String storedState = combined.get(note.getNoteNumber()).get(i);
+        String currentState = this.noteMap.get(note).get(i).getState().name().toLowerCase();
+        if (!storedState.equals(currentState) && !currentState.equals("rest")) {
+          combined.get(note.getNoteNumber()).set(i, currentState);
+        }
+
+      }
+    }
+    return combined;
+  }
+
+  /**
+   * Gets the length of a note starting at a given beat.
+   *
+   * @param note  the Note to get the length of.
+   * @param start the beat the note starts at.
+   * @return the length of the note.
+   */
+  private int getLength(Note note, int start) {
+    int length = 0;
+    for (int beat = start; beat < this.duration
+            && this.noteMap.get(note).get(beat).getState() != MusicStates.REST; beat++) {
+      length += 1;
+    }
+    return length;
   }
 
   /**
@@ -253,16 +393,91 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   /**
    * Determines if the list of cs3500.music.model.MusicStates contains only rests.
    *
-   * @param musicStates the list of cs3500.music.model.MusicStates to check
+   * @param playbackInfos the list of cs3500.music.model.PlaybackInfos to check
    * @return true if the list only contains rests, false otherwise.
    */
-  private boolean allAtRest(List<MusicStates> musicStates) {
-    for (MusicStates m : musicStates) {
-      if (m != MusicStates.REST) {
+  private boolean allAtRest(List<PlaybackInfo> playbackInfos) {
+    for (PlaybackInfo p : playbackInfos) {
+      if (p.getState() != MusicStates.REST) {
         return false;
       }
     }
     return true;
+  }
+
+  /**
+   * Determines the lowest pitch-octave in the piece.
+   *
+   * @return an int representing the note.
+   */
+  private int getLowNote() {
+    Map<Integer, List<String>> combined = this.getCombinedNoteMap();
+    int lowNote = 12;
+    while (this.allRest(combined.get(lowNote))) {
+      if (lowNote > combined.keySet().size()) {
+        break;
+      }
+      lowNote += 1;
+    }
+    return lowNote;
+  }
+
+  /**
+   * Determines if all strings in the list are at rest.
+   *
+   * @param strings the arraylist of strings to check.
+   * @return true if they are all at rest, false otherwise.
+   */
+  private boolean allRest(List<String> strings) {
+    for (String string : strings) {
+      if (!string.equals("rest")) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Determines the highest pitch-octave in the piece.
+   *
+   * @return an int representing the note.
+   */
+  private int getHighNote() {
+    Map<Integer, List<String>> combined = this.getCombinedNoteMap();
+    int highNote = combined.size() + 11;
+    while (this.allRest(combined.get(highNote))) {
+      if (highNote <= 12) {
+        break;
+      }
+      highNote -= 1;
+    }
+    return highNote;
+  }
+
+  /**
+   * Builder class for MusicEditorModel that allows the user to add notes and set the tempo
+   * without needing access to the constructor.
+   */
+  public static class Builder implements CompositionBuilder<IMusicEditor<Note>> {
+
+    private IMusicEditor<Note> model = new MusicEditorModel(10);
+
+    @Override
+    public IMusicEditor<Note> build() {
+      return this.model;
+    }
+
+    @Override
+    public CompositionBuilder<IMusicEditor<Note>> setTempo(int tempo) {
+      this.model.setTempo(tempo);
+      return this;
+    }
+
+    @Override
+    public CompositionBuilder<IMusicEditor<Note>> addNote(int start, int end, int instrument, int pitch, int volume) {
+      this.model.addNote(new Note(pitch, instrument), start, end - start, volume);
+      return this;
+    }
   }
 
 }

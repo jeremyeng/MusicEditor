@@ -15,11 +15,11 @@ public enum MusicStates {
   public String toString() {
     switch (this) {
       case START:
-        return "  X  ";
+        return "X  ";
       case CONTINUE:
-        return "  |  ";
+        return "|  ";
       case REST:
-        return "     ";
+        return "  ";
       default:
         throw new IllegalArgumentException();
     }

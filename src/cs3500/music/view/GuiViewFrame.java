@@ -1,36 +1,114 @@
 package cs3500.music.view;
 
 import java.awt.*;
-import java.awt.event.MouseListener; // Possibly of interest for handling mouse events
+import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.util.*;
+import java.util.List;
 
+import javax.imageio.plugins.jpeg.JPEGHuffmanTable;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.*;
+
+import cs3500.music.model.IMusicEditor;
+import cs3500.music.model.MusicEditorModel;
+import cs3500.music.model.IMusicEditor;
+import cs3500.music.model.Note;
 
 /**
  * A skeleton Frame (i.e., a window) in Swing
  */
-public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView {
+public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView<Note> {
 
-  private final JPanel displayPanel; // You may want to refine this to a subtype of JPanel
+  private final JPanel musicEditorPanel;
+  private final ScorePanel scorePanel; // You may want to refine this to a subtype of JPanel
+  private final PianoPanel pianoPanel;
+  private IMusicEditor model;
+
 
   /**
    * Creates new GuiView
    */
   public GuiViewFrame() {
-    this.displayPanel = new ConcreteGuiViewPanel();
+    super();
+    this.setTitle("Music Editor");
+
+    this.musicEditorPanel = new JPanel();
+    this.musicEditorPanel.setLayout(new BoxLayout(this.musicEditorPanel, BoxLayout.Y_AXIS));
+
+    this.scorePanel = new ScorePanel();
+    this.pianoPanel = new PianoPanel();
+    scorePanel.setPreferredSize(scorePanel.getPreferredSize());
+    pianoPanel.setPreferredSize(new Dimension(1500,1200));
+    this.setSize(1600, 2000);
+    JScrollPane scrollFrame = new JScrollPane(scorePanel);
+
+    this.musicEditorPanel.add(scrollFrame);
+    this.musicEditorPanel.add(pianoPanel);
+
+    this.setContentPane(this.musicEditorPanel);
+
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-    this.getContentPane().add(displayPanel);
-    this.pack();
+//    this.pack();
   }
 
   @Override
-  public void initialize(){
+  public void makeVisible() {
     this.setVisible(true);
   }
 
   @Override
-  public void playNote() throws InvalidMidiDataException {
+  public void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException {
 
+  }
+
+
+  @Override
+  public void setListener(ActionListener action, KeyListener key) {
+    this.addKeyListener(key);
+    this.scorePanel.addKeyListener(key);
+    this.pianoPanel.addKeyListener(key);
+  }
+
+  @Override
+  public void resetFocus() {
+    this.setFocusable(true);
+    this.requestFocus();
+  }
+
+  @Override
+  public void updateCurrentBeat(int beat) {
+    this.scorePanel.updateCurrentBeat(beat);
+    this.pianoPanel.updateCurrentBeat(beat);
+  }
+
+  @Override
+  public void setNoteRange(List noteRange) {
+    this.scorePanel.setNoteRange(noteRange);
+    this.pianoPanel.setNoteRange(noteRange);
+  }
+
+  @Override
+  public void setDuration(int duration) {
+    this.scorePanel.setDuration(duration);
+    this.pianoPanel.setDuration(duration);
+  }
+
+  @Override
+  public void setNoteMap(Map<Note, List<String>> notes) {
+    this.scorePanel.setNoteMap(notes);
+  }
+
+  @Override
+  public void update(IMusicEditor model) {
+    this.model = model;
+  }
+
+
+  @Override
+  public void setCombineNoteMap(Map <Integer, List<String>> notes) {
+    this.pianoPanel.setCombineNoteMap(notes);
+    this.scorePanel.setCombineNoteMap(notes);
   }
 
   @Override
