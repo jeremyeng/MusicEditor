@@ -70,16 +70,26 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
     this.pianoPanel.addKeyListener(key);
   }
 
-  @Override
-  public void resetFocus() {
-    this.setFocusable(true);
-    this.requestFocus();
-  }
+//  @Override
+//  public void resetFocus() {
+//    this.setFocusable(true);
+//    this.requestFocus();
+//  }
 
   @Override
   public void updateCurrentBeat(int beat) {
     this.scorePanel.updateCurrentBeat(beat);
     this.pianoPanel.updateCurrentBeat(beat);
+  }
+
+  @Override
+  public void showErrorMessage() {
+
+  }
+
+  @Override
+  public void refresh() {
+
   }
 
   @Override
