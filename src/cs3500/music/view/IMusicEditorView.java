@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.*;
 
+import cs3500.music.model.Note;
+
 /**
  * Defines the behavior for the music editor.
  */
@@ -37,7 +39,9 @@ public interface IMusicEditorView<K> {
    * Sets a note map for the music editor that maps a note to its state on every beat.
    * @param notes the note map that describe the behavior of each note at every beat
    */
-  void setNoteMap(Map<K, List<String>> notes);
+  void setNoteMap(Map<Note, List<String>> notes);
+
+  void setCombineNoteMap(Map<Integer, List<String>> notes);
 
   void setListener(ActionListener action,KeyListener key);
 

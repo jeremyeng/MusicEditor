@@ -10,6 +10,7 @@ import javax.imageio.plugins.jpeg.JPEGHuffmanTable;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.*;
 
+import cs3500.music.model.IMusicEditor;
 import cs3500.music.model.Note;
 
 /**
@@ -86,7 +87,11 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
   @Override
   public void setNoteMap(Map<Note, List<String>> notes) {
     this.scorePanel.setNoteMap(notes);
-    this.pianoPanel.setNoteMap(notes);
+  }
+
+  @Override
+  public void setCombineNoteMap(Map <Integer, List<String>> notes) {
+    this.pianoPanel.setCombineNoteMap(notes);
   }
 
   @Override

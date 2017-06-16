@@ -93,6 +93,11 @@ public class MidiViewImpl implements IMusicEditorView<Note> {
   }
 
   @Override
+  public void setCombineNoteMap(Map<Integer, List<String>> notes) {
+
+  }
+
+  @Override
   public void setNoteMap(Map notes) {
 
   }

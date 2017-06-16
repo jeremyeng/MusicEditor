@@ -20,13 +20,13 @@ public class PianoPanel extends JPanel {
   private final int BLACK_KEY_LENGTH = 130;
   private final int WHITE_KEY_WIDTH = 20;
   private final int BLACK_KEY_WIDTH = (WHITE_KEY_WIDTH / 2);
-  private final Color WHITE_KEY_DISPLAY_COLOR = Color.GRAY;
-  private final Color BLACK_KEY_DISPLAY_COLOR = Color.BLUE;
+  private final Color WHITE_KEY_DISPLAY_COLOR = Color.YELLOW;
+  private final Color BLACK_KEY_DISPLAY_COLOR = Color.YELLOW;
 
   private List<Note> noteRange = new ArrayList<>();
-  private Map<Note, List<String>> noteMap = new TreeMap<>();
-  private ArrayList<Note> naturalNotes = new ArrayList<>();
-  private ArrayList<Note> sharpNotes = new ArrayList<>();
+  private Map<Integer, List<String>> noteMap = new TreeMap<>();
+  private ArrayList<Integer> naturalNotes = new ArrayList<>();
+  private ArrayList<Integer> sharpNotes = new ArrayList<>();
   private int currentBeat = 0;
   private int duration = 0;
 
@@ -48,12 +48,15 @@ public class PianoPanel extends JPanel {
   private void drawBlackKeys(Graphics2D g2d) {
     int blackKeyCounter = (int)(WHITE_KEY_WIDTH * 0.75);
     for (int i = 0; i < this.sharpNotes.size(); i++) {
-      if (this.sharpNotes.get(i).getPitch().equals(Pitch.DSharp) ||
-              this.sharpNotes.get(i).getPitch().equals(Pitch.ASharp)) {
+      if (new Note(this.sharpNotes.get(i),0).getPitch().equals(Pitch.DSharp) ||
+              new Note(this.sharpNotes.get(i), 0).getPitch().equals(Pitch.ASharp)) {
         if (this.noteMap.get(sharpNotes.get(i)).get(currentBeat).equals("start")
                 || this.noteMap.get(sharpNotes.get(i)).get(currentBeat).equals("continue")) {
           g2d.setColor(BLACK_KEY_DISPLAY_COLOR);
           g2d.fillRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
+          g2d.setColor(Color.BLACK);
+          g2d.drawRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
+          blackKeyCounter += 2 * WHITE_KEY_WIDTH;
         }
         else {
           g2d.setColor(Color.BLACK);
@@ -65,6 +68,9 @@ public class PianoPanel extends JPanel {
                 || this.noteMap.get(sharpNotes.get(i)).get(currentBeat).equals("continue")) {
           g2d.setColor(BLACK_KEY_DISPLAY_COLOR);
           g2d.fillRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
+          g2d.setColor(Color.BLACK);
+          g2d.drawRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
+          blackKeyCounter += WHITE_KEY_WIDTH;
         }
         else {
           g2d.setColor(Color.BLACK);
@@ -82,22 +88,32 @@ public class PianoPanel extends JPanel {
    */
   private void drawWhiteKeys(Graphics2D g2d) {
     for (int i = 0; i < this.naturalNotes.size(); i++) {
-      if (this.noteMap.get(naturalNotes.get(i)).get(currentBeat).equals("start") || this.noteMap.get(naturalNotes.get(i)).get(currentBeat).equals("continue")) {
+      if (this.noteMap.get(naturalNotes.get(i)).get(currentBeat).equals("start")
+              || this.noteMap.get(naturalNotes.get(i)).get(currentBeat).equals("continue")) {
         g2d.setColor(WHITE_KEY_DISPLAY_COLOR);
         g2d.fillRect(i * WHITE_KEY_WIDTH, 0, WHITE_KEY_WIDTH, WHITE_KEY_LENGTH);
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect(i * WHITE_KEY_WIDTH, 0, WHITE_KEY_WIDTH, WHITE_KEY_LENGTH);
       }
+      g2d.setColor(Color.BLACK);
       g2d.drawRect(i * WHITE_KEY_WIDTH, 0, WHITE_KEY_WIDTH, WHITE_KEY_LENGTH);
     }
   }
 
   protected void setNoteRange(List<Note> noteRange) {
     this.noteRange = noteRange;
-    this.naturalNotes = this.getAllNaturalNotes();
-    this.sharpNotes = this.getAllSharpNotes();
   }
 
-  protected void setNoteMap(Map<Note, List<String>> notes) {
+  protected void setCombineNoteMap(Map<Integer, List<String>> notes) {
     this.noteMap = notes;
+    for (Integer i : notes.keySet()) {
+      if (new Note(i,0).isSharp()) {
+        this.sharpNotes.add(i);
+      }
+      else {
+        this.naturalNotes.add(i);
+      }
+    }
   }
 
   protected void updateCurrentBeat(int beat) {
@@ -110,37 +126,6 @@ public class PianoPanel extends JPanel {
   protected void setDuration(int duration) {
     this.duration = duration;
   }
-
-  private ArrayList<Note> getAllNaturalNotes() {
-    ArrayList<Note> toReturnNotes = new ArrayList<>();
-    for (int i = 0; i < noteRange.size(); i++) {
-      if (!noteRange.get(i).isSharp()) {
-        toReturnNotes.add(noteRange.get(i));
-      }
-    }
-    return toReturnNotes;
-  }
-
-  private ArrayList<Note> getAllSharpNotes() {
-    ArrayList<Note> toReturnNotes = new ArrayList<>();
-    for (int i = 0; i < noteRange.size(); i++) {
-      if (noteRange.get(i).isSharp()) {
-        toReturnNotes.add(noteRange.get(i));
-      }
-    }
-    return toReturnNotes;
-  }
-
-  private ArrayList<Note> setPianoRange() {
-    ArrayList<Note> toReturn = new ArrayList<>();
-    toReturn.add(Note.makeNote(21,0));
-    toReturn.add(Note.makeNote(22,0));
-    for (int i = 1; i <= 8; i++ ) {
-      for (int j = 12; j < 23; j++) {
-        toReturn.add(Note.makeNote(j,i));
-      }
-    }
-    return toReturn;
-  }
+  
 
 }
