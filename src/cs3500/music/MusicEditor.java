@@ -34,7 +34,7 @@ public class MusicEditor {
 //    builder = builder.addNote(2, 4, 60, 60, 100);
 //    model = builder.build();
 
-    FileReader littleLamb = new FileReader("mary-little-lamb.txt");
+    FileReader littleLamb = new FileReader("mystery-2.txt");
     model = MusicReader.parseFile(littleLamb, builder);
 
 //    model.addNote(new Note(Pitch.C, 3, 0), 0, 10, 10);

@@ -64,6 +64,7 @@ public class MidiViewImpl implements IMusicEditorView<Note> {
   public void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException {
     for (int beat = 0; beat < info.size(); beat++) {
       for (List<Integer> l: info.get(beat)) {
+        this.receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE, l.get(1), l.get(1), l.get(1)), -1);
         this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, l.get(1), l.get(2), l.get(3)), this.synth.getMicrosecondPosition());
         this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, l.get(1), l.get(2), l.get(3)), this.synth.getMicrosecondPosition() + l.get(4) * tempo);
       }

@@ -37,6 +37,7 @@ public class Note implements Comparable<Note> {
   public Note(int noteNumber, int instrument) {
     this.octave = (noteNumber / 12) - 1;
     this.pitch = Pitch.pitchFromNumber(noteNumber - (this.octave * 12));
+    this.instrument = instrument;
   }
 
   @Override
