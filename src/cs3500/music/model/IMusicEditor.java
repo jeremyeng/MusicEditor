@@ -1,6 +1,9 @@
 package cs3500.music.model;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.sound.midi.MidiMessage;
 
 /**
  * This is the interface that defines behavior for a Music Editor.
@@ -59,6 +62,12 @@ public interface IMusicEditor<K> {
   int getDuration();
 
   /**
+   * Gets the tempo of the piece in microseconds per beat
+   * @return microseconds per beat
+   */
+  long getTempo();
+
+  /**
    * Gets the range of notes that make up the piece, from the lowest to highest.
    * @return a list of notes where the first element is the lowest note and the last element is
    *         the highest note.
@@ -74,6 +83,14 @@ public interface IMusicEditor<K> {
    * @return a string representing the state of the note at the given beat.
    */
   String getNoteState(K note, int beatNumber) throws IllegalArgumentException;
+
+  /**
+   * Gets the information to send to a midi receiver
+   * @return a map of integers where the keys represent the beats and the values represent
+   *         a nested list of integers containing information necessary to send messages to a midi
+   *         such on and off, instrument, volume, etc.
+   */
+  List<List<List<Integer>>> getMidiInfo();
 
   /**
    * Displays the notes in the model that are played. The rows represent the beat numbers of the

@@ -7,10 +7,12 @@ import java.util.Map;
 
 import javax.sound.midi.*;
 
+import cs3500.music.model.Note;
+
 /**
  * A skeleton for MIDI playback
  */
-public class MidiViewImpl implements IMusicEditorView {
+public class MidiViewImpl implements IMusicEditorView<Note> {
   private final Synthesizer synth;
   private final Receiver receiver;
 
@@ -52,29 +54,31 @@ public class MidiViewImpl implements IMusicEditorView {
    *   </a>
    */
 
-  @Override
-  public void playNote() throws InvalidMidiDataException {
-    MidiMessage start = new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 64);
-    MidiMessage stop = new ShortMessage(ShortMessage.NOTE_OFF, 0, 60, 64);
-    this.receiver.send(start, -1);
-    this.receiver.send(stop, this.synth.getMicrosecondPosition() + 200000);
-    
-    /* 
-    The receiver does not "block", i.e. this method
-    immediately moves to the next line and closes the 
-    receiver without waiting for the synthesizer to 
-    finish playing. 
-    
-    You can make the program artificially "wait" using
-    Thread.sleep. A better solution will be forthcoming
-    in the subsequent assignments.
-    */
-    this.receiver.close(); // Only call this once you're done playing *all* notes
-  }
 
   @Override
   public void makeVisible() {
 
+  }
+
+  @Override
+  public void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException {
+    for (int beat = 0; beat < info.size(); beat++) {
+      for (List<Integer> l: info.get(beat)) {
+        this.receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE, l.get(1), l.get(1), l.get(1)), -1);
+        this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, l.get(1), l.get(2), l.get(3)), this.synth.getMicrosecondPosition());
+        this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, l.get(1), l.get(2), l.get(3)), this.synth.getMicrosecondPosition() + l.get(4) * tempo);
+      }
+      try {
+        Thread.sleep(tempo / 1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+
+//    while (true) {
+////      this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 64), -1);
+//      this.receiver.send(new ShortMessage(ShortMessage.CONTINUE, 0, 60, 64), -1);
+//    }
   }
 
 

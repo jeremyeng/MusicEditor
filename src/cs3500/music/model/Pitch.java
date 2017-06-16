@@ -1,5 +1,8 @@
 package cs3500.music.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Represents the twelve distinct pitches in the western style of music.
  * Changes 6/13/17: Added method makePitch
@@ -10,8 +13,23 @@ public enum Pitch {
 
   private final int pitchNumber;
 
+  private static Map<Integer, Pitch> pitchMap = new HashMap<>();
+
+  static {
+    for (Pitch p: Pitch.values()) {
+      pitchMap.put(p.pitchNumber, p);
+    }
+  }
+
   Pitch(int pitchNumber) {
     this.pitchNumber = pitchNumber;
+  }
+
+  public static Pitch pitchFromNumber(int pitchNumber) {
+    if (pitchMap.get(pitchNumber) == null) {
+      throw new IllegalArgumentException("Not a valid pitch");
+    }
+    return pitchMap.get(pitchNumber);
   }
 
   /**

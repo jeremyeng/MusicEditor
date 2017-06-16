@@ -3,7 +3,7 @@ package cs3500.music.model;
 import java.util.Objects;
 
 /**
- * Represents a single musical note, including octave.
+ * Represents a single musical note, including octave and instrument.
  */
 public class Note implements Comparable<Note> {
 
@@ -26,6 +26,17 @@ public class Note implements Comparable<Note> {
 
     this.pitch = pitch;
     this.octave = octave;
+    this.instrument = instrument;
+  }
+
+  /**
+   * Allows construction of a note from the a note number represented as an integer.
+   * @param noteNumber the integer reprsentation of a note
+   * @param instrument the number of the midi instrument.
+   */
+  public Note(int noteNumber, int instrument) {
+    this.octave = (noteNumber / 12) - 1;
+    this.pitch = Pitch.pitchFromNumber(noteNumber - (this.octave * 12));
     this.instrument = instrument;
   }
 
@@ -88,39 +99,21 @@ public class Note implements Comparable<Note> {
     return instrument;
   }
 
-  /**
-   * Checks if the note is sharp
-   * @return true if note is sharp and false otherwise.
-   */
-  public boolean isSharp() {
-    switch (this.pitch) {
-      case C: return false;
-      case CSharp: return true;
-      case D: return false;
-      case DSharp: return true;
-      case E: return false;
-      case F: return false;
-      case FSharp: return true;
-      case G: return false;
-      case GSharp: return true;
-      case A: return false;
-      case ASharp: return true;
-      case B: return false;
-      default: throw new IllegalArgumentException("Invalid sharp!");
-    }
+  public int getNoteNumber() {
+    return this.octave * 12 + pitch.getPitchNumber();
   }
 
-  /**
-   * Construct a note base on the given pitch and octave.
-   * @param pitch the pitch of the note that is to be created
-   * @param octave the octave of the note that is to be created
-   * @return the note with the given pitch and octave.
-   */
-  public static Note makeNote(int pitch, int octave) {
-    if (octave < 0) {
-      throw new IllegalArgumentException("Invalid octave parameter!");
-    }
-    return new Note(Pitch.makePitch(pitch),octave,0);
-  }
+//  /**
+//   * Construct a note base on the given pitch and octave.
+//   * @param pitch the pitch of the note that is to be created
+//   * @param octave the octave of the note that is to be created
+//   * @return the note with the given pitch and octave.
+//   */
+//  public static Note makeNote(int pitch, int octave) {
+//    if (octave < 0) {
+//      throw new IllegalArgumentException("Invalid octave parameter!");
+//    }
+//    return new Note(Pitch.makePitch(pitch),octave);
+//  }
 
 }

@@ -1,5 +1,7 @@
 package cs3500.music.model;
 
+import com.sun.org.apache.regexp.internal.RE;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,12 +12,15 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import cs3500.music.MusicEditor;
+import cs3500.music.util.CompositionBuilder;
+
 /**
  * Represents the notes contained in a piece of music.
  */
 public class MusicEditorModel implements IMusicEditor<Note> {
   private int duration;
-  private int tempo;
+  private long tempo;
   public Map<Note, ArrayList<PlaybackInfo>> noteMap;
 
 
@@ -100,6 +105,11 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   @Override
   public int getDuration() {
     return this.duration;
+  }
+
+  @Override
+  public long getTempo() {
+    return this.tempo;
   }
 
   /**
@@ -245,6 +255,38 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     return this.noteMap.get(note).get(beatNumber).getState().name().toLowerCase();
   }
 
+  @Override
+  public List<List<List<Integer>>> getMidiInfo() {
+    List<List<List<Integer>>> info = new ArrayList<>();
+    for (int i = 0; i < this.duration; i ++) {
+      info.add(i, new ArrayList<>());
+    }
+
+    for (Note note : this.noteMap.keySet()) {
+      for (int i = 0; i < this.duration; i++) {
+        if (this.noteMap.get(note).get(i).getState() == MusicStates.START) {
+          int volume = this.noteMap.get(note).get(i).getVolume();
+          info.get(i).add(new ArrayList<Integer>(Arrays.asList(1, note.getInstrument(), note.getNoteNumber(), volume, this.getLength(note, i))));
+        }
+      }
+    }
+    return info;
+  }
+
+  /**
+   * Gets the length of a note starting at a given beat.
+   * @param note the Note to get the length of.
+   * @param start the beat the note starts at.
+   * @return the length of the note.
+   */
+  private int getLength(Note note, int start) {
+    int length = 0;
+    for (int beat = start; this.noteMap.get(note).get(beat).getState() != MusicStates.REST; beat++) {
+      length += 1;
+    }
+    return length;
+  }
+
   /**
    * Get the highest note that is not completely at rest.
    *
@@ -291,6 +333,32 @@ public class MusicEditorModel implements IMusicEditor<Note> {
       }
     }
     return true;
+  }
+
+  /**
+   * Builder class for MusicEditorModel that allows the user to add notes and set the tempo
+   * without needing access to the constructor.
+   */
+  public static class Builder implements CompositionBuilder<IMusicEditor<Note>> {
+
+    private IMusicEditor<Note> model = new MusicEditorModel(10000);
+
+    @Override
+    public IMusicEditor<Note> build() {
+      return this.model;
+    }
+
+    @Override
+    public CompositionBuilder<IMusicEditor<Note>> setTempo(int tempo) {
+      this.model.setTempo(tempo);
+      return this;
+    }
+
+    @Override
+    public CompositionBuilder<IMusicEditor<Note>> addNote(int start, int end, int instrument, int pitch, int volume) {
+      this.model.addNote(new Note(pitch, instrument), start, end - start, volume);
+      return this;
+    }
   }
 
 }
