@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
+import javax.sound.midi.InvalidMidiDataException;
+
 import cs3500.music.model.IMusicEditor;
 import cs3500.music.model.Note;
 import cs3500.music.view.IMusicEditorView;
@@ -45,7 +47,12 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
       noteMap.put(note,stateList);
     }
     this.view.setNoteMap(noteMap);
-    this.view.makeVisible();
+    this.view.update(this.model);
+    try {
+      this.view.makeVisible();
+    } catch (InvalidMidiDataException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override

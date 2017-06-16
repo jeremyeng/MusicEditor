@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.sound.midi.*;
 
+import cs3500.music.model.IMusicEditor;
+import cs3500.music.model.MusicEditorModel;
 import cs3500.music.model.Note;
 
 /**
@@ -15,6 +17,7 @@ import cs3500.music.model.Note;
 public class MidiViewImpl implements IMusicEditorView<Note> {
   private final Synthesizer synth;
   private final Receiver receiver;
+  private IMusicEditor model;
 
   public MidiViewImpl() throws MidiUnavailableException {
     this.synth = MidiSystem.getSynthesizer();
@@ -56,8 +59,8 @@ public class MidiViewImpl implements IMusicEditorView<Note> {
 
 
   @Override
-  public void makeVisible() {
-
+  public void makeVisible() throws InvalidMidiDataException {
+    this.playNote(this.model.getMidiInfo(), this.model.getTempo());
   }
 
   @Override
@@ -74,11 +77,6 @@ public class MidiViewImpl implements IMusicEditorView<Note> {
         e.printStackTrace();
       }
     }
-
-//    while (true) {
-////      this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 64), -1);
-//      this.receiver.send(new ShortMessage(ShortMessage.CONTINUE, 0, 60, 64), -1);
-//    }
   }
 
 
@@ -90,6 +88,11 @@ public class MidiViewImpl implements IMusicEditorView<Note> {
   @Override
   public void setDuration(int duration) {
 
+  }
+
+  @Override
+  public void update(IMusicEditor model) {
+    this.model = model;
   }
 
   @Override

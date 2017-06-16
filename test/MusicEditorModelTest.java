@@ -47,27 +47,17 @@ public class MusicEditorModelTest {
   @Test
   public void testAddNoteLongerThanDuration() {
     this.model.addNote(new Note(Pitch.C, 0, 0), 0, 10, 64);
-    assertEquals("      C0(0)\n" +
-            " 0       X  \n" +
-            " 1       |  \n" +
-            " 2       |  \n" +
-            " 3       |  \n" +
-            " 4       |  \n" +
-            " 5       |  \n" +
-            " 6       |  \n" +
-            " 7       |  \n" +
-            " 8       |  \n" +
-            " 9       |  \n" +
-            "10       |  \n" +
-            "11       |  \n" +
-            "12       |  \n" +
-            "13       |  \n" +
-            "14       |  \n" +
-            "15       |  \n" +
-            "16       |  \n" +
-            "17       |  \n" +
-            "18       |  \n" +
-            "19       |  \n", this.model.getState());
+    assertEquals("    C0\n" +
+            "0   X\n" +
+            "1   |\n" +
+            "2   |\n" +
+            "3   |\n" +
+            "4   |\n" +
+            "5   |\n" +
+            "6   |\n" +
+            "7   |\n" +
+            "8   |\n" +
+            "9   |\n", this.model.getState());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -79,67 +69,66 @@ public class MusicEditorModelTest {
   public void testAddOneNote() {
 
     this.model.addNote(new Note(Pitch.C, 0, 0), 0, 4, 60);
-    assertEquals("      C0(0)\n" +
-            "0       X  \n" +
-            "1       |  \n" +
-            "2       |  \n" +
-            "3       |  \n" +
-            "4          \n" +
-            "5          \n", this.model.getState());
+    assertEquals("    C0\n" +
+            "0   X\n" +
+            "1   |\n" +
+            "2   |\n" +
+            "3   |\n" +
+            "4    \n" +
+            "5    \n", this.model.getState());
   }
 
   @Test
   public void testAddTwoNotes() {
     this.model.addNote(new Note(Pitch.C, 0, 0), 0, 4, 60);
     this.model.addNote(new Note(Pitch.CSharp, 0, 0), 1, 4, 60);
-    assertEquals("      C0(0)    C#0(0)\n" +
-                    "0       X            \n" +
-                    "1       |         X  \n" +
-                    "2       |         |  \n" +
-                    "3       |         |  \n" +
-                    "4                 |  \n" +
-                    "5                    \n",
-            this.model.getState());
+    assertEquals("    C0  C#0\n" +
+            "0   X    \n" +
+            "1   |   X\n" +
+            "2   |   |\n" +
+            "3   |   |\n" +
+            "4       |\n" +
+            "5        \n", this.model.getState());
   }
 
   @Test
   public void testAddChord() {
     this.model.addNote(new Note(Pitch.C, 0, 0), 0, 4, 10);
     this.model.addNote(new Note(Pitch.E, 0, 0), 0, 4, 10);
-    this.model.addNote(new Note(Pitch.G, 0, 0), 0, 4, 10);
-    assertEquals("      C0(0)    C#0(0)     D0(0)    D#0(0)     E0(0)     F0(0)    F#0(0)     G0(0)\n" +
-            "0       X                                       X                             X  \n" +
-            "1       |                                       |                             |  \n" +
-            "2       |                                       |                             |  \n" +
-            "3       |                                       |                             |  \n" +
-            "4                                                                                \n" +
-            "5                                                                                \n", this.model.getState());
+    this.model.addNote(new Note(Pitch.G, 0, 1), 0, 4, 10);
+    assertEquals("    C0  C#0   D0  D#0   E0   F0  F#0   G0\n" +
+            "0    X                   X              X\n" +
+            "1    |                   |              |\n" +
+            "2    |                   |              |\n" +
+            "3    |                   |              |\n" +
+            "4                                        \n" +
+            "5                                        \n", this.model.getState());
   }
 
   @Test
   public void testAddOverlappingNotes() {
     this.model.addNote(new Note(Pitch.C, 0, 1), 0, 4, 10);
     this.model.addNote(new Note(Pitch.C, 0, 1), 1, 4, 10);
-    assertEquals("      C0(1)\n" +
-            "0       X  \n" +
-            "1       X  \n" +
-            "2       |  \n" +
-            "3       |  \n" +
-            "4       |  \n" +
-            "5          \n", this.model.getState());
+    assertEquals("    C0\n" +
+            "0   X\n" +
+            "1   X\n" +
+            "2   |\n" +
+            "3   |\n" +
+            "4   |\n" +
+            "5    \n", this.model.getState());
   }
 
   @Test
   public void testAddSameNoteDifferentInstrument() {
     this.model.addNote(new Note(Pitch.C, 0, 1), 0, 4, 10);
     this.model.addNote(new Note(Pitch.C, 0, 2), 0, 4, 10);
-    assertEquals("      C0(1)    C#0(1)     D0(1)    D#0(1)     E0(1)     F0(1)    F#0(1)     G0(1)    G#0(1)     A0(1)    A#0(1)     B0(1)     C0(2)\n" +
-            "0       X                                                                                                                       X  \n" +
-            "1       |                                                                                                                       |  \n" +
-            "2       |                                                                                                                       |  \n" +
-            "3       |                                                                                                                       |  \n" +
-            "4                                                                                                                                  \n" +
-            "5                                                                                                                                  \n", this.model.getState());
+    assertEquals("    C0\n" +
+            "0   X\n" +
+            "1   |\n" +
+            "2   |\n" +
+            "3   |\n" +
+            "4    \n" +
+            "5    \n", this.model.getState());
   }
 
   @Test
@@ -147,13 +136,13 @@ public class MusicEditorModelTest {
     this.model.addNote(new Note(Pitch.C, 0, 0), 0, 4, 10);
     this.model.addNote(new Note(Pitch.C, 0, 0), 1, 4, 10);
     this.model.removeNote(new Note(Pitch.C, 0, 0), 1);
-    assertEquals("      C0(0)\n" +
-            "0       X  \n" +
-            "1          \n" +
-            "2          \n" +
-            "3          \n" +
-            "4          \n" +
-            "5          \n", this.model.getState());
+    assertEquals("    C0\n" +
+            "0   X\n" +
+            "1    \n" +
+            "2    \n" +
+            "3    \n" +
+            "4    \n" +
+            "5    \n", this.model.getState());
   }
 
   @Test
@@ -161,13 +150,13 @@ public class MusicEditorModelTest {
     this.model.addNote(new Note(Pitch.C, 0, 0), 0, 4, 10);
     this.model.addNote(new Note(Pitch.C, 0, 0), 1, 4, 10);
     this.model.removeNote(new Note(Pitch.C, 0, 0), 0);
-    assertEquals("      C0(0)\n" +
-            "0          \n" +
-            "1       X  \n" +
-            "2       |  \n" +
-            "3       |  \n" +
-            "4       |  \n" +
-            "5          \n", this.model.getState());
+    assertEquals("    C0\n" +
+            "0    \n" +
+            "1   X\n" +
+            "2   |\n" +
+            "3   |\n" +
+            "4   |\n" +
+            "5    \n", this.model.getState());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -187,18 +176,18 @@ public class MusicEditorModelTest {
     this.model.addNote(new Note(Pitch.C, 0,0), 0, 4, 10);
     this.model.addNote(new Note(Pitch.CSharp, 1, 0), 1, 4, 10);
     this.model.removeNote(new Note(Pitch.CSharp, 1, 0), 1);
-    assertEquals("      C0(0)\n" +
-            "0       X  \n" +
-            "1       |  \n" +
-            "2       |  \n" +
-            "3       |  \n" +
-            "4          \n" +
-            "5          \n", this.model.getState());
+    assertEquals("    C0\n" +
+            "0   X\n" +
+            "1   |\n" +
+            "2   |\n" +
+            "3   |\n" +
+            "4    \n" +
+            "5    \n", this.model.getState());
   }
 
   @Test
   public void testRemoveAllNotes() {
-    this.model.addNote(new Note(Pitch.CSharp, 3, 0), 0, 4, 01);
+    this.model.addNote(new Note(Pitch.CSharp, 3, 0), 0, 4, 1);
     this.model.addNote(new Note(Pitch.B, 10, 0), 0, 4, 10);
     this.model.removeNote(new Note(Pitch.B, 10, 0), 0);
     this.model.removeNote(new Note(Pitch.CSharp, 3, 0), 0);
@@ -217,19 +206,19 @@ public class MusicEditorModelTest {
     MusicEditorModel model2 = new MusicEditorModel(6);
     model2.addNote(new Note(Pitch.C, 0, 0), 0, 4, 10);
     this.model.addPieceConsecutively(model2);
-    assertEquals("      C0(0)\n" +
-            " 0       X  \n" +
-            " 1       |  \n" +
-            " 2       |  \n" +
-            " 3       |  \n" +
-            " 4          \n" +
-            " 5          \n" +
-            " 6       X  \n" +
-            " 7       |  \n" +
-            " 8       |  \n" +
-            " 9       |  \n" +
-            "10          \n" +
-            "11          \n", this.model.getState());
+    assertEquals("    C0\n" +
+            " 0  X\n" +
+            " 1  |\n" +
+            " 2  |\n" +
+            " 3  |\n" +
+            " 4   \n" +
+            " 5   \n" +
+            " 6  X\n" +
+            " 7  |\n" +
+            " 8  |\n" +
+            " 9  |\n" +
+            "10   \n" +
+            "11   \n", this.model.getState());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -246,13 +235,13 @@ public class MusicEditorModelTest {
     MusicEditorModel model2 = new MusicEditorModel(6);
     model2.addNote(new Note(Pitch.C, 0, 0), 0, 4, 10);
     this.model.addPieceSimultaneously(model2);
-    assertEquals("      C0(0)\n" +
-            "0       X  \n" +
-            "1       |  \n" +
-            "2       |  \n" +
-            "3       |  \n" +
-            "4          \n" +
-            "5          \n", this.model.getState());
+    assertEquals("    C0\n" +
+            "0   X\n" +
+            "1   |\n" +
+            "2   |\n" +
+            "3   |\n" +
+            "4    \n" +
+            "5    \n", this.model.getState());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -277,13 +266,13 @@ public class MusicEditorModelTest {
     MusicEditorModel model2 = new MusicEditorModel(6);
     model2.addNote(new Note(Pitch.C, 0, 0), 1, 4, 10);
     this.model.addPieceSimultaneously(model2);
-    assertEquals("      C0(0)\n" +
-            "0       X  \n" +
-            "1       X  \n" +
-            "2       |  \n" +
-            "3       |  \n" +
-            "4       |  \n" +
-            "5          \n", this.model.getState());
+    assertEquals("    C0\n" +
+            "0   X\n" +
+            "1   X\n" +
+            "2   |\n" +
+            "3   |\n" +
+            "4   |\n" +
+            "5    \n", this.model.getState());
   }
 
   @Test
@@ -292,13 +281,13 @@ public class MusicEditorModelTest {
     MusicEditorModel model2 = new MusicEditorModel(6);
     model2.addNote(new Note(Pitch.CSharp, 0, 0), 1, 4, 10);
     this.model.addPieceSimultaneously(model2);
-    assertEquals("      C0(0)    C#0(0)\n" +
-            "0       X            \n" +
-            "1       |         X  \n" +
-            "2       |         |  \n" +
-            "3       |         |  \n" +
-            "4                 |  \n" +
-            "5                    \n", this.model.getState());
+    assertEquals("    C0  C#0\n" +
+            "0   X    \n" +
+            "1   |   X\n" +
+            "2   |   |\n" +
+            "3   |   |\n" +
+            "4       |\n" +
+            "5        \n", this.model.getState());
   }
 
   @Test

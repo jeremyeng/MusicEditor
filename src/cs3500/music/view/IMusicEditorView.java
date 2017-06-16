@@ -9,6 +9,9 @@ import java.util.Map;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.*;
 
+import cs3500.music.model.IMusicEditor;
+import cs3500.music.model.MusicEditorModel;
+
 /**
  * Defines the behavior for the music editor.
  */
@@ -17,7 +20,7 @@ public interface IMusicEditorView<K> {
   /**
    * Makes the music editor visible to the user.
    */
-  void makeVisible();
+  void makeVisible() throws InvalidMidiDataException;
 
   void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException;
 
@@ -39,6 +42,8 @@ public interface IMusicEditorView<K> {
    */
   void setNoteMap(Map<K, List<String>> notes);
 
+  void update(IMusicEditor<K> model);
+
   void setListener(ActionListener action,KeyListener key);
 
   void resetFocus();
@@ -48,4 +53,6 @@ public interface IMusicEditorView<K> {
   void showErrorMessage();
 
   void refresh();
+
+
 }

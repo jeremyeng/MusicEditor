@@ -1,18 +1,14 @@
 package cs3500.music.model;
 
-import com.sun.org.apache.regexp.internal.RE;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import cs3500.music.MusicEditor;
 import cs3500.music.util.CompositionBuilder;
 
 /**
@@ -46,7 +42,6 @@ public class MusicEditorModel implements IMusicEditor<Note> {
         this.noteMap.put(new Note(p, i, instrument), new ArrayList<>(initalList));
       }
     }
-//    this.noteMap.put(note, new ArrayList<>(initalList));
   }
 
 
@@ -121,7 +116,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
    */
   private void overlayNotes(MusicEditorModel other) {
     for (Note note : other.noteMap.keySet()) {
-      this.checkCanAdd(note,0, 1, 1);
+      this.checkCanAdd(note, 0, 1, 1);
       for (int i = 0; i < this.duration; i++) {
         if (other.noteMap.get(note).get(i).getState() != MusicStates.REST
                 && !this.noteMap.get(note).get(i).equals(other.noteMap.get(note).get(i))) {
@@ -179,13 +174,15 @@ public class MusicEditorModel implements IMusicEditor<Note> {
       throw new IllegalArgumentException("volume must be between 0 and 127 (inclusive)");
     }
 
-    if (length < 1) {
-//      throw new IllegalArgumentException("note must be at least one beat long.");
+    if (length < 0) {
+      throw new IllegalArgumentException("cannot have negative beats.");
     }
+
   }
 
   /**
    * Expands the size of the noteMap to hold more notes.
+   *
    * @param expandSize the amount to expand the notemap by
    */
   private void expand(int expandSize) {
@@ -200,28 +197,36 @@ public class MusicEditorModel implements IMusicEditor<Note> {
 
   @Override
   public String getState() {
-    String state = " ";
+    String state = "";
     List<Note> noteRange = this.getNoteRange();
+    Map<Integer, List<String>> combined = this.getCombinedNoteMap();
 
-    state += getColumnHeaders(noteRange) + "\n";
-    state += getRowStates(noteRange);
+    int lowNote = this.getLowNote();
+    int highNote = this.getHighNote();
+
+    state += getColumnHeaders(lowNote, highNote, combined) + "\n";
+    state += getRowStates(lowNote, highNote, combined);
 
     return state;
   }
 
   /**
-   * Gets the status of all the beats in the noteMap.
+   * Gets the status of all the beats in the noteMap ("X", "|", or " ").
    *
-   * @param noteRange the range of notes that comprise the piece
+   * @param lowNote the range of notes that comprise the piece
+   * @param highNote the lowest pitch-octave in the piece
+   * @param combined the map of notes where all instrument's notes are combined.
    * @return a String representing the MusicState of the notes for each beat of the piece.
    */
-  private String getRowStates(List<Note> noteRange) {
+  private String getRowStates(int lowNote, int highNote, Map<Integer, List<String>> combined) {
     String rowStates = "";
-    int beatColumnWidth = Integer.toString(this.duration).length();
+    int beatColumnWidth = Integer.toString(this.duration - 1).length();
     for (int i = 0; i < this.duration; i++) {
       rowStates += String.format("%1$" + beatColumnWidth + "s", i);
-      for (Note note : noteRange) {
-        rowStates += String.format("%1$10s", this.noteMap.get(note).get(i).getState().toString());
+      for (int j = lowNote; j <= highNote; j++) {
+
+        rowStates += String.format("%1$" + Integer.toString(5) + "s", this.convertState(combined.get(j).get(i)));
+//        rowStates += this.convertState(combined.get(j).get(i));
       }
       rowStates += "\n";
     }
@@ -229,17 +234,41 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   }
 
   /**
-   * Gets the column headers for the state.
+   * Converts the state of a note in string form to a symbol for the console view.
    *
-   * @param noteRange the range of notes that comprise the piece
-   * @return a String representing all the notes that make up the piece, from the lowest to highest
+   * @param s the state of the note.
+   * @return the corresponding state symbol
    */
-  private String getColumnHeaders(List<Note> noteRange) {
-    String columnHeaders = "";
-    for (Note note : noteRange) {
-      String noteColumn = String.format("%1$10s", note.toString());
-      columnHeaders += noteColumn;
+  private String convertState(String s) {
+    switch (s) {
+      case "start":
+        return "X";
+      case "continue":
+        return "|";
+      case "rest":
+        return " ";
+      default:
+        throw new IllegalArgumentException("Invalid string state");
     }
+  }
+
+  /**
+   * Gets the columns of the text view showing the range of pitch-octaves in the piece.
+   *
+   * @param lowNote the range of notes that comprise the piece
+   * @param highNote the lowest pitch-octave in the piece
+   * @param combined the map of notes where all instrument's notes are combined.
+   * @return a String representing the MusicState of the notes for each beat of the piece.
+   */
+  private String getColumnHeaders(int lowNote, int highNote, Map<Integer, List<String>> combined) {
+    int beatColumnWidth = Integer.toString(this.duration - 1).length();
+    String columnHeaders = String.format("%1$" + beatColumnWidth + "s", "");
+    for (int j = lowNote; j <= highNote; j++) {
+      columnHeaders += String.format("%1$" + Integer.toString(5) + "s", new Note(j, 0).toString());
+//      String column = "   " + new Note(j, 0).toString() + "   ";
+//      columnHeaders = columnHeaders + column.substring(0, 5);
+    }
+
     return columnHeaders;
   }
 
@@ -273,7 +302,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   @Override
   public List<List<List<Integer>>> getMidiInfo() {
     List<List<List<Integer>>> info = new ArrayList<>();
-    for (int i = 0; i < this.duration; i ++) {
+    for (int i = 0; i < this.duration; i++) {
       info.add(i, new ArrayList<>());
     }
 
@@ -281,7 +310,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
       for (int i = 0; i < this.duration; i++) {
         if (this.noteMap.get(note).get(i).getState() == MusicStates.START) {
           int volume = this.noteMap.get(note).get(i).getVolume();
-          info.get(i).add(new ArrayList<Integer>(Arrays.asList(1, note.getInstrument(), note.getNoteNumber(), volume, this.getLength(note, i))));
+          info.get(i).add(new ArrayList<Integer>(Arrays.asList(1, note.getInstrument() - 1, note.getNoteNumber(), volume, this.getLength(note, i))));
         }
       }
     }
@@ -295,7 +324,6 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     String[] initial = new String[this.duration];
     List<String> initalList = new ArrayList<>(Arrays.asList(initial));
     Collections.fill(initalList, "rest");
-
     for (int i = 12; i <= 143; i++) {
       combined.put(i, new ArrayList<>(initalList));
     }
@@ -310,14 +338,13 @@ public class MusicEditorModel implements IMusicEditor<Note> {
 
       }
     }
-
     return combined;
-
   }
 
   /**
    * Gets the length of a note starting at a given beat.
-   * @param note the Note to get the length of.
+   *
+   * @param note  the Note to get the length of.
    * @param start the beat the note starts at.
    * @return the length of the note.
    */
@@ -379,12 +406,61 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   }
 
   /**
+   * Determines the lowest pitch-octave in the piece.
+   *
+   * @return an int representing the note.
+   */
+  private int getLowNote() {
+    Map<Integer, List<String>> combined = this.getCombinedNoteMap();
+    int lowNote = 12;
+    while (this.allRest(combined.get(lowNote))) {
+      if (lowNote > combined.keySet().size()) {
+        break;
+      }
+      lowNote += 1;
+    }
+    return lowNote;
+  }
+
+  /**
+   * Determines if all strings in the list are at rest.
+   *
+   * @param strings the arraylist of strings to check.
+   * @return true if they are all at rest, false otherwise.
+   */
+  private boolean allRest(List<String> strings) {
+    for (String string : strings) {
+      if (!string.equals("rest")) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Determines the highest pitch-octave in the piece.
+   *
+   * @return an int representing the note.
+   */
+  private int getHighNote() {
+    Map<Integer, List<String>> combined = this.getCombinedNoteMap();
+    int highNote = combined.size() + 11;
+    while (this.allRest(combined.get(highNote))) {
+      if (highNote <= 12) {
+        break;
+      }
+      highNote -= 1;
+    }
+    return highNote;
+  }
+
+  /**
    * Builder class for MusicEditorModel that allows the user to add notes and set the tempo
    * without needing access to the constructor.
    */
   public static class Builder implements CompositionBuilder<IMusicEditor<Note>> {
 
-    private IMusicEditor<Note> model = new MusicEditorModel(1000);
+    private IMusicEditor<Note> model = new MusicEditorModel(10);
 
     @Override
     public IMusicEditor<Note> build() {
