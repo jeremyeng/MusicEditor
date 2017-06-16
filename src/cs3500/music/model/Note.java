@@ -74,7 +74,7 @@ public class Note implements Comparable<Note> {
 
   @Override
   public String toString() {
-    return this.pitch.toString() + this.octave +"(" + this.instrument + ")" ;
+    return this.pitch.toString() + this.octave;
   }
 
   /**
