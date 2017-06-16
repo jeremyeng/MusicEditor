@@ -45,6 +45,11 @@ public class ConsoleView implements IMusicEditorView<Note> {
   }
 
   @Override
+  public void setCombineNoteMap(Map<Integer, List<String>> notes) {
+
+  }
+
+  @Override
   public void update(IMusicEditor model) {
     this.model = model;
   }
@@ -53,11 +58,11 @@ public class ConsoleView implements IMusicEditorView<Note> {
   public void setListener(ActionListener action, KeyListener key) {
 
   }
-
-  @Override
-  public void resetFocus() {
-
-  }
+//
+//  @Override
+//  public void resetFocus() {
+//
+//  }
 
   @Override
   public void updateCurrentBeat(int beat) {

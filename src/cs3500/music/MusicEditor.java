@@ -20,9 +20,9 @@ import javax.sound.midi.MidiUnavailableException;
 
 public class MusicEditor {
   public static void main(String[] args) throws IOException, InvalidMidiDataException, MidiUnavailableException {
-    IMusicEditorView view = ViewFactory.getView("console");
+    IMusicEditorView view = ViewFactory.getView("visual");
     CompositionBuilder<IMusicEditor<Note>> builder = new MusicEditorModel.Builder();
-    FileReader file = new FileReader("mystery-3.txt");
+    FileReader file = new FileReader("zoot-lw.txt");
     IMusicEditor<Note> model = MusicReader.parseFile(file, builder);
     IMusicEditorController controller = new MusicEditorController(model, view);
     controller.go();
