@@ -34,12 +34,13 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
     this.musicEditorPanel.setLayout(new BoxLayout(this.musicEditorPanel, BoxLayout.Y_AXIS));
 
     this.scorePanel = new ScorePanel();
-
     this.pianoPanel = new PianoPanel();
+    scorePanel.setPreferredSize(scorePanel.getPreferredSize());
+    pianoPanel.setPreferredSize(new Dimension(1500,1200));
+    this.setSize(1600, 2000);
+    JScrollPane scrollFrame = new JScrollPane(scorePanel);
 
-    this.setSize(1500, 750);
-
-    this.musicEditorPanel.add(scorePanel);
+    this.musicEditorPanel.add(scrollFrame);
     this.musicEditorPanel.add(pianoPanel);
 
     this.setContentPane(this.musicEditorPanel);
