@@ -82,8 +82,7 @@ public class PianoPanel extends JPanel {
    */
   private void drawWhiteKeys(Graphics2D g2d) {
     for (int i = 0; i < this.naturalNotes.size(); i++) {
-      if (this.noteMap.get(naturalNotes.get(i)).get(currentBeat).equals("start")
-              || this.noteMap.get(naturalNotes.get(i)).get(currentBeat).equals("continue")) {
+      if (this.noteMap.get(naturalNotes.get(i)).get(currentBeat).equals("start") || this.noteMap.get(naturalNotes.get(i)).get(currentBeat).equals("continue")) {
         g2d.setColor(WHITE_KEY_DISPLAY_COLOR);
         g2d.fillRect(i * WHITE_KEY_WIDTH, 0, WHITE_KEY_WIDTH, WHITE_KEY_LENGTH);
       }
@@ -112,7 +111,7 @@ public class PianoPanel extends JPanel {
     this.duration = duration;
   }
 
-  protected ArrayList<Note> getAllNaturalNotes() {
+  private ArrayList<Note> getAllNaturalNotes() {
     ArrayList<Note> toReturnNotes = new ArrayList<>();
     for (int i = 0; i < noteRange.size(); i++) {
       if (!noteRange.get(i).isSharp()) {
@@ -122,7 +121,7 @@ public class PianoPanel extends JPanel {
     return toReturnNotes;
   }
 
-  protected ArrayList<Note> getAllSharpNotes() {
+  private ArrayList<Note> getAllSharpNotes() {
     ArrayList<Note> toReturnNotes = new ArrayList<>();
     for (int i = 0; i < noteRange.size(); i++) {
       if (noteRange.get(i).isSharp()) {
@@ -130,6 +129,18 @@ public class PianoPanel extends JPanel {
       }
     }
     return toReturnNotes;
+  }
+
+  private ArrayList<Note> setPianoRange() {
+    ArrayList<Note> toReturn = new ArrayList<>();
+    toReturn.add(Note.makeNote(21,0));
+    toReturn.add(Note.makeNote(22,0));
+    for (int i = 1; i <= 8; i++ ) {
+      for (int j = 12; j < 23; j++) {
+        toReturn.add(Note.makeNote(j,i));
+      }
+    }
+    return toReturn;
   }
 
 }

@@ -26,6 +26,7 @@ public class MusicEditor {
     model.addNote(new Note(Pitch.F, 3, 0), 10, 20, 10);
     model.addNote(new Note(Pitch.CSharp, 3, 1),11,15, 10);
     model.addNote(new Note(Pitch.C, 3, 1),19,15, 10);
+    model.addNote(new Note(Pitch.C, 8, 1),19,15, 10);
     IMusicEditorController controller = new MusicEditorController(model, view);
     controller.go();
   }

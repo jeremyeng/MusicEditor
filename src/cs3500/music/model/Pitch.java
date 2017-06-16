@@ -30,26 +30,26 @@ public enum Pitch {
     return this.name();
   }
 
-//  /**
-//   * Makes a pitch according to the integer given
-//   * @param pitch the integer that associates with the pitch
-//   * @return the pitch that associates with the Integer.
-//   */
-//  public static Pitch makePitch(int pitch) {
-//    switch (pitch) {
-//      case 1: return C;
-//      case 2 :return CSharp;
-//      case 3: return D;
-//      case 4: return DSharp;
-//      case 5: return E;
-//      case 6: return F;
-//      case 7: return FSharp;
-//      case 8: return G;
-//      case 9: return GSharp;
-//      case 10: return A;
-//      case 11: return ASharp;
-//      case 12: return B;
-//      default: throw new IllegalArgumentException("No such pitch!");
-//    }
-//  }
+  /**
+   * Makes a pitch according to the integer given
+   * @param pitch the integer that associates with the pitch
+   * @return the pitch that associates with the Integer.
+   */
+  public static Pitch makePitch(int pitch) {
+    switch (pitch) {
+      case 12: return C;
+      case 13 :return CSharp;
+      case 14: return D;
+      case 15: return DSharp;
+      case 16: return E;
+      case 17: return F;
+      case 18: return FSharp;
+      case 19: return G;
+      case 20: return GSharp;
+      case 21: return A;
+      case 22: return ASharp;
+      case 23: return B;
+      default: throw new IllegalArgumentException("No such pitch!");
+    }
+  }
 }

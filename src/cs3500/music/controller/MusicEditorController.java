@@ -27,11 +27,6 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
   }
 
   @Override
-  public String processCommand(String command) {
-    return null;
-  }
-
-  @Override
   public void go() {
     this.view.setListener(this,this);
     this.view.setDuration(model.getDuration());
@@ -45,28 +40,26 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
       noteMap.put(note,stateList);
     }
     this.view.setNoteMap(noteMap);
-    //this.view.setCurrentBeat();
     this.view.makeVisible();
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    System.out.println("some action performed!");
+
   }
 
   @Override
   public void keyTyped(KeyEvent e) {
-    System.out.print("key typed!");
+
   }
 
   @Override
   public void keyPressed(KeyEvent e) {
-    switch (e.getKeyCode()) {
-      case KeyEvent.VK_LEFT:
-        this.view.updateCurrentBeat(-1);
-      break;
-      case KeyEvent.VK_RIGHT: this.view.updateCurrentBeat(1); break;
-      default: throw new IllegalArgumentException("Unsupported Key!");
+    if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+      this.view.updateCurrentBeat(-1);
+    }
+    if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+      this.view.updateCurrentBeat(1);
     }
   }
 

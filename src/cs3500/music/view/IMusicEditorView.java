@@ -42,11 +42,6 @@ public interface IMusicEditorView<K> {
 
   void setListener(ActionListener action,KeyListener key);
 
-  void resetFocus();
-
   void updateCurrentBeat(int beat);
 
-  void showErrorMessage();
-
-  void refresh();
 }

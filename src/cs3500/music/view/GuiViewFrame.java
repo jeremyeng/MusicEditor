@@ -66,12 +66,6 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
   }
 
   @Override
-  public void resetFocus() {
-    this.setFocusable(true);
-    this.requestFocus();
-  }
-
-  @Override
   public void updateCurrentBeat(int beat) {
     this.scorePanel.updateCurrentBeat(beat);
     this.pianoPanel.updateCurrentBeat(beat);
@@ -93,17 +87,6 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
   public void setNoteMap(Map<Note, List<String>> notes) {
     this.scorePanel.setNoteMap(notes);
     this.pianoPanel.setNoteMap(notes);
-  }
-
-
-  @Override
-  public void showErrorMessage() {
-
-  }
-
-  @Override
-  public void refresh() {
-
   }
 
   @Override

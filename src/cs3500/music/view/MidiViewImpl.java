@@ -99,23 +99,7 @@ public class MidiViewImpl implements IMusicEditorView {
   }
 
   @Override
-  public void resetFocus() {
-
-  }
-
-  @Override
   public void updateCurrentBeat(int beat) {
-
-  }
-
-
-  @Override
-  public void showErrorMessage() {
-
-  }
-
-  @Override
-  public void refresh() {
 
   }
 
