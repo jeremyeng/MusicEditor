@@ -23,7 +23,6 @@ public class PianoPanel extends JPanel {
   private final Color WHITE_KEY_DISPLAY_COLOR = Color.YELLOW;
   private final Color BLACK_KEY_DISPLAY_COLOR = Color.ORANGE;
 
-  private List<Note> noteRange = new ArrayList<>();
   private Map<Integer, List<String>> noteMap = new TreeMap<>();
   private ArrayList<Integer> naturalNotes = new ArrayList<>();
   private ArrayList<Integer> sharpNotes = new ArrayList<>();
@@ -100,10 +99,10 @@ public class PianoPanel extends JPanel {
     }
   }
 
-  protected void setNoteRange(List<Note> noteRange) {
-    this.noteRange = noteRange;
-  }
-
+  /**
+   * Sets the combined note map for the piano panel.
+   * @param notes the combined note map in which the piano panel is going to use.
+   */
   protected void setCombineNoteMap(Map<Integer, List<String>> notes) {
     this.noteMap = notes;
     for (Integer i : notes.keySet()) {
@@ -116,6 +115,11 @@ public class PianoPanel extends JPanel {
     }
   }
 
+  /**
+   * Updates the current beat of the piano panel base on the integer given, negative number
+   * goes back a beat and positive number advance a beat.
+   * @param beat the number of beat in which the panel is going to move.
+   */
   protected void updateCurrentBeat(int beat) {
     if (!((this.currentBeat + beat < 0) || this.currentBeat + beat >= this.duration)) {
       this.currentBeat += beat;
@@ -123,6 +127,10 @@ public class PianoPanel extends JPanel {
     }
   }
 
+  /**
+   * Sets the duration of the piano panel.
+   * @param duration the duration of the piano panel
+   */
   protected void setDuration(int duration) {
     this.duration = duration;
   }

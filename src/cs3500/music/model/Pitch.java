@@ -21,10 +21,19 @@ public enum Pitch {
     }
   }
 
+  /**
+   * Constucts an instance of pitch
+   * @param pitchNumber the number associates with the pitch,
+   */
   Pitch(int pitchNumber) {
     this.pitchNumber = pitchNumber;
   }
 
+  /**
+   * Returns a new pitch base on the number given.
+   * @param pitchNumber the number of the pitch to be created
+   * @return a pitch associates with the number given
+   */
   public static Pitch pitchFromNumber(int pitchNumber) {
     if (pitchMap.get(pitchNumber) == null) {
       throw new IllegalArgumentException("Not a valid pitch");

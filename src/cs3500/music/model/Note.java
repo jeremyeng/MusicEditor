@@ -78,8 +78,7 @@ public class Note implements Comparable<Note> {
   }
 
   /**
-   * Gets the pitch.
-   *
+   * Gets the pitch of a note.
    * @return the pitch of the note.
    */
   public Pitch getPitch() {
@@ -88,19 +87,22 @@ public class Note implements Comparable<Note> {
 
   /**
    * Gets the octave of the note.
-   *
    * @return the octave the pitch is in.
    */
   public int getOctave() {
     return this.octave;
   }
 
+  /**
+   * Gets the midi integer representation of an instrument.
+   * @return Gets the midi integer representation of an instrument.
+   */
   public int getInstrument() {
     return instrument;
   }
 
   /**
-   * Checks if the note is sharp
+   * Checks if the note is sharp.
    * @return true if note is sharp and false otherwise.
    */
   public boolean isSharp() {
@@ -135,6 +137,10 @@ public class Note implements Comparable<Note> {
   }
 
 
+  /**
+   * Gets the midi integer representation of the note.
+   * @return the midi integer representation of the note
+   */
   public int getNoteNumber() {
     return this.octave * 12 + pitch.getPitchNumber();
   }

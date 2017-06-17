@@ -16,7 +16,6 @@ import cs3500.music.model.Note;
  */
 public class ConsoleView implements IMusicEditorView<Note> {
 
-
   private IMusicEditor model;
 
   @Override
@@ -25,22 +24,7 @@ public class ConsoleView implements IMusicEditorView<Note> {
   }
 
   @Override
-  public void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException {
-
-  }
-
-  @Override
-  public void setNoteRange(List<Note> noteRange) {
-
-  }
-
-  @Override
   public void setDuration(int duration) {
-
-  }
-
-  @Override
-  public void setNoteMap(Map<Note, List<String>> notes) {
 
   }
 
@@ -50,19 +34,9 @@ public class ConsoleView implements IMusicEditorView<Note> {
   }
 
   @Override
-  public void update(IMusicEditor model) {
-    this.model = model;
-  }
-
-  @Override
   public void setListener(ActionListener action, KeyListener key) {
 
   }
-//
-//  @Override
-//  public void resetFocus() {
-//
-//  }
 
   @Override
   public void updateCurrentBeat(int beat) {
@@ -70,13 +44,8 @@ public class ConsoleView implements IMusicEditorView<Note> {
   }
 
   @Override
-  public void showErrorMessage() {
-
-  }
-
-  @Override
-  public void refresh() {
-
+  public void update(IMusicEditor model) {
+    this.model = model;
   }
 
 }

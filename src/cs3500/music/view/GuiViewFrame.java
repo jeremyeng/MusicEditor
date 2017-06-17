@@ -49,7 +49,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
     this.setContentPane(this.musicEditorPanel);
 
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-//    this.pack();
+    // this.pack();
   }
 
   @Override
@@ -58,23 +58,11 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
   }
 
   @Override
-  public void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException {
-
-  }
-
-
-  @Override
   public void setListener(ActionListener action, KeyListener key) {
     this.addKeyListener(key);
     this.scorePanel.addKeyListener(key);
     this.pianoPanel.addKeyListener(key);
   }
-
-//  @Override
-//  public void resetFocus() {
-//    this.setFocusable(true);
-//    this.requestFocus();
-//  }
 
   @Override
   public void updateCurrentBeat(int beat) {
@@ -83,30 +71,9 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
   }
 
   @Override
-  public void showErrorMessage() {
-
-  }
-
-  @Override
-  public void refresh() {
-
-  }
-
-  @Override
-  public void setNoteRange(List noteRange) {
-    this.scorePanel.setNoteRange(noteRange);
-    this.pianoPanel.setNoteRange(noteRange);
-  }
-
-  @Override
   public void setDuration(int duration) {
     this.scorePanel.setDuration(duration);
     this.pianoPanel.setDuration(duration);
-  }
-
-  @Override
-  public void setNoteMap(Map<Note, List<String>> notes) {
-    this.scorePanel.setNoteMap(notes);
   }
 
   @Override

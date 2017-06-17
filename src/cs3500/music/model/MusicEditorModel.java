@@ -226,7 +226,6 @@ public class MusicEditorModel implements IMusicEditor<Note> {
       for (int j = lowNote; j <= highNote; j++) {
 
         rowStates += String.format("%1$" + Integer.toString(5) + "s", this.convertState(combined.get(j).get(i)));
-//        rowStates += this.convertState(combined.get(j).get(i));
       }
       rowStates += "\n";
     }
@@ -265,8 +264,6 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     String columnHeaders = String.format("%1$" + beatColumnWidth + "s", "");
     for (int j = lowNote; j <= highNote; j++) {
       columnHeaders += String.format("%1$" + Integer.toString(5) + "s", new Note(j, 0).toString());
-//      String column = "   " + new Note(j, 0).toString() + "   ";
-//      columnHeaders = columnHeaders + column.substring(0, 5);
     }
 
     return columnHeaders;
