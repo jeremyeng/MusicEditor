@@ -11,6 +11,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.*;
 
 import cs3500.music.model.IMusicEditor;
+import cs3500.music.model.IReadOnlyMusicEditor;
 import cs3500.music.model.MusicEditorModel;
 import cs3500.music.model.IMusicEditor;
 import cs3500.music.model.Note;
@@ -23,7 +24,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
   private final JPanel musicEditorPanel;
   private final ScorePanel scorePanel; // You may want to refine this to a subtype of JPanel
   private final PianoPanel pianoPanel;
-  private IMusicEditor model;
+  private IReadOnlyMusicEditor model;
 
 
   /**
@@ -57,6 +58,11 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
   }
 
   @Override
+  public void update(IReadOnlyMusicEditor model) {
+    this.model = model;
+  }
+
+  @Override
   public void setListener(ActionListener action, KeyListener key) {
     this.addKeyListener(key);
     scorePanel.addKeyListener(key);
@@ -75,10 +81,6 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
     this.pianoPanel.setDuration(duration);
   }
 
-  @Override
-  public void update(IMusicEditor model) {
-    this.model = model;
-  }
 
 
   @Override

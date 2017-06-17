@@ -8,16 +8,17 @@ import java.util.Map;
 import javax.sound.midi.*;
 
 import cs3500.music.model.IMusicEditor;
+import cs3500.music.model.IReadOnlyMusicEditor;
 import cs3500.music.model.MusicEditorModel;
 import cs3500.music.model.Note;
 
 /**
  * A skeleton for MIDI playback
  */
-public class MidiViewImpl implements IMidiView {
+public class MidiViewImpl implements IMidiView<Note> {
   private final Synthesizer synth;
   private final Receiver receiver;
-  private IMusicEditor model;
+  private IReadOnlyMusicEditor model;
 
 
   /**
@@ -96,7 +97,7 @@ public class MidiViewImpl implements IMidiView {
   }
 
   @Override
-  public void update(IMusicEditor model) {
+  public void update(IReadOnlyMusicEditor model) {
     this.model = model;
   }
 

@@ -2,6 +2,7 @@ package cs3500.music.view;
 
 import java.io.IOException;
 import cs3500.music.model.IMusicEditor;
+import cs3500.music.model.IReadOnlyMusicEditor;
 
 
 /**
@@ -9,7 +10,7 @@ import cs3500.music.model.IMusicEditor;
  */
 public class ConsoleView implements IMusicEditorView {
 
-  private IMusicEditor model;
+  private IReadOnlyMusicEditor model;
   private Appendable text;
 
   /**
@@ -26,7 +27,7 @@ public class ConsoleView implements IMusicEditorView {
   }
 
   @Override
-  public void update(IMusicEditor model) {
+  public void update(IReadOnlyMusicEditor model) {
     this.model = model;
   }
 

@@ -14,6 +14,7 @@ import javax.sound.midi.InvalidMidiDataException;
 
 import cs3500.music.model.IMusicEditor;
 import cs3500.music.model.Note;
+import cs3500.music.model.ReadOnlyMusicEditorModel;
 import cs3500.music.view.GuiViewFrame;
 import cs3500.music.view.IGuiView;
 import cs3500.music.view.IMidiView;
@@ -54,7 +55,7 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
       }
       guiView.setCombineNoteMap(model.getCombinedNoteMap());
     }
-    this.view.update(this.model);
+    this.view.update(new ReadOnlyMusicEditorModel(model));
     try {
       this.view.makeVisible();
     } catch (InvalidMidiDataException e) {

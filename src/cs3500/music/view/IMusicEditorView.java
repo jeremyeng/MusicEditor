@@ -11,6 +11,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.*;
 
 import cs3500.music.model.IMusicEditor;
+import cs3500.music.model.IReadOnlyMusicEditor;
 import cs3500.music.model.MusicEditorModel;
 
 import cs3500.music.model.Note;
@@ -29,6 +30,6 @@ public interface IMusicEditorView<K> {
    * Gives the view a model to operate on.
    * @param model the model that the view is going to operate on.
    */
-  void update(IMusicEditor<K> model);
+  void update(IReadOnlyMusicEditor<K> model);
 
 }
