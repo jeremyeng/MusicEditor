@@ -1,4 +1,4 @@
-
+**********************************************************************************************************
 Model:
 **********************************************************************************************************
 IMusicEditor:
@@ -27,6 +27,15 @@ MusicEditorModel:
     the initial number of beats must be passed in as an argument and all notes in all octaves are 
     initialized to be at rest for that duration.
 
+IReadOnlyMusicEditor:
+    Defines the behavior for a immutable version of IMusicEditor.
+
+    Removes all methods that allow the user to change data in the model.
+
+ReadOnlyMusicEditorModel:
+    Implements a read-only IMusicEditor that contains a normal IMusicEditor as a field;
+
+    Only allows the user to call methods that retrieve data from the IMusicEditor.
 
 Note:
     Represents a note in the western style of music in pitch-octave notation, with an integer representing
