@@ -23,10 +23,6 @@ public class MockReceiver implements Receiver{
   @Override
   public void send(MidiMessage message, long timeStamp) {
     ShortMessage msg = this.shortenMessage(message);
-//    String command = this.parseCommand(msg);
-//    if (command == null) {
-//      return;
-//    }
 
     switch (msg.getCommand()) {
       case ShortMessage.NOTE_ON:
@@ -46,33 +42,8 @@ public class MockReceiver implements Receiver{
       default:
         break;
     }
-//    log.append(command);
-//    log.append("Instrument: ");
-//    log.append(msg.getChannel() + " ");
-//    log.append("Pitch: ");
-//    log.append(msg.getData1() + " ");
-//    log.append("Volume: ");
-//    log.append(msg.getData2() + " ");
-//    log.append("TimeStamp: ");
-//    log.append(timeStamp);
-//    log.append("\n");
   }
 
-  /**
-   * Parses the command of a short message into a string that represents what it does.
-   * @param msg the ShortMessage to parse.
-   * @return a String representation of the ShortMessage.
-   */
-  private String parseCommand(ShortMessage msg) {
-    switch (msg.getCommand()) {
-      case ShortMessage.NOTE_ON:
-        return "Note ON: ";
-      case ShortMessage.NOTE_OFF:
-        return "Note OFF: ";
-      default:
-        return null;
-    }
-  }
 
   /**
    * Converts the midi message to a ShortMessage
