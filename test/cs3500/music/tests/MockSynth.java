@@ -1,4 +1,4 @@
-package cs3500.music.view;
+package cs3500.music.tests;
 
 import java.util.List;
 
@@ -90,32 +90,32 @@ public class MockSynth implements Synthesizer {
 
   @Override
   public int getMaxPolyphony() {
-    return 0;
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override
   public long getLatency() {
-    return 0;
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override
   public MidiChannel[] getChannels() {
-    return new MidiChannel[0];
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override
   public VoiceStatus[] getVoiceStatus() {
-    return new VoiceStatus[0];
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override
   public boolean isSoundbankSupported(Soundbank soundbank) {
-    return false;
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override
   public boolean loadInstrument(Instrument instrument) {
-    return false;
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override
@@ -125,27 +125,27 @@ public class MockSynth implements Synthesizer {
 
   @Override
   public boolean remapInstrument(Instrument from, Instrument to) {
-    return false;
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override
   public Soundbank getDefaultSoundbank() {
-    return null;
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override
   public Instrument[] getAvailableInstruments() {
-    return new Instrument[0];
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override
   public Instrument[] getLoadedInstruments() {
-    return new Instrument[0];
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override
   public boolean loadAllInstruments(Soundbank soundbank) {
-    return false;
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override
@@ -155,11 +155,11 @@ public class MockSynth implements Synthesizer {
 
   @Override
   public boolean loadInstruments(Soundbank soundbank, Patch[] patchList) {
-    return false;
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override
   public void unloadInstruments(Soundbank soundbank, Patch[] patchList) {
-
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 }

@@ -1,4 +1,4 @@
-/**
+package cs3500.music.tests; /**
  * Created by Hoyin on 6/17/2017.
  */
 

@@ -36,7 +36,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
     this.musicEditorPanel = new JPanel();
     this.musicEditorPanel.setLayout(new BoxLayout(this.musicEditorPanel, BoxLayout.Y_AXIS));
 
-    this.scorePanel = new ScorePanel();
+    scorePanel = new ScorePanel();
     this.pianoPanel = new PianoPanel();
     scorePanel.setPreferredSize(scorePanel.getPreferredSize());
     pianoPanel.setPreferredSize(new Dimension(1500,1200));
@@ -59,19 +59,19 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
   @Override
   public void setListener(ActionListener action, KeyListener key) {
     this.addKeyListener(key);
-    this.scorePanel.addKeyListener(key);
+    scorePanel.addKeyListener(key);
     this.pianoPanel.addKeyListener(key);
   }
 
   @Override
   public void updateCurrentBeat(int beat) {
-    this.scorePanel.updateCurrentBeat(beat);
+    scorePanel.updateCurrentBeat(beat);
     this.pianoPanel.updateCurrentBeat(beat);
   }
 
   @Override
   public void setDuration(int duration) {
-    this.scorePanel.setDuration(duration);
+    scorePanel.setDuration(duration);
     this.pianoPanel.setDuration(duration);
   }
 
@@ -84,7 +84,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
   @Override
   public void setCombineNoteMap(Map <Integer, List<String>> notes) {
     this.pianoPanel.setCombineNoteMap(notes);
-    this.scorePanel.setCombineNoteMap(notes);
+    scorePanel.setCombineNoteMap(notes);
   }
 
   @Override

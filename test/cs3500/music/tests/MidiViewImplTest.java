@@ -1,4 +1,4 @@
-package cs3500.music.view;
+package cs3500.music.tests;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,9 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Receiver;
 import javax.sound.midi.Synthesizer;
 
 import cs3500.music.controller.IMusicEditorController;
@@ -21,6 +19,7 @@ import cs3500.music.model.MusicEditorModel;
 import cs3500.music.model.Note;
 import cs3500.music.util.CompositionBuilder;
 import cs3500.music.util.MusicReader;
+import cs3500.music.view.MidiViewImpl;
 
 import static org.junit.Assert.*;
 

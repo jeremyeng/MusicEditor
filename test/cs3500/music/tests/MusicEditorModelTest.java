@@ -1,3 +1,5 @@
+package cs3500.music.tests;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
