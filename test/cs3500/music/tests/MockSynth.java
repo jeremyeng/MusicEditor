@@ -120,7 +120,7 @@ public class MockSynth implements Synthesizer {
 
   @Override
   public void unloadInstrument(Instrument instrument) {
-
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override
@@ -150,7 +150,7 @@ public class MockSynth implements Synthesizer {
 
   @Override
   public void unloadAllInstruments(Soundbank soundbank) {
-
+    throw new UnsupportedOperationException("I'm not a real MidiDevice!");
   }
 
   @Override

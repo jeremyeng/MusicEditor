@@ -5,15 +5,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.ShortMessage;
-
 import cs3500.music.model.MusicEditorModel;
 import cs3500.music.model.Note;
 import cs3500.music.model.Pitch;

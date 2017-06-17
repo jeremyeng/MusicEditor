@@ -8,9 +8,16 @@ import javax.sound.midi.MidiUnavailableException;
  * appropriate concrete view.
  */
 public class ViewFactory {
+  /**
+   * Generates an implementation of the IMusicEditorView interface from the given String.
+   * @param viewType a string representing the type of view to be created.
+   * @return the corresponding IMusiEditorView
+   * @throws MidiUnavailableException if midi data is unavailable
+   * @throws IllegalArgumentException if given an invalid view type.
+   */
   public static IMusicEditorView getView(String viewType) throws MidiUnavailableException {
     switch (viewType.toLowerCase()) {
-      case "console" :
+      case "console":
         return new ConsoleView(System.out);
       case "visual":
         return new GuiViewFrame();

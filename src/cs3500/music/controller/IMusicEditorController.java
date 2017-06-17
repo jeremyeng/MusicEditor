@@ -10,6 +10,7 @@ public interface IMusicEditorController<K> {
 
   /**
    * Starts the Music Editor and gives command to the controller.
+   * The controller will handle interactions between the view and the model.
    */
-  void go() throws IOException;
+  void execute() throws IOException;
 }

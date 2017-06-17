@@ -86,7 +86,8 @@ public class ConsoleView implements IMusicEditorView {
       rowStates += String.format("%1$" + beatColumnWidth + "s", i);
       for (int j = lowNote; j <= highNote; j++) {
 
-        rowStates += String.format("%1$" + Integer.toString(5) + "s", this.convertState(combined.get(j).get(i)));
+        rowStates += String.format("%1$" + Integer.toString(5) + "s",
+                this.convertState(combined.get(j).get(i)));
       }
       rowStates += "\n";
     }

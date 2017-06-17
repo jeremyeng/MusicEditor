@@ -21,22 +21,23 @@ import cs3500.music.util.CompositionBuilder;
 import cs3500.music.util.MusicReader;
 import cs3500.music.view.MidiViewImpl;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertEquals;
+
 
 /**
  * Tests the midi view implementation by using Mock Synthesizers and Receivers to log the
  * sent MidiMessages.
  */
 public class MidiViewImplTest {
-  private Synthesizer synth;
-  private MidiViewImpl midiView;
   private CompositionBuilder<IMusicEditor<Note>> builder;
   private StringBuilder log;
 
+  /**
+   * Initialize the testing environment variables.
+   */
   @Before
-  public void initialize() throws FileNotFoundException, MidiUnavailableException {
+  public void initialize() {
     this.log = new StringBuilder();
-
     this.builder = new MusicEditorModel.Builder();
   }
 
@@ -45,10 +46,10 @@ public class MidiViewImplTest {
     FileReader file = new FileReader("mary-little-lamb.txt");
     String content = new Scanner(new File("mary-little-lamb.txt")).useDelimiter("\\Z").next();
     IMusicEditor<Note> model = MusicReader.parseFile(file, builder);
-    this.synth = new MockSynth(log, model.getTempo());
-    this.midiView = new MidiViewImpl(synth);
+    Synthesizer synth = new MockSynth(log, model.getTempo());
+    MidiViewImpl midiView = new MidiViewImpl(synth);
     IMusicEditorController controller = new MusicEditorController(model, midiView);
-    controller.go();
+    controller.execute();
     assertEquals(content, log.toString());
   }
 

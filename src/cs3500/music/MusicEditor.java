@@ -21,7 +21,15 @@ import javax.sound.midi.MidiUnavailableException;
  * getView, and the file can be selected by changing the argument of FileReader.
  */
 public class MusicEditor {
-  public static void main(String[] args) throws IOException, InvalidMidiDataException, MidiUnavailableException {
+  /**
+   * Main method for our MusicEditor.
+   * @param args two string arguments that specify which file to play and which view to create.
+   * @throws IOException if there invalid input or output.
+   * @throws InvalidMidiDataException if midi data is invalid.
+   * @throws MidiUnavailableException if the midi is unavailable.
+   */
+  public static void main(String[] args) throws IOException, InvalidMidiDataException,
+          MidiUnavailableException {
     IMusicEditorView view = ViewFactory.getView(
             args[1]
     );
@@ -29,6 +37,6 @@ public class MusicEditor {
     FileReader file = new FileReader(args[0]);
     IMusicEditor<Note> model = MusicReader.parseFile(file, builder);
     IMusicEditorController controller = new MusicEditorController(model, view);
-    controller.go();
+    controller.execute();
   }
 }

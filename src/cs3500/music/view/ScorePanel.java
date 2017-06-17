@@ -1,19 +1,15 @@
 package cs3500.music.view;
 
 import java.awt.*;
-import javax.swing.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import javax.swing.*;
+
 import cs3500.music.model.Note;
-
-
-/**
- * Created by Hoyin on 6/12/2017.
- */
 
 /**
  * A class that represents a panel of a music score. The panel consist of
@@ -44,7 +40,8 @@ public class ScorePanel extends JPanel {
     }
     Collections.reverse(notesToRender);
     for (int i = 0; i < notesToRender.size(); i++) {
-      drawBlock(notesToRender.get(i), SCORE_X_POSITION, HIGHEST_NOTE_Y_POSITION + i * SINGLE_NOTE_HEIGHT, g2d);
+      drawBlock(notesToRender.get(i), SCORE_X_POSITION,
+              HIGHEST_NOTE_Y_POSITION + i * SINGLE_NOTE_HEIGHT, g2d);
     }
     for (int i = 0; i < SINGLE_NOTE_WIDTH * duration + 1; i += 4 * SINGLE_NOTE_WIDTH) {
       g2d.drawString(Integer.toString(i / SINGLE_NOTE_WIDTH),
@@ -67,7 +64,7 @@ public class ScorePanel extends JPanel {
    * @param y the y-position in which the block is going to be drawn.
    * @param g2d the image in which the block is going to be drawn.
    */
-  protected void drawBlock(List<String> states, int x, int y, Graphics2D g2d) {
+  private void drawBlock(List<String> states, int x, int y, Graphics2D g2d) {
     g2d.drawRect(x, y, SINGLE_NOTE_WIDTH * duration, SINGLE_NOTE_HEIGHT);
     for (int i = 0; i < this.duration; i++) {
       renderNoteState(states.get(i), x + i * SINGLE_NOTE_WIDTH, y, g2d);
@@ -82,7 +79,7 @@ public class ScorePanel extends JPanel {
    * Sets a combine note map for the score panel to use.
    * @param combineNoteMap the combine note map that the score panel is going to reference on.
    */
-  protected void setCombineNoteMap(Map<Integer, List<String>> combineNoteMap) {
+  void setCombineNoteMap(Map<Integer, List<String>> combineNoteMap) {
     this.combineNoteMap = combineNoteMap;
   }
 
@@ -90,7 +87,7 @@ public class ScorePanel extends JPanel {
    * Sets the duration of the score panel.
    * @param duration the duration of the score panel.
    */
-  protected void setDuration(int duration) {
+  void setDuration(int duration) {
     this.duration = duration;
   }
 
@@ -101,17 +98,17 @@ public class ScorePanel extends JPanel {
    * @param y the y-position in which the note is going to be drawn.
    * @param g2d the image in which the note is going to be drawn on.
    */
-  protected void renderNoteState(String state,int x, int y, Graphics2D g2d) {
+  private void renderNoteState(String state, int x, int y, Graphics2D g2d) {
     switch (state) {
       case "start": g2d.setColor(Color.BLACK);
-      g2d.fillRect(x,y,SINGLE_NOTE_WIDTH - 1,SINGLE_NOTE_HEIGHT - 1);
-      break;
+        g2d.fillRect(x,y,SINGLE_NOTE_WIDTH - 1,SINGLE_NOTE_HEIGHT - 1);
+        break;
       case "continue": g2d.setColor(Color.GREEN);
-      g2d.fillRect(x,y,SINGLE_NOTE_WIDTH - 1,SINGLE_NOTE_HEIGHT - 1);
-      break;
+        g2d.fillRect(x,y,SINGLE_NOTE_WIDTH - 1,SINGLE_NOTE_HEIGHT - 1);
+        break;
       case "rest": g2d.setColor(Color.WHITE);
-      g2d.fillRect(x,y,SINGLE_NOTE_WIDTH - 1,SINGLE_NOTE_HEIGHT - 1);
-      break;
+        g2d.fillRect(x,y,SINGLE_NOTE_WIDTH - 1,SINGLE_NOTE_HEIGHT - 1);
+        break;
       default: throw new IllegalArgumentException("Unsupported note state to render!");
     }
   }
@@ -122,7 +119,7 @@ public class ScorePanel extends JPanel {
    * @param y the y-position in which the line is going to be drawn.
    * @param g2d the image in which the note is going to be drawn on.
    */
-  protected void drawRedLine(int x, int y, Graphics2D g2d) {
+  private void drawRedLine(int x, int y, Graphics2D g2d) {
     g2d.setColor(Color.RED);
     g2d.drawLine(x,y,x,y + this.combineNoteMap.size() * SINGLE_NOTE_HEIGHT);
   }
@@ -132,7 +129,7 @@ public class ScorePanel extends JPanel {
    * and goes back otherwise.
    * @param beat the beat in which the score panel is going to be updates by.
    */
-  protected void updateCurrentBeat(int beat) {
+  void updateCurrentBeat(int beat) {
     if (! (this.currentBeat + beat < 0 || this.currentBeat + beat > this.duration)) {
       this.currentBeat += beat;
       this.repaint();

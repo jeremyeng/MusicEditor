@@ -1,6 +1,4 @@
-package cs3500.music.tests; /**
- * Created by Hoyin on 6/17/2017.
- */
+package cs3500.music.tests;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +28,9 @@ public class ConsoleViewTest {
   Appendable viewOutput;
 
 
+  /**
+   * Initialize the testing environment.
+   */
   @Before
   public void initData() {
     viewOutput = new StringBuilder();
@@ -43,7 +44,7 @@ public class ConsoleViewTest {
     FileReader file = new FileReader("mary-little-lamb.txt");
     IMusicEditor<Note> model = MusicReader.parseFile(file, builder);
     controller = new MusicEditorController(model,consoleView);
-    controller.go();
+    controller.execute();
     assertEquals("     E3   F3  F#3   G3  G#3   A3  A#3   B3   C4  C#4   D4  D#4   E4  " +
                     " F4  F#4   G4\n" +
             " 0                   X                                            X               \n" +

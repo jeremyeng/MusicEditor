@@ -1,15 +1,18 @@
 package cs3500.music.view;
 
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
 import java.util.List;
-import java.util.Map;
 
-import javax.sound.midi.*;
 
-import cs3500.music.model.IMusicEditor;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiMessage;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Receiver;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Synthesizer;
+
 import cs3500.music.model.IReadOnlyMusicEditor;
-import cs3500.music.model.MusicEditorModel;
 import cs3500.music.model.Note;
 
 /**
@@ -23,7 +26,6 @@ public class MidiViewImpl implements IMidiView<Note> {
 
   /**
    * Creates a new MidiViewImpl with a synthesizer and receiver from the built-in java Midi
-   * @throws MidiUnavailableException
    */
   public MidiViewImpl() throws MidiUnavailableException {
     this.synth = MidiSystem.getSynthesizer();
@@ -34,6 +36,7 @@ public class MidiViewImpl implements IMidiView<Note> {
   /**
    * Creates a new MidiViewImpl with a synthesizer in.
    * Used for testing purposes.
+   *
    * @param synth the synthesizer to use.
    */
   public MidiViewImpl(Synthesizer synth) throws MidiUnavailableException {
@@ -45,32 +48,33 @@ public class MidiViewImpl implements IMidiView<Note> {
   /**
    * Relevant classes and methods from the javax.sound.midi library:
    * <ul>
-   *  <li>{@link MidiSystem#getSynthesizer()}</li>
-   *  <li>{@link Synthesizer}
-   *    <ul>
-   *      <li>{@link Synthesizer#open()}</li>
-   *      <li>{@link Synthesizer#getReceiver()}</li>
-   *      <li>{@link Synthesizer#getChannels()}</li>
-   *    </ul>
-   *  </li>
-   *  <li>{@link Receiver}
-   *    <ul>
-   *      <li>{@link Receiver#send(MidiMessage, long)}</li>
-   *      <li>{@link Receiver#close()}</li>
-   *    </ul>
-   *  </li>
-   *  <li>{@link MidiMessage}</li>
-   *  <li>{@link ShortMessage}</li>
-   *  <li>{@link MidiChannel}
-   *    <ul>
-   *      <li>{@link MidiChannel#getProgram()}</li>
-   *      <li>{@link MidiChannel#programChange(int)}</li>
-   *    </ul>
-   *  </li>
+   * <li>{@link MidiSystem#getSynthesizer()}</li>
+   * <li>{@link Synthesizer}
+   * <ul>
+   * <li>{@link Synthesizer#open()}</li>
+   * <li>{@link Synthesizer#getReceiver()}</li>
+   * <li>{@link Synthesizer#getChannels()}</li>
    * </ul>
+   * </li>
+   * <li>{@link Receiver}
+   * <ul>
+   * <li>{@link Receiver#send(MidiMessage, long)}</li>
+   * <li>{@link Receiver#close()}</li>
+   * </ul>
+   * </li>
+   * <li>{@link MidiMessage}</li>
+   * <li>{@link ShortMessage}</li>
+   * <li>{@link MidiChannel}
+   * <ul>
+   * <li>{@link MidiChannel#getProgram()}</li>
+   * <li>{@link MidiChannel#programChange(int)}</li>
+   * </ul>
+   * </li>
+   * </ul>
+   *
    * @see <a href="https://en.wikipedia.org/wiki/General_MIDI">
    *   https://en.wikipedia.org/wiki/General_MIDI
-   *   </a>
+   * </a>
    */
 
 
@@ -83,10 +87,13 @@ public class MidiViewImpl implements IMidiView<Note> {
   public void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException {
     long start = this.synth.getMicrosecondPosition();
     for (int beat = 0; beat < info.size(); beat++) {
-      for (List<Integer> l: info.get(beat)) {
-        this.receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE, l.get(1), l.get(1), l.get(1)), -1);
-        this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, l.get(1), l.get(2), l.get(3)), beat * tempo);
-        this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, l.get(1), l.get(2), l.get(3)), (beat * tempo) + (l.get(4) * tempo));
+      for (List<Integer> l : info.get(beat)) {
+        this.receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE, l.get(1), l.get(1),
+                l.get(1)), -1);
+        this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, l.get(1), l.get(2), l.get(3)),
+                beat * tempo);
+        this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, l.get(1), l.get(2), l.get(3)),
+                (beat * tempo) + (l.get(4) * tempo));
       }
       try {
         Thread.sleep(tempo / 1000);
@@ -100,7 +107,6 @@ public class MidiViewImpl implements IMidiView<Note> {
   public void update(IReadOnlyMusicEditor model) {
     this.model = model;
   }
-
 
 
 }

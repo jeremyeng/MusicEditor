@@ -46,7 +46,8 @@ public class MusicEditorModel implements IMusicEditor<Note> {
 
 
   @Override
-  public void addNote(Note note, int beatNumber, int length, int volume) throws IllegalArgumentException {
+  public void addNote(Note note, int beatNumber, int length, int volume)
+          throws IllegalArgumentException {
     this.checkCanAdd(note, beatNumber, length, volume);
 
     this.noteMap.get(note).set(beatNumber, new PlaybackInfo(MusicStates.START, volume));
@@ -196,14 +197,11 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   }
 
 
-
-
-
   /**
    * Gets the range of notes that comprise the piece, from the lowest to the highest note.
    *
    * @return a sublist of notes where the first item is the lowest note and the last item is the
-   * highest note.
+   *         highest note.
    */
   public List<Note> getNoteRange() {
     int lowestNoteIndex = getLowestNoteIndex();
@@ -237,7 +235,8 @@ public class MusicEditorModel implements IMusicEditor<Note> {
       for (int i = 0; i < this.duration; i++) {
         if (this.noteMap.get(note).get(i).getState() == MusicStates.START) {
           int volume = this.noteMap.get(note).get(i).getVolume();
-          info.get(i).add(new ArrayList<Integer>(Arrays.asList(1, note.getInstrument() - 1, note.getNoteNumber(), volume, this.getLength(note, i))));
+          info.get(i).add(new ArrayList<Integer>(Arrays.asList(1, note.getInstrument() - 1,
+                  note.getNoteNumber(), volume, this.getLength(note, i))));
         }
       }
     }
@@ -353,7 +352,8 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     }
 
     @Override
-    public CompositionBuilder<IMusicEditor<Note>> addNote(int start, int end, int instrument, int pitch, int volume) {
+    public CompositionBuilder<IMusicEditor<Note>> addNote(int start, int end, int instrument,
+                                                          int pitch, int volume) {
       this.model.addNote(new Note(pitch, instrument), start, end - start, volume);
       return this;
     }
@@ -363,6 +363,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
    * Displays the notes in the model that are played. The rows represent the beat numbers of the
    * piece and the columns represent each note in the piece as well as during which beats they
    * start and continue.
+   *
    * @return a String
    */
   public String getState() {
@@ -381,7 +382,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   /**
    * Gets the columns of the text view showing the range of pitch-octaves in the piece.
    *
-   * @param lowNote the range of notes that comprise the piece
+   * @param lowNote  the range of notes that comprise the piece
    * @param highNote the lowest pitch-octave in the piece
    * @param combined the map of notes where all instrument's notes are combined.
    * @return a String representing the MusicState of the notes for each beat of the piece.
@@ -390,7 +391,8 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     int beatColumnWidth = Integer.toString(this.getDuration() - 1).length();
     String columnHeaders = String.format("%1$" + beatColumnWidth + "s", "");
     for (int j = lowNote; j <= highNote; j++) {
-      columnHeaders += String.format("%1$" + Integer.toString(5) + "s", new Note(j, 0).toString());
+      columnHeaders += String.format("%1$" + Integer.toString(5) + "s",
+              new Note(j, 0).toString());
     }
 
     return columnHeaders;
@@ -399,7 +401,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
   /**
    * Gets the status of all the beats in the noteMap ("X", "|", or " ").
    *
-   * @param lowNote the range of notes that comprise the piece
+   * @param lowNote  the range of notes that comprise the piece
    * @param highNote the lowest pitch-octave in the piece
    * @param combined the map of notes where all instrument's notes are combined.
    * @return a String representing the MusicState of the notes for each beat of the piece.
@@ -411,7 +413,8 @@ public class MusicEditorModel implements IMusicEditor<Note> {
       rowStates += String.format("%1$" + beatColumnWidth + "s", i);
       for (int j = lowNote; j <= highNote; j++) {
 
-        rowStates += String.format("%1$" + Integer.toString(5) + "s", this.convertState(combined.get(j).get(i)));
+        rowStates += String.format("%1$" + Integer.toString(5) + "s",
+                this.convertState(combined.get(j).get(i)));
       }
       rowStates += "\n";
     }

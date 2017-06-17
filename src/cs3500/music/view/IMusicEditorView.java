@@ -1,20 +1,10 @@
 package cs3500.music.view;
 
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.swing.*;
 
-import cs3500.music.model.IMusicEditor;
 import cs3500.music.model.IReadOnlyMusicEditor;
-import cs3500.music.model.MusicEditorModel;
-
-import cs3500.music.model.Note;
 
 /**
  * Defines the behavior for the music editor.

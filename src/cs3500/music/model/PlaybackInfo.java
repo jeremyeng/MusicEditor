@@ -9,7 +9,7 @@ public class PlaybackInfo {
   private int volume;
 
   /**
-   * Construct a playback info
+   * Construct a playback info.
    * @param state the state of the music
    * @param volume the volume of the note
    */
@@ -22,7 +22,7 @@ public class PlaybackInfo {
   }
 
   /**
-   * Gets the current music state
+   * Gets the current music state.
    * @return the current music state
    */
   public MusicStates getState() {
@@ -30,7 +30,7 @@ public class PlaybackInfo {
   }
 
   /**
-   * Gets the current volume music state
+   * Gets the current volume music state.
    * @return the current volume of the note
    */
   public int getVolume() {

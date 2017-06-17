@@ -7,13 +7,14 @@ import javax.sound.midi.ShortMessage;
 /**
  * Emulates a Java Receiver and logs every call to send in a StringBuilder.
  */
-public class MockReceiver implements Receiver{
+public class MockReceiver implements Receiver {
   private StringBuilder log;
   private long tempo;
+
   /**
    * Creates a new Mock Java Receiver that logs every call to send in the given String Builder.
    */
-  public MockReceiver(StringBuilder log, long tempo) {
+  MockReceiver(StringBuilder log, long tempo) {
     this.tempo = tempo;
     this.log = log;
     log.append("tempo ");
@@ -46,12 +47,13 @@ public class MockReceiver implements Receiver{
 
 
   /**
-   * Converts the midi message to a ShortMessage
+   * Converts the midi message to a ShortMessage.
+   *
    * @param message the message to convert
    * @return the shortenedMessage
    */
   private ShortMessage shortenMessage(MidiMessage message) {
-    if (message instanceof  ShortMessage) {
+    if (message instanceof ShortMessage) {
       return (ShortMessage) message;
     }
     return null;
@@ -59,7 +61,7 @@ public class MockReceiver implements Receiver{
 
   @Override
   public void close() {
-
+    throw new IllegalArgumentException("Can't shut this down, baby!");
   }
 
   public StringBuilder getLog() {

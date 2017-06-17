@@ -3,8 +3,6 @@ package cs3500.music.model;
 import java.util.List;
 import java.util.Map;
 
-import javax.sound.midi.MidiMessage;
-
 /**
  * This is the interface that defines behavior for a Music Editor.
  * It is parameterized over K, so any implementation of a cs3500.music.model.Note can be used.
@@ -62,7 +60,7 @@ public interface IMusicEditor<K> {
   int getDuration();
 
   /**
-   * Gets the tempo of the piece in microseconds per beat
+   * Gets the tempo of the piece in microseconds per beat.
    * @return microseconds per beat
    */
   long getTempo();

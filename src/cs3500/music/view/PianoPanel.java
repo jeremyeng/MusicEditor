@@ -45,9 +45,9 @@ public class PianoPanel extends JPanel {
    * @param g2d the image in which the key is going to be drawn
    */
   private void drawBlackKeys(Graphics2D g2d) {
-    int blackKeyCounter = (int)(WHITE_KEY_WIDTH * 0.75);
+    int blackKeyCounter = (int) (WHITE_KEY_WIDTH * 0.75);
     for (int i = 0; i < this.sharpNotes.size(); i++) {
-      if (new Note(this.sharpNotes.get(i),0).getPitch().equals(Pitch.DSharp) ||
+      if (new Note(this.sharpNotes.get(i), 0).getPitch().equals(Pitch.DSharp) ||
               new Note(this.sharpNotes.get(i), 0).getPitch().equals(Pitch.ASharp)) {
         if (this.noteMap.get(sharpNotes.get(i)).get(currentBeat).equals("start")
                 || this.noteMap.get(sharpNotes.get(i)).get(currentBeat).equals("continue")) {
@@ -56,8 +56,7 @@ public class PianoPanel extends JPanel {
           g2d.setColor(Color.BLACK);
           g2d.drawRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
           blackKeyCounter += 2 * WHITE_KEY_WIDTH;
-        }
-        else {
+        } else {
           g2d.setColor(Color.BLACK);
           g2d.fillRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
           blackKeyCounter += 2 * WHITE_KEY_WIDTH;
@@ -70,8 +69,7 @@ public class PianoPanel extends JPanel {
           g2d.setColor(Color.BLACK);
           g2d.drawRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
           blackKeyCounter += WHITE_KEY_WIDTH;
-        }
-        else {
+        } else {
           g2d.setColor(Color.BLACK);
           g2d.fillRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
           blackKeyCounter += WHITE_KEY_WIDTH;
@@ -81,7 +79,7 @@ public class PianoPanel extends JPanel {
   }
 
   /**
-   * Draws the white kets on the piano
+   * Draws the white kets on the piano.
    *
    * @param g2d the image in which the key is going to be drawn
    */
@@ -101,15 +99,15 @@ public class PianoPanel extends JPanel {
 
   /**
    * Sets the combined note map for the piano panel.
+   *
    * @param notes the combined note map in which the piano panel is going to use.
    */
   protected void setCombineNoteMap(Map<Integer, List<String>> notes) {
     this.noteMap = notes;
     for (Integer i : notes.keySet()) {
-      if (new Note(i,0).isSharp()) {
+      if (new Note(i, 0).isSharp()) {
         this.sharpNotes.add(i);
-      }
-      else {
+      } else {
         this.naturalNotes.add(i);
       }
     }
@@ -118,6 +116,7 @@ public class PianoPanel extends JPanel {
   /**
    * Updates the current beat of the piano panel base on the integer given, negative number
    * goes back a beat and positive number advance a beat.
+   *
    * @param beat the number of beat in which the panel is going to move.
    */
   protected void updateCurrentBeat(int beat) {
@@ -129,6 +128,7 @@ public class PianoPanel extends JPanel {
 
   /**
    * Sets the duration of the piano panel.
+   *
    * @param duration the duration of the piano panel
    */
   protected void setDuration(int duration) {

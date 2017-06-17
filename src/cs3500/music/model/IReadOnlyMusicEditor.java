@@ -15,7 +15,7 @@ public interface IReadOnlyMusicEditor<K> {
   int getDuration();
 
   /**
-   * Gets the tempo of the piece in microseconds per beat
+   * Gets the tempo of the piece in microseconds per beat.
    * @return microseconds per beat
    */
   long getTempo();
