@@ -29,8 +29,6 @@ public class ScorePanel extends JPanel {
   private final int GAP_BETWEEN_NOTE_AND_BLOCKS_X = 50;
   private final int GAP_BETWEEN_NOTE_AND_BLOCKS_Y = -15;
   private final int GAP_BETWEEN_BEAT_AND_SCORE = 10;
-  private List<Note> noteRange = new ArrayList<>();
-  private Map<Note, List<String>> noteMap = new TreeMap<>();
   private Map<Integer, List<String>> combineNoteMap = new TreeMap<>();
   private int duration = 0;
   private int currentBeat = 0;
@@ -62,6 +60,13 @@ public class ScorePanel extends JPanel {
             HIGHEST_NOTE_Y_POSITION, g2d);
   }
 
+  /**
+   * Draws a note block base on the information given.
+   * @param states a list of strings that describe the behavior of the notes on every beat.
+   * @param x the x-position in which the block is going to be drawn.
+   * @param y the y-position in which the block is going to be drawn.
+   * @param g2d the image in which the block is going to be drawn.
+   */
   protected void drawBlock(List<String> states, int x, int y, Graphics2D g2d) {
     g2d.drawRect(x, y, SINGLE_NOTE_WIDTH * duration, SINGLE_NOTE_HEIGHT);
     for (int i = 0; i < this.duration; i++) {
@@ -73,22 +78,29 @@ public class ScorePanel extends JPanel {
     }
   }
 
-  protected void setNoteRange(List<Note> notes) {
-    this.noteRange = notes;
-  }
-
+  /**
+   * Sets a combine note map for the score panel to use.
+   * @param combineNoteMap the combine note map that the score panel is going to reference on.
+   */
   protected void setCombineNoteMap(Map<Integer, List<String>> combineNoteMap) {
     this.combineNoteMap = combineNoteMap;
   }
 
+  /**
+   * Sets the duration of the score panel.
+   * @param duration the duration of the score panel.
+   */
   protected void setDuration(int duration) {
     this.duration = duration;
   }
 
-  protected void setNoteMap(Map<Note, List<String>> noteMap) {
-    this.noteMap = noteMap;
-  }
-
+  /**
+   * Renders a note base on its state.
+   * @param state the state of the note.
+   * @param x the x-position in which the note is going to be drawn.
+   * @param y the y-position in which the note is going to be drawn.
+   * @param g2d the image in which the note is going to be drawn on.
+   */
   protected void renderNoteState(String state,int x, int y, Graphics2D g2d) {
     switch (state) {
       case "start": g2d.setColor(Color.BLACK);
@@ -104,11 +116,22 @@ public class ScorePanel extends JPanel {
     }
   }
 
+  /**
+   * Draws a red line that indicates the current beat.
+   * @param x the x-position in which the line is going to be drawn.
+   * @param y the y-position in which the line is going to be drawn.
+   * @param g2d the image in which the note is going to be drawn on.
+   */
   protected void drawRedLine(int x, int y, Graphics2D g2d) {
     g2d.setColor(Color.RED);
     g2d.drawLine(x,y,x,y + this.combineNoteMap.size() * SINGLE_NOTE_HEIGHT);
   }
 
+  /**
+   * Updates the current beat of the score panel with the given integer, advance if positive
+   * and goes back otherwise.
+   * @param beat the beat in which the score panel is going to be updates by.
+   */
   protected void updateCurrentBeat(int beat) {
     if (! (this.currentBeat + beat < 0 || this.currentBeat + beat > this.duration)) {
       this.currentBeat += beat;
@@ -116,11 +139,6 @@ public class ScorePanel extends JPanel {
     }
 
   }
-
-  protected void setCurrentBeat(int beat) {
-    this.currentBeat = beat;
-  }
-
 
   @Override
   public boolean isFocusable() {

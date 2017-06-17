@@ -24,13 +24,7 @@ public interface IMusicEditorView<K> {
    */
   void makeVisible() throws InvalidMidiDataException;
 
-  void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException;
-
-  /**
-   * Sets the range of note of the music editor.
-   * @param noteRange the range of notes in the music editor
-   */
-  void setNoteRange(List<K> noteRange);
+  void update(IMusicEditor<K> model);
 
   /**
    * Sets the duration of the music editor.
@@ -38,23 +32,10 @@ public interface IMusicEditorView<K> {
    */
   void setDuration(int duration);
 
-  /**
-   * Sets a note map for the music editor that maps a note to its state on every beat.
-   * @param notes the note map that describe the behavior of each note at every beat
-   */
-  void setNoteMap(Map<K, List<String>> notes);
-
   void setCombineNoteMap(Map<Integer, List<String>> notes);
 
-  void update(IMusicEditor<K> model);
-
-  void setListener(ActionListener action,KeyListener key);
+  void setListener(ActionListener action, KeyListener key);
 
   void updateCurrentBeat(int beat);
-
-  void showErrorMessage();
-
-  void refresh();
-
 
 }

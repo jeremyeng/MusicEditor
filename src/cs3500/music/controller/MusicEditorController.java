@@ -23,6 +23,11 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
   private IMusicEditor<Note> model;
   private IMusicEditorView<Note> view;
 
+  /**
+   * Constructs an instance of a controller.
+   * @param model the model in which the controller is going to operate on.
+   * @param view the view in which the controller is going to receive command from
+   */
   public MusicEditorController(IMusicEditor<Note> model, IMusicEditorView<Note> view) {
     this.model = model;
     this.view = view;
@@ -32,7 +37,6 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
   public void go() {
     this.view.setListener(this,this);
     this.view.setDuration(model.getDuration());
-    this.view.setNoteRange(model.getNoteRange());
     TreeMap<Note, List<String>> noteMap = new TreeMap<>();
     for (Note note : model.getNoteRange()) {
       List<String> stateList = new ArrayList<>();
@@ -41,7 +45,6 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
       }
       noteMap.put(note,stateList);
     }
-    this.view.setNoteMap(noteMap);
     this.view.setCombineNoteMap(model.getCombinedNoteMap());
     this.view.update(this.model);
     try {

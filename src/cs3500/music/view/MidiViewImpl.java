@@ -14,10 +14,11 @@ import cs3500.music.model.Note;
 /**
  * A skeleton for MIDI playback
  */
-public class MidiViewImpl implements IMusicEditorView<Note> {
+public class MidiViewImpl implements IMidiView {
   private final Synthesizer synth;
   private final Receiver receiver;
   private IMusicEditor model;
+
 
   public MidiViewImpl() throws MidiUnavailableException {
     this.synth = MidiSystem.getSynthesizer();
@@ -79,29 +80,13 @@ public class MidiViewImpl implements IMusicEditorView<Note> {
     }
   }
 
-
-  @Override
-  public void setNoteRange(List noteRange) {
-
-  }
-
-  @Override
-  public void setDuration(int duration) {
-
-  }
-
   @Override
   public void update(IMusicEditor model) {
     this.model = model;
   }
 
   @Override
-  public void setCombineNoteMap(Map<Integer, List<String>> notes) {
-
-  }
-
-  @Override
-  public void setNoteMap(Map notes) {
+  public void setDuration(int duration) {
 
   }
 
@@ -115,15 +100,10 @@ public class MidiViewImpl implements IMusicEditorView<Note> {
 
   }
 
-
   @Override
-  public void showErrorMessage() {
+  public void setCombineNoteMap(Map notes) {
 
   }
 
-  @Override
-  public void refresh() {
-
-  }
 
 }
