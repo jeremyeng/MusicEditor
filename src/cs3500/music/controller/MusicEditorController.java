@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
   }
 
   @Override
-  public void go() {
+  public void go() throws IOException {
     if (this.view instanceof IGuiView) {
       IGuiView guiView = (IGuiView) this.view;
       guiView.setListener(this,this);
@@ -52,15 +53,6 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
         noteMap.put(note,stateList);
       }
       guiView.setCombineNoteMap(model.getCombinedNoteMap());
-    }
-    if (this.view instanceof IMidiView) {
-      IMidiView midiView = (IMidiView) this.view;
-      midiView.update(this.model);
-      try {
-        this.view.makeVisible();
-      } catch (InvalidMidiDataException e) {
-        e.printStackTrace();
-      }
     }
     this.view.update(this.model);
     try {

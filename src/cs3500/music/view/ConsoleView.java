@@ -1,26 +1,28 @@
 package cs3500.music.view;
 
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
-import java.util.List;
-import java.util.Map;
-
-import javax.sound.midi.InvalidMidiDataException;
-
+import java.io.IOException;
 import cs3500.music.model.IMusicEditor;
-import cs3500.music.model.MusicEditorModel;
-import cs3500.music.model.Note;
+
 
 /**
  * Represents the music editor as text printed to the console.
  */
-public class ConsoleView implements IMusicEditorView<Note> {
+public class ConsoleView implements IMusicEditorView {
 
   private IMusicEditor model;
+  private Appendable text;
+
+  /**
+   * Construct a console view with the given appendable as its text.
+   * @param app the appendable to be set as the console view's text.
+   */
+  public ConsoleView(Appendable app) {
+    this.text = app;
+  }
 
   @Override
-  public void makeVisible() {
-    System.out.println(this.model.getState());
+  public void makeVisible() throws IOException {
+    text.append(this.model.getState());
   }
 
   @Override

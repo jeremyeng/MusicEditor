@@ -2,6 +2,7 @@ package cs3500.music.view;
 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ public interface IMusicEditorView<K> {
   /**
    * Makes the music editor visible to the user.
    */
-  void makeVisible() throws InvalidMidiDataException;
+  void makeVisible() throws InvalidMidiDataException, IOException;
 
   /**
    * Gives the view a model to operate on.
