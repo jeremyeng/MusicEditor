@@ -1,12 +1,14 @@
 package cs3500.music.view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 import cs3500.music.model.Note;
 import cs3500.music.model.Pitch;

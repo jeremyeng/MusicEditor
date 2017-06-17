@@ -16,7 +16,7 @@ import cs3500.music.model.IReadOnlyMusicEditor;
 import cs3500.music.model.Note;
 
 /**
- * A skeleton for MIDI playback
+ * A skeleton for MIDI playback.
  */
 public class MidiViewImpl implements IMidiView<Note> {
   private final Synthesizer synth;
@@ -25,7 +25,7 @@ public class MidiViewImpl implements IMidiView<Note> {
 
 
   /**
-   * Creates a new MidiViewImpl with a synthesizer and receiver from the built-in java Midi
+   * Creates a new MidiViewImpl with a synthesizer and receiver from the built-in java Midi.
    */
   public MidiViewImpl() throws MidiUnavailableException {
     this.synth = MidiSystem.getSynthesizer();
