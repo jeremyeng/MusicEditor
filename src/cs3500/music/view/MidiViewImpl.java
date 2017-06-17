@@ -20,10 +20,24 @@ public class MidiViewImpl implements IMidiView {
   private IMusicEditor model;
 
 
+  /**
+   * Creates a new MidiViewImpl with a synthesizer and receiver from the built-in java Midi
+   * @throws MidiUnavailableException
+   */
   public MidiViewImpl() throws MidiUnavailableException {
     this.synth = MidiSystem.getSynthesizer();
     this.receiver = synth.getReceiver();
     this.synth.open();
+  }
+
+  /**
+   * Creates a new MidiViewImpl with a synthesizer in.
+   * Used for testing purposes.
+   * @param synth the synthesizer to use.
+   */
+  public MidiViewImpl(Synthesizer synth) throws MidiUnavailableException {
+    this.synth = synth;
+    this.receiver = this.synth.getReceiver();
   }
 
 
@@ -66,11 +80,12 @@ public class MidiViewImpl implements IMidiView {
 
   @Override
   public void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException {
+    long start = this.synth.getMicrosecondPosition();
     for (int beat = 0; beat < info.size(); beat++) {
       for (List<Integer> l: info.get(beat)) {
         this.receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE, l.get(1), l.get(1), l.get(1)), -1);
-        this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, l.get(1), l.get(2), l.get(3)), this.synth.getMicrosecondPosition());
-        this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, l.get(1), l.get(2), l.get(3)), this.synth.getMicrosecondPosition() + l.get(4) * tempo);
+        this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, l.get(1), l.get(2), l.get(3)), beat * tempo);
+        this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, l.get(1), l.get(2), l.get(3)), (beat * tempo) + (l.get(4) * tempo));
       }
       try {
         Thread.sleep(tempo / 1000);

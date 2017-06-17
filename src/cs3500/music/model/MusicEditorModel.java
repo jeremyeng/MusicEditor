@@ -346,9 +346,10 @@ public class MusicEditorModel implements IMusicEditor<Note> {
    * @return the length of the note.
    */
   private int getLength(Note note, int start) {
-    int length = 0;
-    for (int beat = start; beat < this.duration
-            && this.noteMap.get(note).get(beat).getState() != MusicStates.REST; beat++) {
+    int length = 1;
+    for (int beat = start + 1; beat < this.duration
+            && this.noteMap.get(note).get(beat).getState() != MusicStates.REST
+            && this.noteMap.get(note).get(beat).getState() != MusicStates.START; beat++) {
       length += 1;
     }
     return length;
