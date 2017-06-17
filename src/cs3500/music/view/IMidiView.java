@@ -13,6 +13,14 @@ import javax.sound.midi.InvalidMidiDataException;
  */
 public interface IMidiView extends IMusicEditorView {
 
+  /**
+   * A method that plays a note base on the information given by a model.
+   * @param info the most nested list contains 5 integers that represents a midi message, the one
+   *             outer represents all the midi messages in one beat, the most outer list represent
+   *             the list of midi messages in all beats.
+   * @param tempo the speed of the piece in microseconds per beat.
+   * @throws InvalidMidiDataException
+   */
   void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException;
 
 }

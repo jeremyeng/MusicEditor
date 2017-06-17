@@ -24,18 +24,10 @@ public interface IMusicEditorView<K> {
    */
   void makeVisible() throws InvalidMidiDataException;
 
-  void update(IMusicEditor<K> model);
-
   /**
-   * Sets the duration of the music editor.
-   * @param duration the total duration of the music editor
+   * Gives the view a model to operate on.
+   * @param model the model that the view is going to operate on.
    */
-  void setDuration(int duration);
-
-  void setCombineNoteMap(Map<Integer, List<String>> notes);
-
-  void setListener(ActionListener action, KeyListener key);
-
-  void updateCurrentBeat(int beat);
+  void update(IMusicEditor<K> model);
 
 }

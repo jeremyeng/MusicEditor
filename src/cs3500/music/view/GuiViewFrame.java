@@ -18,7 +18,7 @@ import cs3500.music.model.Note;
 /**
  * A skeleton Frame (i.e., a window) in Swing
  */
-public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView<Note> {
+public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
 
   private final JPanel musicEditorPanel;
   private final ScorePanel scorePanel; // You may want to refine this to a subtype of JPanel
@@ -27,7 +27,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
 
 
   /**
-   * Creates new GuiView
+   * Creates new GuiView by adding in the score and then piano panel.
    */
   public GuiViewFrame() {
     super();
@@ -49,7 +49,6 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicEditorView
     this.setContentPane(this.musicEditorPanel);
 
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-    // this.pack();
   }
 
   @Override

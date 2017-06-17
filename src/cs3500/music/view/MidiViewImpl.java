@@ -85,25 +85,6 @@ public class MidiViewImpl implements IMidiView {
     this.model = model;
   }
 
-  @Override
-  public void setDuration(int duration) {
-
-  }
-
-  @Override
-  public void setListener(ActionListener action, KeyListener key) {
-
-  }
-
-  @Override
-  public void updateCurrentBeat(int beat) {
-
-  }
-
-  @Override
-  public void setCombineNoteMap(Map notes) {
-
-  }
 
 
 }

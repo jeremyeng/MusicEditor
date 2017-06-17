@@ -24,26 +24,6 @@ public class ConsoleView implements IMusicEditorView<Note> {
   }
 
   @Override
-  public void setDuration(int duration) {
-
-  }
-
-  @Override
-  public void setCombineNoteMap(Map<Integer, List<String>> notes) {
-
-  }
-
-  @Override
-  public void setListener(ActionListener action, KeyListener key) {
-
-  }
-
-  @Override
-  public void updateCurrentBeat(int beat) {
-
-  }
-
-  @Override
   public void update(IMusicEditor model) {
     this.model = model;
   }

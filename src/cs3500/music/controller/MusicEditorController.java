@@ -13,7 +13,11 @@ import javax.sound.midi.InvalidMidiDataException;
 
 import cs3500.music.model.IMusicEditor;
 import cs3500.music.model.Note;
+import cs3500.music.view.GuiViewFrame;
+import cs3500.music.view.IGuiView;
+import cs3500.music.view.IMidiView;
 import cs3500.music.view.IMusicEditorView;
+import cs3500.music.view.MidiViewImpl;
 
 /**
  * Implements the IMusicEditorController interface and facilitates interaction between the model
@@ -35,17 +39,29 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
 
   @Override
   public void go() {
-    this.view.setListener(this,this);
-    this.view.setDuration(model.getDuration());
-    TreeMap<Note, List<String>> noteMap = new TreeMap<>();
-    for (Note note : model.getNoteRange()) {
-      List<String> stateList = new ArrayList<>();
-      for (int i = 0; i < model.getDuration(); i++) {
-        stateList.add(model.getNoteState(note,i));
+    if (this.view instanceof IGuiView) {
+      IGuiView guiView = (IGuiView) this.view;
+      guiView.setListener(this,this);
+      guiView.setDuration(model.getDuration());
+      TreeMap<Note, List<String>> noteMap = new TreeMap<>();
+      for (Note note : model.getNoteRange()) {
+        List<String> stateList = new ArrayList<>();
+        for (int i = 0; i < model.getDuration(); i++) {
+          stateList.add(model.getNoteState(note,i));
+        }
+        noteMap.put(note,stateList);
       }
-      noteMap.put(note,stateList);
+      guiView.setCombineNoteMap(model.getCombinedNoteMap());
     }
-    this.view.setCombineNoteMap(model.getCombinedNoteMap());
+    if (this.view instanceof IMidiView) {
+      IMidiView midiView = (IMidiView) this.view;
+      midiView.update(this.model);
+      try {
+        this.view.makeVisible();
+      } catch (InvalidMidiDataException e) {
+        e.printStackTrace();
+      }
+    }
     this.view.update(this.model);
     try {
       this.view.makeVisible();
@@ -66,11 +82,13 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
 
   @Override
   public void keyPressed(KeyEvent e) {
-    if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-      this.view.updateCurrentBeat(-1);
+    if (e.getKeyCode() == KeyEvent.VK_LEFT && this.view instanceof IGuiView) {
+      IGuiView guiView = (IGuiView) this.view;
+      guiView.updateCurrentBeat(-1);
     }
-    if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-      this.view.updateCurrentBeat(1);
+    if (e.getKeyCode() == KeyEvent.VK_RIGHT && this.view instanceof IGuiView) {
+      IGuiView guiView = (IGuiView) this.view;
+      guiView.updateCurrentBeat(1);
     }
   }
 
