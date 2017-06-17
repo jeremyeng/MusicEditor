@@ -47,4 +47,9 @@ public class ReadOnlyMusicEditorModel implements IReadOnlyMusicEditor<Note> {
   public Map<Integer, List<String>> getCombinedNoteMap() {
     return model.getCombinedNoteMap();
   }
+
+  @Override
+  public String getState() {
+    return this.model.getState();
+  }
 }

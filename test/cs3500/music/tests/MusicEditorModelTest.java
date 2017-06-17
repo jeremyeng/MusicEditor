@@ -287,6 +287,13 @@ public class MusicEditorModelTest {
   }
 
   @Test
+  public void getNoteRange() {
+    this.model.addNote(new Note(Pitch.C, 0, 0), 0, 4, 10);
+    this.model.addNote(new Note(Pitch.CSharp, 0, 0), 1, 4, 10);
+    assertEquals("[C0, C#0]", this.model.getNoteRange().toString());
+  }
+
+  @Test
   public void testGetNoteState() {
     this.model.addNote(new Note(Pitch.C, 0, 0), 0, 4, 10);
     assertEquals("start", this.model.getNoteState(new Note(Pitch.C, 0, 0), 0));
@@ -301,6 +308,14 @@ public class MusicEditorModelTest {
     this.model.addNote(new Note(Pitch.C, 0, 1), 1, 4, 10);
     assertEquals("[start, start, continue, continue, continue, rest]",
             this.model.getCombinedNoteMap().get(12).toString());
+  }
+
+  @Test
+  public void testGetMidiInfo() {
+    this.model.addNote(new Note(Pitch.C, 0, 0), 0, 4, 10);
+    this.model.addNote(new Note(Pitch.C, 0, 1), 1, 4, 10);
+    assertEquals("[[[1, -1, 12, 10, 4]], [[1, 0, 12, 10, 4]], [], [], [], []]",
+            this.model.getMidiInfo().toString());
   }
 
 }

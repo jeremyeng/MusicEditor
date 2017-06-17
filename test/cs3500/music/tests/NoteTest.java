@@ -35,9 +35,9 @@ public class NoteTest {
 
   @Test
   public void testNoteToString() {
-    assertEquals("C4(0)", this.c4_0.toString());
-    assertEquals("C#4(0)", this.cSharp4_0.toString());
-    assertEquals("B3(0)", this.b3_0.toString());
+    assertEquals("C4", this.c4_0.toString());
+    assertEquals("C#4", this.cSharp4_0.toString());
+    assertEquals("B3", this.b3_0.toString());
   }
 
   @Test (expected = IllegalArgumentException.class)
