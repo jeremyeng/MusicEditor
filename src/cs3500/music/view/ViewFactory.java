@@ -11,13 +11,13 @@ public class ViewFactory {
   public static IMusicEditorView getView(String viewType) throws MidiUnavailableException {
     switch (viewType.toLowerCase()) {
       case "console" :
-        return new ConsoleView();
+        return new ConsoleView(System.out);
       case "visual":
         return new GuiViewFrame();
       case "midi":
         return new MidiViewImpl();
       default:
-        throw new IllegalArgumentException("");
+        throw new IllegalArgumentException("Invalid view type!");
     }
   }
 }

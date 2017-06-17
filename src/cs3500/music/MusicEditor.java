@@ -22,9 +22,11 @@ import javax.sound.midi.MidiUnavailableException;
  */
 public class MusicEditor {
   public static void main(String[] args) throws IOException, InvalidMidiDataException, MidiUnavailableException {
-    IMusicEditorView view = ViewFactory.getView("midi");
+    IMusicEditorView view = ViewFactory.getView(
+            args[1]
+    );
     CompositionBuilder<IMusicEditor<Note>> builder = new MusicEditorModel.Builder();
-    FileReader file = new FileReader("mystery-3.txt");
+    FileReader file = new FileReader(args[0]);
     IMusicEditor<Note> model = MusicReader.parseFile(file, builder);
     IMusicEditorController controller = new MusicEditorController(model, view);
     controller.go();

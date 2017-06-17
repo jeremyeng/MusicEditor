@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 import javax.sound.midi.MidiDevice;
@@ -41,7 +42,7 @@ public class MidiViewImplTest {
   }
 
   @Test
-  public void testMidi() throws FileNotFoundException, MidiUnavailableException {
+  public void testMidi() throws IOException, MidiUnavailableException {
     FileReader file = new FileReader("mary-little-lamb.txt");
     String content = new Scanner(new File("mary-little-lamb.txt")).useDelimiter("\\Z").next();
     IMusicEditor<Note> model = MusicReader.parseFile(file, builder);
