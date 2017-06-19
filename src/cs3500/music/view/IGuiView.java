@@ -29,12 +29,11 @@ public interface IGuiView extends IMusicEditorView {
   void setCombineNoteMap(Map<Integer, List<String>> notes);
 
   /**
-   * Sets the listener for actions from the guiview.
+   * Sets the key listener for the guiview.
    *
-   * @param action the action listener of the guiview
    * @param key    the key listener of the guiview
    */
-  void setListener(ActionListener action, KeyListener key);
+  void addKeyListener(KeyListener key);
 
   /**
    * Updates the beat the music model is current on by the given parameter, positive
