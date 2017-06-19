@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 
 import javax.swing.JPanel;
@@ -21,6 +22,9 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
 
   private final ScorePanel scorePanel;
   private final PianoPanel pianoPanel;
+  private Map<Integer, List<String>> combineNoteMap = new TreeMap<>();
+  private int duration = 0;
+  private int currentBeat = 0;
 
 
   /**
@@ -66,12 +70,14 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
 
   @Override
   public void updateCurrentBeat(int beat) {
+    this.currentBeat += beat;
     scorePanel.updateCurrentBeat(beat);
     this.pianoPanel.updateCurrentBeat(beat);
   }
 
   @Override
   public void setDuration(int duration) {
+    this.duration = duration;
     scorePanel.setDuration(duration);
     this.pianoPanel.setDuration(duration);
   }
@@ -79,6 +85,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
 
   @Override
   public void setCombineNoteMap(Map<Integer, List<String>> notes) {
+    this.combineNoteMap = notes;
     this.pianoPanel.setCombineNoteMap(notes);
     scorePanel.setCombineNoteMap(notes);
   }
@@ -86,6 +93,16 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
   @Override
   public Dimension getPreferredSize() {
     return new Dimension(100, 100);
+  }
+
+  @Override
+  public int getCurrentBeat() {
+    return this.currentBeat;
+  }
+
+  @Override
+  public int getDuration() {
+    return this.duration;
   }
 
 }
