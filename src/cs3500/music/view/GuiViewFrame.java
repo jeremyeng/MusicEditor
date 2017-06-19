@@ -59,10 +59,9 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
   }
 
   @Override
-  public void setListener(ActionListener action, KeyListener key) {
-    this.addKeyListener(key);
+  public void addKeyListener(KeyListener key) {
     scorePanel.addKeyListener(key);
-    this.pianoPanel.addKeyListener(key);
+    pianoPanel.addKeyListener(key);
   }
 
   @Override
