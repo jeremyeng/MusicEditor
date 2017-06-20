@@ -14,6 +14,7 @@ import java.util.TreeMap;
 
 import javax.sound.midi.InvalidMidiDataException;
 
+import cs3500.music.MusicEditor;
 import cs3500.music.model.IMusicEditor;
 import cs3500.music.model.Note;
 import cs3500.music.model.ReadOnlyMusicEditorModel;
@@ -96,13 +97,20 @@ public class MusicEditorController implements IMusicEditorController<Note> {
   }
 
   private void configureMouseListener() {
+    Map<Integer, Runnable> mouseClicks = new HashMap<>();
+
+    mouseClicks.put(MouseEvent.MOUSE_CLICKED, new PutNote());
+
+    ViewMouseListener mouseListener = new ViewMouseListener();
+    mouseListener.setMouseClicksMap(mouseClicks);
+
     if (view instanceof GuiViewFrame) {
       GuiViewFrame guiView = (GuiViewFrame) view;
-      guiView.addMouseListener(new ViewMouseListener(guiView));
+      guiView.addMouseListener(mouseListener);
     }
     else if (view instanceof MidiViewImpl) {
       MidiViewImpl midiView = (MidiViewImpl) view;
-      midiView.addMouseListener(new ViewMouseListener(midiView));
+      midiView.addMouseListener(mouseListener);
     }
   }
 
@@ -167,6 +175,19 @@ public class MusicEditorController implements IMusicEditorController<Note> {
            midiView.pause();
            System.out.println("Im pausing!");
          }
+      }
+    }
+  }
+
+  class PutNote implements Runnable {
+    @Override
+    public void run() {
+      if (view instanceof GuiViewFrame) {
+        GuiViewFrame guiView = (GuiViewFrame) view;
+        int noteNumber = guiView.noteClicked();
+        System.out.println(noteNumber);
+        model.addNote(new Note(noteNumber, 0), guiView.getCurrentBeat(), 1, 60);
+        guiView.update(new ReadOnlyMusicEditorModel(model));
       }
     }
   }

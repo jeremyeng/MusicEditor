@@ -1,5 +1,6 @@
 package cs3500.music.view;
 
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -58,5 +59,13 @@ public interface IGuiView extends IMusicEditorView {
    * @return the beat that the view is currently on.
    */
   int getCurrentBeat();
+
+  /**
+   * Returns a midi integer representation of a note base on what note on the piano
+   * is being clicked.
+   * @return a midi integer representation of what note is being clicked.
+   */
+  int noteClicked();
+
 
 }

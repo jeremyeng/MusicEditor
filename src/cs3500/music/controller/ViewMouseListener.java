@@ -3,7 +3,9 @@ package cs3500.music.controller;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Map;
 
+import cs3500.music.view.GuiViewFrame;
 import cs3500.music.view.IMusicEditorView;
 
 /**
@@ -11,16 +13,15 @@ import cs3500.music.view.IMusicEditorView;
  */
 public class ViewMouseListener implements MouseListener {
 
-  private IMusicEditorView view;
+  private Map<Integer, Runnable> mouseClicksMap;
 
-  public ViewMouseListener(IMusicEditorView view) {
-    this.view = view;
+  public void setMouseClicksMap(Map<Integer, Runnable> mouseClicksMap) {
+    this.mouseClicksMap = mouseClicksMap;
   }
 
   @Override
   public void mouseClicked(MouseEvent e) {
-    System.out.println(e.getLocationOnScreen().toString());
-
+    this.mouseClicksMap.get(e.getID()).run();
   }
 
   @Override
@@ -42,4 +43,5 @@ public class ViewMouseListener implements MouseListener {
   public void mouseExited(MouseEvent e) {
 
   }
+
 }

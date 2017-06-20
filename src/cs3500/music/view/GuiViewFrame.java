@@ -1,6 +1,6 @@
 package cs3500.music.view;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -15,6 +15,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
 
 import cs3500.music.model.IReadOnlyMusicEditor;
+import cs3500.music.model.ReadOnlyMusicEditorModel;
 
 /**
  * A skeleton Frame (i.e., a window) in Swing
@@ -24,6 +25,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
 
   private final ScorePanel scorePanel;
   private final PianoPanel pianoPanel;
+  private IReadOnlyMusicEditor model;
   private Map<Integer, List<String>> combineNoteMap = new TreeMap<>();
   private int duration = 0;
   private int currentBeat = 0;
@@ -52,6 +54,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
     this.setContentPane(musicEditorPanel);
 
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
   }
 
   @Override
@@ -61,7 +64,11 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
 
   @Override
   public void update(IReadOnlyMusicEditor model) {
-    // Does not require model
+    this.model = model;
+    this.combineNoteMap = model.getCombinedNoteMap();
+    this.pianoPanel.setCombineNoteMap(this.combineNoteMap);
+    scorePanel.setCombineNoteMap(this.combineNoteMap);
+    updateCurrentBeat(1);
   }
 
   @Override
@@ -81,6 +88,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
     this.currentBeat += beat;
     scorePanel.updateCurrentBeat(beat);
     this.pianoPanel.updateCurrentBeat(beat);
+    this.repaint();
   }
 
   @Override
@@ -107,6 +115,11 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
   @Override
   public int getCurrentBeat() {
     return this.currentBeat;
+  }
+
+  @Override
+  public int noteClicked() {
+    return this.pianoPanel.getNoteClicked();
   }
 
   @Override
