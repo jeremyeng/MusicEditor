@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * A class created to listen for keyboard events.
  */
-public class KeyBoardListener implements KeyListener {
+public class ViewKeyBoardListener implements KeyListener {
 
   private Map<Character, Runnable> keyTypedMap;
   private Map<Integer, Runnable> keyPressedMap, keyReleasedMap;

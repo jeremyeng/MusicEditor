@@ -1,9 +1,6 @@
 package cs3500.music.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,8 +21,7 @@ import cs3500.music.view.IMusicEditorView;
  * Implements the IMusicEditorController interface and facilitates interaction between the model
  * and the view.
  */
-public class MusicEditorController implements IMusicEditorController<Note>, ActionListener,
-        KeyListener {
+public class MusicEditorController implements IMusicEditorController<Note> {
   private IMusicEditor<Note> model;
   private IMusicEditorView<Note> view;
 
@@ -45,7 +41,6 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
   public void execute() throws IOException {
     if (this.view instanceof IGuiView) {
       IGuiView guiView = (IGuiView) this.view;
-      guiView.addKeyListener(this);
       guiView.setDuration(model.getDuration());
       TreeMap<Note, List<String>> noteMap = new TreeMap<>();
       for (Note note : model.getNoteRange()) {
@@ -72,8 +67,10 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
 
     keyPresses.put(KeyEvent.VK_LEFT, new RetractBeat());
     keyPresses.put(KeyEvent.VK_RIGHT, new AdvanceBeat());
+    keyPresses.put(KeyEvent.VK_HOME, new ToBeginning());
+    keyPresses.put(KeyEvent.VK_END, new ToEnd());
 
-    KeyBoardListener kbd = new KeyBoardListener();
+    ViewKeyBoardListener kbd = new ViewKeyBoardListener();
     kbd.setKeyPressedMap(keyPresses);
     kbd.setKeyReleasedMap(keyReleases);
     kbd.setKeyTypedMap(keyTypes);
@@ -83,33 +80,6 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
       guiView.addKeyListener(kbd);
     }
 
-  }
-
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    // Unsupported. Current Assignment does not require.
-  }
-
-  @Override
-  public void keyTyped(KeyEvent e) {
-    // Unsupported. Current Assignment does not require.
-  }
-
-  @Override
-  public void keyPressed(KeyEvent e) {
-//    if (e.getKeyCode() == KeyEvent.VK_LEFT && this.view instanceof IGuiView) {
-//      IGuiView guiView = (IGuiView) this.view;
-//      guiView.updateCurrentBeat(-1);
-//    }
-//    if (e.getKeyCode() == KeyEvent.VK_RIGHT && this.view instanceof IGuiView) {
-//      IGuiView guiView = (IGuiView) this.view;
-//      guiView.updateCurrentBeat(1);
-//    }
-  }
-
-  @Override
-  public void keyReleased(KeyEvent e) {
-    // Unsupported. Current Assignment does not require.
   }
 
   /**
@@ -126,7 +96,7 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
   }
 
   /**
-   * A functional class that allows the view to retract a beat.
+   * A functional class that allows the view to advance a beat.
    */
   class AdvanceBeat implements Runnable {
     @Override
@@ -134,6 +104,26 @@ public class MusicEditorController implements IMusicEditorController<Note>, Acti
       if (view instanceof GuiViewFrame) {
         GuiViewFrame guiView = (GuiViewFrame) view;
         guiView.updateCurrentBeat(1);
+      }
+    }
+  }
+
+  class ToBeginning implements Runnable {
+    @Override
+    public void run() {
+      if (view instanceof GuiViewFrame) {
+        GuiViewFrame guiView = (GuiViewFrame) view;
+        guiView.updateCurrentBeat( -1 * guiView.getCurrentBeat());
+      }
+    }
+  }
+
+  class ToEnd implements Runnable {
+    @Override
+    public void run() {
+      if (view instanceof GuiViewFrame) {
+        GuiViewFrame guiView = (GuiViewFrame) view;
+        guiView.updateCurrentBeat(guiView.getDuration() - guiView.getCurrentBeat());
       }
     }
   }

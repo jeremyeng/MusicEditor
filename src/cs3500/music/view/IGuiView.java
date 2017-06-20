@@ -43,4 +43,16 @@ public interface IGuiView extends IMusicEditorView {
    */
   void updateCurrentBeat(int beat);
 
+  /**
+   * Gets the duration of the view.
+   * @return the duration of the view.
+   */
+  int getDuration();
+
+  /**
+   * Gets the beat that the view is currently on.
+   * @return the beat that the view is currently on.
+   */
+  int getCurrentBeat();
+
 }
