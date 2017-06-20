@@ -38,9 +38,9 @@ public class ConsoleView implements IMusicEditorView {
    * Displays the notes in the model that are played. The rows represent the beat numbers of the
    * piece and the columns represent each note in the piece as well as during which beats they
    * start and continue.
-   * @return a String
+   * @return a String illustrating the state of the notes.
    */
-  public String getState() {
+  private String getState() {
     String state = "";
     Map<Integer, List<String>> combined = this.model.getCombinedNoteMap();
 

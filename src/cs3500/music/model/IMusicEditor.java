@@ -101,4 +101,12 @@ public interface IMusicEditor<K> {
    */
   Map<Integer, List<String>> getCombinedNoteMap();
 
+  /**
+   * Displays the notes in the model that are played. The rows represent the beat numbers of the
+   * piece and the columns represent each note in the piece as well as during which beats they
+   * start and continue.
+   * @return a String illustrating the state of the notes.
+   */
+  String getState();
+
 }
