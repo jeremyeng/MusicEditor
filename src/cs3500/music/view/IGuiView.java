@@ -2,6 +2,8 @@ package cs3500.music.view;
 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +36,8 @@ public interface IGuiView extends IMusicEditorView {
    * @param key    the key listener of the guiview
    */
   void addKeyListener(KeyListener key);
+
+  void addMouseListener(MouseListener mouse);
 
   /**
    * Updates the beat the music model is current on by the given parameter, positive

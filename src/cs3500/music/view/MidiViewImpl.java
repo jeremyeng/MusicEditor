@@ -1,5 +1,8 @@
 package cs3500.music.view;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 
@@ -11,14 +14,16 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
+import javax.swing.*;
 
+import cs3500.music.controller.ViewKeyBoardListener;
 import cs3500.music.model.IReadOnlyMusicEditor;
 import cs3500.music.model.Note;
 
 /**
  * A skeleton for MIDI playback.
  */
-public class MidiViewImpl implements IMidiView<Note> {
+public class MidiViewImpl extends JComponent implements IMidiView<Note> {
   private boolean _paused = false;
   private final Synthesizer synth;
   private final Receiver receiver;
@@ -87,11 +92,11 @@ public class MidiViewImpl implements IMidiView<Note> {
   @Override
   public void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException {
     long start = this.synth.getMicrosecondPosition();
-    System.out.println(start);
     for (int beat = 0; beat < info.size(); beat++) {
       for (List<Integer> l : info.get(beat)) {
         synchronized (this) {
           while (_paused) {
+            System.out.println("Im paused!");
             try {
               wait();
             } catch (InterruptedException e) {
@@ -116,19 +121,26 @@ public class MidiViewImpl implements IMidiView<Note> {
 
   @Override
   public synchronized void resume() {
+    System.out.println("resumed");
     this._paused = false;
-    notify();
+    notifyAll();
   }
 
   @Override
   public synchronized void pause() {
+    System.out.println("paused");
     this._paused = true;
-    notify();
+    notifyAll();
   }
 
   @Override
   public void update(IReadOnlyMusicEditor model) {
     this.model = model;
+  }
+
+  @Override
+  public boolean isPaused() {
+    return this._paused;
   }
 
 

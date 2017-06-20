@@ -1,8 +1,12 @@
 package cs3500.music.view;
 
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.sound.midi.InvalidMidiDataException;
+
+import cs3500.music.controller.ViewKeyBoardListener;
 
 /**
  * Created by Hoyin on 6/16/2017.
@@ -32,5 +36,11 @@ public interface IMidiView<K> extends IMusicEditorView<K> {
    * Pauses playback of the MidiView
    */
   void pause();
+
+  /**
+   * Return true if the music is currently paused and false otherwise.
+   * @return true if the music is true, false otherwise.
+   */
+  boolean isPaused();
 
 }

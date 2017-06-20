@@ -3,6 +3,8 @@ package cs3500.music.view;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -69,6 +71,12 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
   }
 
   @Override
+  public void addMouseListener(MouseListener mouse) {
+    this.pianoPanel.addMouseListener(mouse);
+    this.scorePanel.addMouseListener(mouse);
+  }
+
+  @Override
   public void updateCurrentBeat(int beat) {
     this.currentBeat += beat;
     scorePanel.updateCurrentBeat(beat);
@@ -87,6 +95,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
   public void setCombineNoteMap(Map<Integer, List<String>> notes) {
     this.combineNoteMap = notes;
     this.pianoPanel.setCombineNoteMap(notes);
+    this.pianoPanel.setUpKeys();
     scorePanel.setCombineNoteMap(notes);
   }
 

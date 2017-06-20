@@ -1,9 +1,10 @@
 package cs3500.music.view;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import com.sun.org.apache.regexp.internal.RE;
+
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -30,72 +31,77 @@ public class PianoPanel extends JPanel {
   private ArrayList<Integer> sharpNotes = new ArrayList<>();
   private int currentBeat = 0;
   private int duration = 0;
+  private ArrayList<Rectangle> whiteKeys = new ArrayList<>();
+  private ArrayList<Rectangle> blackKeys = new ArrayList<>();
+  private HashMap<Integer, Rectangle> whiteKeysMap = new HashMap<>();
+  private HashMap<Integer, Rectangle> blackKeysMap = new HashMap<>();
 
+  /**
+   * Sets up the keys as rectangles.
+   */
+  public void setUpKeys() {
+    for (int i = 0; i < this.naturalNotes.size(); i++) {
+      Rectangle curRect = new Rectangle(i * WHITE_KEY_WIDTH, 0, WHITE_KEY_WIDTH, WHITE_KEY_LENGTH);
+      this.whiteKeys.add(curRect);
+      this.whiteKeysMap.put(naturalNotes.get(i),curRect);
+    }
+    int blackKeyCounter = (int) (WHITE_KEY_WIDTH * 0.75);
+    for (int i = 0; i < this.sharpNotes.size(); i++) {
+      Rectangle curRect = new Rectangle(blackKeyCounter, 0,BLACK_KEY_WIDTH,BLACK_KEY_LENGTH);
+      if (new Note(this.sharpNotes.get(i), 0).getPitch().equals(Pitch.DSharp) ||
+              new Note(this.sharpNotes.get(i), 0).getPitch().equals(Pitch.ASharp)) {
+        this.blackKeys.add(curRect);
+        this.blackKeysMap.put(sharpNotes.get(i), curRect);
+        blackKeyCounter += 2 * WHITE_KEY_WIDTH;
+      }
+      else {
+        this.blackKeys.add(curRect);
+        this.blackKeysMap.put(sharpNotes.get(i), curRect);
+        blackKeyCounter += WHITE_KEY_WIDTH;
+      }
+    }
+  }
 
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g;
     g2d.setColor(Color.BLACK);
-    this.drawWhiteKeys(g2d);
-    this.drawBlackKeys(g2d);
+    this.drawKeys(g2d);
   }
 
-  /**
-   * Draws the black keys on the piano.
-   *
-   * @param g2d the image in which the key is going to be drawn
-   */
-  private void drawBlackKeys(Graphics2D g2d) {
-    int blackKeyCounter = (int) (WHITE_KEY_WIDTH * 0.75);
-    for (int i = 0; i < this.sharpNotes.size(); i++) {
-      if (new Note(this.sharpNotes.get(i), 0).getPitch().equals(Pitch.DSharp) ||
-              new Note(this.sharpNotes.get(i), 0).getPitch().equals(Pitch.ASharp)) {
-        if (this.noteMap.get(sharpNotes.get(i)).get(currentBeat).equals("start")
-                || this.noteMap.get(sharpNotes.get(i)).get(currentBeat).equals("continue")) {
-          g2d.setColor(BLACK_KEY_DISPLAY_COLOR);
-          g2d.fillRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
-          g2d.setColor(Color.BLACK);
-          g2d.drawRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
-          blackKeyCounter += 2 * WHITE_KEY_WIDTH;
-        } else {
-          g2d.setColor(Color.BLACK);
-          g2d.fillRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
-          blackKeyCounter += 2 * WHITE_KEY_WIDTH;
-        }
-      } else {
-        if (this.noteMap.get(sharpNotes.get(i)).get(currentBeat).equals("start")
-                || this.noteMap.get(sharpNotes.get(i)).get(currentBeat).equals("continue")) {
-          g2d.setColor(BLACK_KEY_DISPLAY_COLOR);
-          g2d.fillRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
-          g2d.setColor(Color.BLACK);
-          g2d.drawRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
-          blackKeyCounter += WHITE_KEY_WIDTH;
-        } else {
-          g2d.setColor(Color.BLACK);
-          g2d.fillRect(blackKeyCounter, 0, BLACK_KEY_WIDTH, BLACK_KEY_LENGTH);
-          blackKeyCounter += WHITE_KEY_WIDTH;
-        }
-      }
-    }
-  }
-
-  /**
-   * Draws the white kets on the piano.
-   *
-   * @param g2d the image in which the key is going to be drawn
-   */
-  private void drawWhiteKeys(Graphics2D g2d) {
-    for (int i = 0; i < this.naturalNotes.size(); i++) {
+  private void drawKeys(Graphics2D g2d) {
+    for (int i = 0; i < this.whiteKeys.size(); i++) {
+      Rectangle curKey = this.whiteKeys.get(i);
       if (this.noteMap.get(naturalNotes.get(i)).get(currentBeat).equals("start")
               || this.noteMap.get(naturalNotes.get(i)).get(currentBeat).equals("continue")) {
         g2d.setColor(WHITE_KEY_DISPLAY_COLOR);
-        g2d.fillRect(i * WHITE_KEY_WIDTH, 0, WHITE_KEY_WIDTH, WHITE_KEY_LENGTH);
+        g2d.fill(curKey);
         g2d.setColor(Color.BLACK);
-        g2d.drawRect(i * WHITE_KEY_WIDTH, 0, WHITE_KEY_WIDTH, WHITE_KEY_LENGTH);
+        g2d.drawRect((int)curKey.getX(),(int)curKey.getY(), curKey.width, curKey.height);
       }
-      g2d.setColor(Color.BLACK);
-      g2d.drawRect(i * WHITE_KEY_WIDTH, 0, WHITE_KEY_WIDTH, WHITE_KEY_LENGTH);
+      else {
+        g2d.setColor(Color.WHITE);
+        g2d.fill(curKey);
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect((int)curKey.getX(),(int)curKey.getY(), curKey.width, curKey.height);
+      }
+    }
+    for (int i = 0; i < this.blackKeys.size(); i++) {
+      Rectangle curKey = this.blackKeys.get(i);
+      if (this.noteMap.get(sharpNotes.get(i)).get(currentBeat).equals("start")
+              || this.noteMap.get(sharpNotes.get(i)).get(currentBeat).equals("continue")) {
+        g2d.setColor(BLACK_KEY_DISPLAY_COLOR);
+        g2d.fill(curKey);
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect((int)curKey.getX(),(int)curKey.getY(), curKey.width, curKey.height);
+      }
+      else {
+        g2d.setColor(Color.BLACK);
+        g2d.fill(curKey);
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect((int)curKey.getX(),(int)curKey.getY(), curKey.width, curKey.height);
+      }
     }
   }
 
