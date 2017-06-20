@@ -23,4 +23,14 @@ public interface IMidiView<K> extends IMusicEditorView<K> {
    */
   void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException;
 
+  /**
+   * Resumes playback of the MidiView;
+   */
+  void resume();
+
+  /**
+   * Pauses playback of the MidiView
+   */
+  void pause();
+
 }

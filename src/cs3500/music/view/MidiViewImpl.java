@@ -19,6 +19,7 @@ import cs3500.music.model.Note;
  * A skeleton for MIDI playback.
  */
 public class MidiViewImpl implements IMidiView<Note> {
+  private boolean _paused = false;
   private final Synthesizer synth;
   private final Receiver receiver;
   private IReadOnlyMusicEditor model;
@@ -86,14 +87,24 @@ public class MidiViewImpl implements IMidiView<Note> {
   @Override
   public void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException {
     long start = this.synth.getMicrosecondPosition();
+    System.out.println(start);
     for (int beat = 0; beat < info.size(); beat++) {
       for (List<Integer> l : info.get(beat)) {
+        synchronized (this) {
+          while (_paused) {
+            try {
+              wait();
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            }
+          }
+        }
         this.receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE, l.get(1), l.get(1),
                 l.get(1)), -1);
         this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, l.get(1), l.get(2), l.get(3)),
-                beat * tempo);
+                start + beat * tempo);
         this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, l.get(1), l.get(2), l.get(3)),
-                (beat * tempo) + (l.get(4) * tempo));
+                start + (beat * tempo) + (l.get(4) * tempo));
       }
       try {
         Thread.sleep(tempo / 1000);
@@ -101,6 +112,18 @@ public class MidiViewImpl implements IMidiView<Note> {
         e.printStackTrace();
       }
     }
+  }
+
+  @Override
+  public synchronized void resume() {
+    this._paused = false;
+    notify();
+  }
+
+  @Override
+  public synchronized void pause() {
+    this._paused = true;
+    notify();
   }
 
   @Override
