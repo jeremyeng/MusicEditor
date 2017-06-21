@@ -23,7 +23,7 @@ import cs3500.music.model.Note;
 /**
  * A skeleton for MIDI playback.
  */
-public class MidiViewImpl extends JComponent implements IMidiView<Note> {
+public class MidiViewImpl extends JFrame implements IMidiView<Note> {
   private boolean _paused = false;
   private final Synthesizer synth;
   private final Receiver receiver;
@@ -34,6 +34,11 @@ public class MidiViewImpl extends JComponent implements IMidiView<Note> {
    * Creates a new MidiViewImpl with a synthesizer and receiver from the built-in java Midi.
    */
   public MidiViewImpl() throws MidiUnavailableException {
+    super();
+    this.setTitle("Midi");
+    this.setSize(1600, 2000);
+    this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    this.setFocusable(true);
     this.synth = MidiSystem.getSynthesizer();
     this.receiver = synth.getReceiver();
     this.synth.open();
@@ -142,6 +147,11 @@ public class MidiViewImpl extends JComponent implements IMidiView<Note> {
   @Override
   public boolean isPaused() {
     return this._paused;
+  }
+
+  @Override
+  public boolean isFocusable() {
+    return true;
   }
 
 
