@@ -18,6 +18,7 @@ import cs3500.music.MusicEditor;
 import cs3500.music.model.IMusicEditor;
 import cs3500.music.model.Note;
 import cs3500.music.model.ReadOnlyMusicEditorModel;
+import cs3500.music.view.CombinedView;
 import cs3500.music.view.GuiViewFrame;
 import cs3500.music.view.IGuiView;
 import cs3500.music.view.IMidiView;
@@ -47,19 +48,6 @@ public class MusicEditorController implements IMusicEditorController<Note> {
 
   @Override
   public void execute() throws IOException {
-    if (this.view instanceof IGuiView) {
-      IGuiView guiView = (IGuiView) this.view;
-      guiView.setDuration(model.getDuration());
-      TreeMap<Note, List<String>> noteMap = new TreeMap<>();
-      for (Note note : model.getNoteRange()) {
-        List<String> stateList = new ArrayList<>();
-        for (int i = 0; i < model.getDuration(); i++) {
-          stateList.add(model.getNoteState(note, i));
-        }
-        noteMap.put(note, stateList);
-      }
-      guiView.setCombineNoteMap(model.getCombinedNoteMap());
-    }
     this.view.update(new ReadOnlyMusicEditorModel(model));
     try {
       this.view.makeVisible();
@@ -70,8 +58,8 @@ public class MusicEditorController implements IMusicEditorController<Note> {
 
   private void configureKeyBoardListener() {
     Map<Character, Runnable> keyTypes = new HashMap<>();
-    Map<Integer,Runnable> keyPresses = new HashMap<>();
-    Map<Integer,Runnable> keyReleases = new HashMap<>();
+    Map<Integer, Runnable> keyPresses = new HashMap<>();
+    Map<Integer, Runnable> keyReleases = new HashMap<>();
 
     keyPresses.put(KeyEvent.VK_LEFT, new RetractBeat());
     keyPresses.put(KeyEvent.VK_RIGHT, new AdvanceBeat());
@@ -89,7 +77,10 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       guiView.addKeyListener(kbd);
     }
 
-    else if (view instanceof MidiViewImpl) {
+    if (view instanceof CombinedView) {
+      CombinedView combined = (CombinedView) view;
+      combined.addKeyListener(kbd);
+    } else if (view instanceof MidiViewImpl) {
       MidiViewImpl midiView = (MidiViewImpl) view;
       midiView.addKeyListener(kbd);
     }
@@ -107,8 +98,7 @@ public class MusicEditorController implements IMusicEditorController<Note> {
     if (view instanceof GuiViewFrame) {
       GuiViewFrame guiView = (GuiViewFrame) view;
       guiView.addMouseListener(mouseListener);
-    }
-    else if (view instanceof MidiViewImpl) {
+    } else if (view instanceof MidiViewImpl) {
       MidiViewImpl midiView = (MidiViewImpl) view;
       midiView.addMouseListener(mouseListener);
     }
@@ -125,6 +115,9 @@ public class MusicEditorController implements IMusicEditorController<Note> {
         GuiViewFrame guiView = (GuiViewFrame) view;
         guiView.updateCurrentBeat(-1);
       }
+      if (view instanceof CombinedView) {
+        ((CombinedView) view).getGuiView().updateCurrentBeat(-1);
+      }
     }
   }
 
@@ -138,6 +131,9 @@ public class MusicEditorController implements IMusicEditorController<Note> {
         GuiViewFrame guiView = (GuiViewFrame) view;
         guiView.updateCurrentBeat(1);
       }
+      if (view instanceof CombinedView) {
+        ((CombinedView) view).getGuiView().updateCurrentBeat(1);
+      }
     }
   }
 
@@ -146,7 +142,11 @@ public class MusicEditorController implements IMusicEditorController<Note> {
     public void run() {
       if (view instanceof GuiViewFrame) {
         GuiViewFrame guiView = (GuiViewFrame) view;
-        guiView.updateCurrentBeat( -1 * guiView.getCurrentBeat());
+        guiView.updateCurrentBeat(-1 * guiView.getCurrentBeat());
+      }
+      if (view instanceof CombinedView) {
+        GuiViewFrame guiView = ((CombinedView) view).getGuiView();
+        guiView.updateCurrentBeat(-1 * guiView.getCurrentBeat());
       }
     }
   }
@@ -158,6 +158,11 @@ public class MusicEditorController implements IMusicEditorController<Note> {
         GuiViewFrame guiView = (GuiViewFrame) view;
         guiView.updateCurrentBeat(guiView.getDuration() - guiView.getCurrentBeat());
       }
+      if (view instanceof CombinedView) {
+        GuiViewFrame guiView = ((CombinedView) view).getGuiView();
+        ((CombinedView) view).getGuiView().updateCurrentBeat(
+                guiView.getDuration() - guiView.getCurrentBeat());
+      }
     }
   }
 
@@ -166,15 +171,14 @@ public class MusicEditorController implements IMusicEditorController<Note> {
     public void run() {
       System.out.println("Im running!");
       if (view instanceof MidiViewImpl) {
-         MidiViewImpl midiView = (MidiViewImpl) view;
-         if (midiView.isPaused()) {
-           System.out.println("Im resuming!");
-           midiView.resume();
-         }
-         else {
-           midiView.pause();
-           System.out.println("Im pausing!");
-         }
+        MidiViewImpl midiView = (MidiViewImpl) view;
+        if (midiView.isPaused()) {
+          System.out.println("Im resuming!");
+          midiView.resume();
+        } else {
+          midiView.pause();
+          System.out.println("Im pausing!");
+        }
       }
     }
   }
@@ -185,7 +189,6 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       if (view instanceof GuiViewFrame) {
         GuiViewFrame guiView = (GuiViewFrame) view;
         int noteNumber = guiView.noteClicked();
-        System.out.println(noteNumber);
         model.addNote(new Note(noteNumber, 0), guiView.getCurrentBeat(), 1, 60);
         guiView.update(new ReadOnlyMusicEditorModel(model));
       }

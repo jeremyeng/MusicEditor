@@ -64,9 +64,13 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
 
   @Override
   public void update(IReadOnlyMusicEditor model) {
-    this.model = model;
     this.combineNoteMap = model.getCombinedNoteMap();
-    this.pianoPanel.setCombineNoteMap(this.combineNoteMap);
+    if (this.model == null) {
+      this.pianoPanel.setCombineNoteMap(this.combineNoteMap);
+      this.pianoPanel.setUpKeys();
+    }
+    this.model = model;
+    this.setDuration(model.getDuration());
     scorePanel.setCombineNoteMap(this.combineNoteMap);
     updateCurrentBeat(1);
   }

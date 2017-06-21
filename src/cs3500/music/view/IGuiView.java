@@ -31,13 +31,6 @@ public interface IGuiView extends IMusicEditorView {
    */
   void setCombineNoteMap(Map<Integer, List<String>> notes);
 
-  /**
-   * Sets the key listener for the guiview.
-   *
-   * @param key    the key listener of the guiview
-   */
-  void addKeyListener(KeyListener key);
-
   void addMouseListener(MouseListener mouse);
 
   /**

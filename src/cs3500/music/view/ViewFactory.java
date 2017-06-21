@@ -23,6 +23,8 @@ public class ViewFactory {
         return new GuiViewFrame();
       case "midi":
         return new MidiViewImpl();
+      case "combined":
+        return new CombinedView(new GuiViewFrame(), new MidiViewImpl());
       default:
         throw new IllegalArgumentException("Invalid view type!");
     }
