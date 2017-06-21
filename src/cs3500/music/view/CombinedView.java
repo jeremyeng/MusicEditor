@@ -14,13 +14,19 @@ import cs3500.music.model.Note;
 /**
  * Combines both the Visual GUI View and the MIDI Playback View.
  */
-public class CombinedView extends JFrame implements IMusicEditorView<Note>{
-  GuiViewFrame guiView;
-  MidiViewImpl midiView;
+public class CombinedView extends JFrame implements ICombinedView<Note>{
+  private IGuiView guiView;
+  private  IMidiView midiView;
   private IReadOnlyMusicEditor model;
 
 
-  public CombinedView(GuiViewFrame guiView, MidiViewImpl midiView) throws MidiUnavailableException {
+  /**
+   * Creates an instance of a view comprised of both visual and audio representations of music.
+   * @param guiView the visual representation.
+   * @param midiView the audio representation.
+   * @throws MidiUnavailableException if the midi is unavailable.
+   */
+  public CombinedView(IGuiView guiView, IMidiView midiView) throws MidiUnavailableException {
     this.guiView = guiView;
     this.midiView = midiView;
   }
@@ -50,19 +56,15 @@ public class CombinedView extends JFrame implements IMusicEditorView<Note>{
     this.midiView.addMouseListener(mouseListener);
   }
 
-  /**
-   * Gets the GUI view that comprises the combined view.
-   * @return an instance of the GUI View implementation.
-   */
-  public GuiViewFrame getGuiView() {
+
+  @Override
+  public IGuiView getGuiView() {
     return this.guiView;
   }
 
-  /**
-   * Gets the MIDI view that comprisese the combined view.
-   * @return an instance of the MIDI View implementation.
-   */
-  public MidiViewImpl getMidiView() {
+
+  @Override
+  public IMidiView getMidiView() {
     return this.midiView;
   }
 }

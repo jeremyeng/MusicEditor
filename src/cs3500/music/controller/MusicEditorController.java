@@ -15,6 +15,7 @@ import cs3500.music.model.Note;
 import cs3500.music.model.ReadOnlyMusicEditorModel;
 import cs3500.music.view.CombinedView;
 import cs3500.music.view.GuiViewFrame;
+import cs3500.music.view.IGuiView;
 import cs3500.music.view.IMidiView;
 import cs3500.music.view.IMusicEditorView;
 import cs3500.music.view.MidiViewImpl;
@@ -146,7 +147,7 @@ public class MusicEditorController implements IMusicEditorController<Note> {
         guiView.updateCurrentBeat(-1 * guiView.getCurrentBeat());
       }
       if (view instanceof CombinedView) {
-        GuiViewFrame guiView = ((CombinedView) view).getGuiView();
+        IGuiView guiView = ((CombinedView) view).getGuiView();
         guiView.updateCurrentBeat(-1 * guiView.getCurrentBeat());
       }
     }
@@ -160,7 +161,7 @@ public class MusicEditorController implements IMusicEditorController<Note> {
         guiView.updateCurrentBeat(guiView.getDuration() - guiView.getCurrentBeat());
       }
       if (view instanceof CombinedView) {
-        GuiViewFrame guiView = ((CombinedView) view).getGuiView();
+        IGuiView guiView = ((CombinedView) view).getGuiView();
         ((CombinedView) view).getGuiView().updateCurrentBeat(
                 guiView.getDuration() - guiView.getCurrentBeat());
       }
@@ -202,7 +203,7 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       }
 
       if (view instanceof CombinedView) {
-        GuiViewFrame guiView = ((CombinedView) view).getGuiView();
+        IGuiView guiView = ((CombinedView) view).getGuiView();
         int noteNumber = guiView.noteClicked();
         model.addNote(new Note(noteNumber, 0), guiView.getCurrentBeat(), 1, 60);
         guiView.update(new ReadOnlyMusicEditorModel(model));

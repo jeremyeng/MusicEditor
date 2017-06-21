@@ -1,16 +1,8 @@
 package cs3500.music.view;
 
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.sound.midi.InvalidMidiDataException;
-
-import cs3500.music.controller.ViewKeyBoardListener;
-
-/**
- * Created by Hoyin on 6/16/2017.
- */
 
 /**
  * An interface designed for a midi view that plays notes base on the information given.

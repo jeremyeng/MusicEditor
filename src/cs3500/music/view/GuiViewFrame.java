@@ -15,10 +15,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
 
 import cs3500.music.model.IReadOnlyMusicEditor;
-import cs3500.music.model.ReadOnlyMusicEditorModel;
 
 /**
- * A skeleton Frame (i.e., a window) in Swing
+ * A representation of a visual Frame (i.e., a window) in Swing.
  */
 public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
 

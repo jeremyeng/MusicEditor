@@ -21,7 +21,7 @@ import cs3500.music.model.IReadOnlyMusicEditor;
 import cs3500.music.model.Note;
 
 /**
- * A skeleton for MIDI playback.
+ * An implementation for a MIDI view that plays back notes using synthesizer and a receiver.
  */
 public class MidiViewImpl extends JFrame implements IMidiView<Note> {
   private boolean _paused = false;
@@ -109,6 +109,7 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
               e.printStackTrace();
             }
           }
+
         }
         this.receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE, l.get(1), l.get(1),
                 l.get(1)), -1);
@@ -157,7 +158,4 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
   public boolean isFocusable() {
     return true;
   }
-
-
-
 }
