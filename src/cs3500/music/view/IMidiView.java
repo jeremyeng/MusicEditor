@@ -43,4 +43,9 @@ public interface IMidiView<K> extends IMusicEditorView<K> {
    */
   boolean isPaused();
 
+  /**
+   * Pass in a runnable to be executed between every beat.
+   * @param action the runnable to be run.
+   */
+  void setActionBetweenBeats(Runnable action);
 }

@@ -28,6 +28,7 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
   private final Synthesizer synth;
   private final Receiver receiver;
   private IReadOnlyMusicEditor model;
+  private Runnable action;
 
 
   /**
@@ -36,7 +37,7 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
   public MidiViewImpl() throws MidiUnavailableException {
     super();
     this.setTitle("Midi");
-    this.setSize(1600, 2000);
+    this.setSize(1, 1);
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     this.setFocusable(true);
     this.synth = MidiSystem.getSynthesizer();
@@ -91,7 +92,7 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
 
   @Override
   public void makeVisible() throws InvalidMidiDataException {
-    this.setVisible(true);
+    this.setVisible(false);
     this.playNote(this.model.getMidiInfo(), this.model.getTempo());
   }
 
@@ -102,7 +103,6 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
       for (List<Integer> l : info.get(beat)) {
         synchronized (this) {
           while (_paused) {
-            System.out.println("Im paused!");
             try {
               wait();
             } catch (InterruptedException e) {
@@ -122,19 +122,18 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
+      this.action.run();
     }
   }
 
   @Override
   public synchronized void resume() {
-    System.out.println("resumed");
     this._paused = false;
     notifyAll();
   }
 
   @Override
   public synchronized void pause() {
-    System.out.println("paused");
     this._paused = true;
     notifyAll();
   }
@@ -147,6 +146,11 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
   @Override
   public boolean isPaused() {
     return this._paused;
+  }
+
+  @Override
+  public void setActionBetweenBeats(Runnable action) {
+    this.action = action;
   }
 
   @Override

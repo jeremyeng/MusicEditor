@@ -1,6 +1,6 @@
 package cs3500.music.controller;
 
-import com.sun.media.sound.MidiInDeviceProvider;
+import sun.plugin.com.event.COMEventHandler;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -15,6 +15,7 @@ import cs3500.music.model.Note;
 import cs3500.music.model.ReadOnlyMusicEditorModel;
 import cs3500.music.view.CombinedView;
 import cs3500.music.view.GuiViewFrame;
+import cs3500.music.view.IMidiView;
 import cs3500.music.view.IMusicEditorView;
 import cs3500.music.view.MidiViewImpl;
 
@@ -72,9 +73,13 @@ public class MusicEditorController implements IMusicEditorController<Note> {
 
     if (view instanceof CombinedView) {
       CombinedView combined = (CombinedView) view;
+      combined.getMidiView().setActionBetweenBeats(new AdvanceBeat());
       combined.addKeyListener(kbd);
-    } else if (view instanceof MidiViewImpl) {
+    }
+
+    if (view instanceof MidiViewImpl) {
       MidiViewImpl midiView = (MidiViewImpl) view;
+      midiView.setActionBetweenBeats(new AdvanceBeat());
       midiView.addKeyListener(kbd);
     }
 
@@ -94,6 +99,9 @@ public class MusicEditorController implements IMusicEditorController<Note> {
     } else if (view instanceof MidiViewImpl) {
       MidiViewImpl midiView = (MidiViewImpl) view;
       midiView.addMouseListener(mouseListener);
+    } else if (view instanceof CombinedView) {
+      CombinedView combinedView = (CombinedView) view;
+      combinedView.addMouseListener(mouseListener);
     }
   }
 
@@ -162,12 +170,21 @@ public class MusicEditorController implements IMusicEditorController<Note> {
   class Pause implements Runnable {
     @Override
     public void run() {
+      if (view instanceof IMidiView) {
+        IMidiView midiView = (IMidiView) view;
+        if (midiView.isPaused()) {
+          midiView.resume();
+        } else {
+          midiView.pause();
+        }
+      }
+
       if (view instanceof CombinedView) {
         CombinedView combinedView = (CombinedView) view;
-        if (combinedView.isPaused()) {
-          combinedView.resume();
+        if (combinedView.getMidiView().isPaused()) {
+          combinedView.getMidiView().resume();
         } else {
-          combinedView.pause();
+          combinedView.getMidiView().pause();
         }
       }
     }
@@ -178,6 +195,14 @@ public class MusicEditorController implements IMusicEditorController<Note> {
     public void run() {
       if (view instanceof GuiViewFrame) {
         GuiViewFrame guiView = (GuiViewFrame) view;
+        int noteNumber = guiView.noteClicked();
+        model.addNote(new Note(noteNumber, 0), guiView.getCurrentBeat(), 1, 60);
+        guiView.update(new ReadOnlyMusicEditorModel(model));
+        guiView.updateCurrentBeat(1);
+      }
+
+      if (view instanceof CombinedView) {
+        GuiViewFrame guiView = ((CombinedView) view).getGuiView();
         int noteNumber = guiView.noteClicked();
         model.addNote(new Note(noteNumber, 0), guiView.getCurrentBeat(), 1, 60);
         guiView.update(new ReadOnlyMusicEditorModel(model));
