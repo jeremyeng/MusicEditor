@@ -1,5 +1,7 @@
 package cs3500.music.view;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
+
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.List;
@@ -14,11 +16,12 @@ import javax.sound.midi.Synthesizer;
 import javax.swing.JFrame;
 
 import cs3500.music.model.IReadOnlyMusicEditor;
+import cs3500.music.model.Note;
 
 /**
  * Combines both the Visual GUI View and the MIDI Playback View.
  */
-public class CombinedView extends JFrame implements IMusicEditorView{
+public class CombinedView extends JFrame implements IMidiView<Note>{
   GuiViewFrame guiView;
   MidiViewImpl midiView;
   private boolean _paused = false;
@@ -63,8 +66,7 @@ public class CombinedView extends JFrame implements IMusicEditorView{
     return this.midiView;
   }
 
-
-
+  @Override
   public void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException {
     long start = this.synth.getMicrosecondPosition();
     for (int beat = 0; beat < info.size(); beat++) {
@@ -91,7 +93,24 @@ public class CombinedView extends JFrame implements IMusicEditorView{
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-//      this.guiView.updateCurrentBeat(1);
+      this.guiView.updateCurrentBeat(1);
     }
+  }
+
+  @Override
+  public synchronized void resume() {
+    this._paused = false;
+    notify();
+  }
+
+  @Override
+  public synchronized void pause() {
+    this._paused = true;
+    notify();
+  }
+
+  @Override
+  public boolean isPaused() {
+    return this._paused;
   }
 }
