@@ -4,24 +4,17 @@ import com.sun.media.sound.MidiInDeviceProvider;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.sound.midi.InvalidMidiDataException;
 
-import cs3500.music.MusicEditor;
 import cs3500.music.model.IMusicEditor;
 import cs3500.music.model.Note;
 import cs3500.music.model.ReadOnlyMusicEditorModel;
 import cs3500.music.view.CombinedView;
 import cs3500.music.view.GuiViewFrame;
-import cs3500.music.view.IGuiView;
-import cs3500.music.view.IMidiView;
 import cs3500.music.view.IMusicEditorView;
 import cs3500.music.view.MidiViewImpl;
 
@@ -169,15 +162,12 @@ public class MusicEditorController implements IMusicEditorController<Note> {
   class Pause implements Runnable {
     @Override
     public void run() {
-      System.out.println("Im running!");
-      if (view instanceof MidiViewImpl) {
-        MidiViewImpl midiView = (MidiViewImpl) view;
-        if (midiView.isPaused()) {
-          System.out.println("Im resuming!");
-          midiView.resume();
+      if (view instanceof CombinedView) {
+        CombinedView combinedView = (CombinedView) view;
+        if (combinedView.isPaused()) {
+          combinedView.resume();
         } else {
-          midiView.pause();
-          System.out.println("Im pausing!");
+          combinedView.pause();
         }
       }
     }

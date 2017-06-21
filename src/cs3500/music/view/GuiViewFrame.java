@@ -72,7 +72,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
     this.model = model;
     this.setDuration(model.getDuration());
     scorePanel.setCombineNoteMap(this.combineNoteMap);
-    updateCurrentBeat(1);
+
   }
 
   @Override
