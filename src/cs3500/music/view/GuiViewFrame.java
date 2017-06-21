@@ -1,30 +1,22 @@
 package cs3500.music.view;
 
-import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
-import javax.swing.JScrollPane;
-
 import cs3500.music.model.IReadOnlyMusicEditor;
-import cs3500.music.model.ReadOnlyMusicEditorModel;
 
 /**
  * A skeleton Frame (i.e., a window) in Swing
  */
-public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
+public class GuiViewFrame extends JFrame implements IGuiView {
 
-
-  private final ScorePanel scorePanel;
-  private final PianoPanel pianoPanel;
+  private final GuiViewPanel guiViewPanel;
   private IReadOnlyMusicEditor model;
   private Map<Integer, List<String>> combineNoteMap = new TreeMap<>();
   private int duration = 0;
@@ -37,24 +29,10 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
   public GuiViewFrame() {
     super();
     this.setTitle("Music Editor");
-
-    JPanel musicEditorPanel = new JPanel();
-    musicEditorPanel.setLayout(new BoxLayout(musicEditorPanel, BoxLayout.Y_AXIS));
-
-    scorePanel = new ScorePanel();
-    this.pianoPanel = new PianoPanel();
-    scorePanel.setPreferredSize(scorePanel.getPreferredSize());
-    pianoPanel.setPreferredSize(new Dimension(1500, 1200));
+    this.guiViewPanel = new GuiViewPanel();
     this.setSize(1600, 2000);
-    JScrollPane scrollFrame = new JScrollPane(scorePanel);
-
-    musicEditorPanel.add(scrollFrame);
-    musicEditorPanel.add(pianoPanel);
-
-    this.setContentPane(musicEditorPanel);
-
+    this.setContentPane(this.guiViewPanel);
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
   }
 
   @Override
@@ -66,45 +44,39 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
   public void update(IReadOnlyMusicEditor model) {
     this.model = model;
     this.combineNoteMap = model.getCombinedNoteMap();
-    this.pianoPanel.setCombineNoteMap(this.combineNoteMap);
-    scorePanel.setCombineNoteMap(this.combineNoteMap);
-    updateCurrentBeat(1);
+    this.guiViewPanel.update(model);
   }
 
   @Override
   public void addKeyListener(KeyListener key) {
-    scorePanel.addKeyListener(key);
-    pianoPanel.addKeyListener(key);
+    this.guiViewPanel.addKeyListener(key);
   }
 
   @Override
   public void addMouseListener(MouseListener mouse) {
-    this.pianoPanel.addMouseListener(mouse);
-    this.scorePanel.addMouseListener(mouse);
+    this.guiViewPanel.addMouseListener(mouse);
   }
 
   @Override
   public void updateCurrentBeat(int beat) {
-    this.currentBeat += beat;
-    scorePanel.updateCurrentBeat(beat);
-    this.pianoPanel.updateCurrentBeat(beat);
-    this.repaint();
+    if (this.currentBeat + beat >= 0 || this.currentBeat + beat <= this.duration) {
+      this.currentBeat += beat;
+      this.guiViewPanel.updateCurrentBeat(beat);
+      this.repaint();
+    }
   }
 
   @Override
   public void setDuration(int duration) {
     this.duration = duration;
-    scorePanel.setDuration(duration);
-    this.pianoPanel.setDuration(duration);
+    this.guiViewPanel.setDuration(duration);
   }
 
 
   @Override
   public void setCombineNoteMap(Map<Integer, List<String>> notes) {
     this.combineNoteMap = notes;
-    this.pianoPanel.setCombineNoteMap(notes);
-    this.pianoPanel.setUpKeys();
-    scorePanel.setCombineNoteMap(notes);
+    this.guiViewPanel.setCombineNoteMap(notes);
   }
 
   @Override
@@ -114,17 +86,17 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
 
   @Override
   public int getCurrentBeat() {
-    return this.currentBeat;
+    return this.guiViewPanel.getCurrentBeat();
   }
 
   @Override
   public int noteClicked() {
-    return this.pianoPanel.getNoteClicked();
+    return this.guiViewPanel.noteClicked();
   }
 
   @Override
   public int getDuration() {
-    return this.duration;
+    return this.guiViewPanel.getDuration();
   }
 
 }

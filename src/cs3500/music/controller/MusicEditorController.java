@@ -188,6 +188,7 @@ public class MusicEditorController implements IMusicEditorController<Note> {
         System.out.println(noteNumber);
         model.addNote(new Note(noteNumber, 0), guiView.getCurrentBeat(), 1, 60);
         guiView.update(new ReadOnlyMusicEditorModel(model));
+        guiView.updateCurrentBeat(1);
       }
     }
   }

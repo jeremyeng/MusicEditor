@@ -151,15 +151,16 @@ public class PianoPanel extends JPanel {
    *          -1 when such note does not exist.
    */
   protected int getNoteClicked() {
-    System.out.println(this.getMousePosition());
-    for (Rectangle rect : blackKeysMap.keySet()) {
-      if (rect.contains(this.getMousePosition())) {
-        return this.blackKeysMap.get(rect);
+    if (this.getMousePosition() != null) {
+      for (Rectangle rect : blackKeysMap.keySet()) {
+        if (rect.contains(this.getMousePosition())) {
+          return this.blackKeysMap.get(rect);
+        }
       }
-    }
-    for (Rectangle rect : whiteKeysMap.keySet()) {
-      if (rect.contains(this.getMousePosition())) {
-        return this.whiteKeysMap.get(rect);
+      for (Rectangle rect : whiteKeysMap.keySet()) {
+        if (rect.contains(this.getMousePosition())) {
+          return this.whiteKeysMap.get(rect);
+        }
       }
     }
     return -1;

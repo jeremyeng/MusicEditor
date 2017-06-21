@@ -86,6 +86,7 @@ public class MidiViewImpl extends JComponent implements IMidiView<Note> {
 
   @Override
   public void makeVisible() throws InvalidMidiDataException {
+    this.setVisible(true);
     this.playNote(this.model.getMidiInfo(), this.model.getTempo());
   }
 
@@ -142,6 +143,7 @@ public class MidiViewImpl extends JComponent implements IMidiView<Note> {
   public boolean isPaused() {
     return this._paused;
   }
+
 
 
 }
