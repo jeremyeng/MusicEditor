@@ -10,9 +10,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 
-import javax.swing.JPanel;
-import javax.swing.BoxLayout;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import cs3500.music.model.IReadOnlyMusicEditor;
 import cs3500.music.model.ReadOnlyMusicEditorModel;
@@ -25,10 +23,13 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
 
   private final ScorePanel scorePanel;
   private final PianoPanel pianoPanel;
+  private JScrollPane scoreScroll;
   private IReadOnlyMusicEditor model;
   private Map<Integer, List<String>> combineNoteMap = new TreeMap<>();
   private int duration = 0;
   private int currentBeat = 0;
+  public static final int SCREEN_WIDTH = 1600;
+  public static final int SCREEN_HEIGHT = 2000;
 
 
   /**
@@ -45,12 +46,10 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
     this.pianoPanel = new PianoPanel();
     scorePanel.setPreferredSize(scorePanel.getPreferredSize());
     pianoPanel.setPreferredSize(new Dimension(1500, 1200));
-    this.setSize(1600, 2000);
-    JScrollPane scrollFrame = new JScrollPane(scorePanel);
-
-    musicEditorPanel.add(scrollFrame);
+    this.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    scoreScroll = new JScrollPane(scorePanel);
+    musicEditorPanel.add(scoreScroll);
     musicEditorPanel.add(pianoPanel);
-
     this.setContentPane(musicEditorPanel);
 
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -92,7 +91,6 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
     this.currentBeat += beat;
     scorePanel.updateCurrentBeat(beat);
     this.pianoPanel.updateCurrentBeat(beat);
-    this.repaint();
   }
 
   @Override
@@ -113,7 +111,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
 
   @Override
   public Dimension getPreferredSize() {
-    return new Dimension(100, 100);
+    return new Dimension(1000, 1000);
   }
 
   @Override
@@ -130,5 +128,6 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
   public int getDuration() {
     return this.duration;
   }
+
 
 }
