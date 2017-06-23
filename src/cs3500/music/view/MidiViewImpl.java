@@ -38,7 +38,9 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
   public MidiViewImpl() throws MidiUnavailableException {
     super();
     this.setTitle("Midi");
-    this.setSize(1, 1);
+    this.setSize(180, 100);
+    JLabel stringLabel = new JLabel("Press \"P\" to pause/resume!");
+    this.add(stringLabel);
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     this.setFocusable(true);
     this.synth = MidiSystem.getSynthesizer();
@@ -92,7 +94,7 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
 
   @Override
   public void makeVisible() throws InvalidMidiDataException {
-    this.setVisible(false);
+    this.setVisible(true);
     this.playNote(this.model.getMidiInfo(), this.model.getTempo());
   }
 
