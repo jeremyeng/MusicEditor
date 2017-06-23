@@ -27,8 +27,6 @@ public interface IGuiView extends IMusicEditorView {
    */
   void setCombineNoteMap(Map<Integer, List<String>> notes);
 
-  void addMouseListener(MouseListener mouse);
-
   /**
    * Updates the beat the music model is current on by the given parameter, positive
    * number would advance the beat and negative number would execute back beats.

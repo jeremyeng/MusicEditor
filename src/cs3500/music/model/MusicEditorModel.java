@@ -179,6 +179,7 @@ public class MusicEditorModel implements IMusicEditor<Note> {
       throw new IllegalArgumentException("cannot have negative beats.");
     }
 
+
   }
 
   /**

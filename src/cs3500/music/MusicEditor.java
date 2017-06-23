@@ -29,29 +29,20 @@ import javax.sound.midi.Track;
 public class MusicEditor {
   /**
    * Main method for our MusicEditor.
+   *
    * @param args two string arguments that specify which file to play and which view to create.
-   * @throws IOException if there invalid input or output.
+   * @throws IOException              if there invalid input or output.
    * @throws InvalidMidiDataException if midi data is invalid.
    * @throws MidiUnavailableException if the midi is unavailable.
    */
   public static void main(String[] args) throws IOException, InvalidMidiDataException,
           MidiUnavailableException {
-    IMusicEditorView view = ViewFactory.getView(
-            args[1]
-    );
+    IMusicEditorView view = ViewFactory.getView(args[1]);
     CompositionBuilder<IMusicEditor<Note>> builder = new MusicEditorModel.Builder();
     FileReader file = new FileReader(args[0]);
     IMusicEditor<Note> model = MusicReader.parseFile(file, builder);
     IMusicEditorController controller = new MusicEditorController(model, view);
     controller.execute();
-//    Sequencer sequencer = MidiSystem.getSequencer();
-//    Sequence s = new Sequence(Sequence.PPQ, 2000);
-//    Track t1 = s.createTrack();
-//    t1.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_ON, 0, 64, 100), 0));
-//    t1.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF, 0, 64, 100), 200));
-//    t1.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_ON, 0, 64, 100), 2000));
-//    sequencer.open();
-//    sequencer.setSequence(s);
-//    sequencer.start();
+
   }
 }

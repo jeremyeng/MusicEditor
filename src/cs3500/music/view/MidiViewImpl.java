@@ -85,8 +85,7 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
    * </li>
    * </ul>
    *
-   * @see <a href="https://en.wikipedia.org/wiki/General_MIDI">
-   *   https://en.wikipedia.org/wiki/General_MIDI
+   * @see <a href="https://en.wikipedia.org/wiki/General_MIDI"> https://en.wikipedia.org/wiki/General_MIDI
    * </a>
    */
 
@@ -120,14 +119,18 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
         this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, l.get(1), l.get(2), l.get(3)),
                 start + timePaused + beat * tempo);
         this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, l.get(1), l.get(2), l.get(3)),
-                start + timePaused +(beat * tempo) + (l.get(4) * tempo));
+                start + timePaused + (beat * tempo) + (l.get(4) * tempo));
       }
+
+      startPause = this.synth.getMicrosecondPosition();
+      this.action.run();
+      timePaused += this.synth.getMicrosecondPosition() - startPause;
       try {
-        Thread.sleep(tempo / 1000);
+        Thread.sleep((tempo / 1000));
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      this.action.run();
+
     }
   }
 

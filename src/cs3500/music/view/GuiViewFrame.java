@@ -87,9 +87,11 @@ public class GuiViewFrame extends javax.swing.JFrame implements IGuiView {
 
   @Override
   public void updateCurrentBeat(int beat) {
-    this.currentBeat += beat;
     scorePanel.updateCurrentBeat(beat);
     this.pianoPanel.updateCurrentBeat(beat);
+
+    this.currentBeat += beat;
+
   }
 
   @Override

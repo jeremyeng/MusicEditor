@@ -28,6 +28,7 @@ public class ScorePanel extends JPanel {
   private Map<Integer, List<String>> combineNoteMap = new TreeMap<>();
   private int duration = 0;
   private int currentBeat = 0;
+  private int beatsPlayed = 0;
 
   @Override
   protected void paintComponent(Graphics g) {
@@ -132,10 +133,14 @@ public class ScorePanel extends JPanel {
   void updateCurrentBeat(int beat) {
     if (! (this.currentBeat + beat < 0 || this.currentBeat + beat > this.duration)) {
       this.currentBeat += beat;
-      this.scrollRectToVisible(new Rectangle(this.getRedLineXPos(),
-              0,
-              1300,
-              this.getHeight()));
+      this.beatsPlayed += beat;
+      if (this.beatsPlayed > 50) {
+        this.scrollRectToVisible(new Rectangle(this.getRedLineXPos(),
+                0,
+                1300,
+                this.getHeight()));
+        this.beatsPlayed = 0;
+      }
       this.repaint();
     }
   }
