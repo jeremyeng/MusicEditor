@@ -9,7 +9,7 @@ import cs3500.music.view.GuiViewFrame;
 import cs3500.music.view.IMusicEditorView;
 
 /**
- * Created by Hoyin on 6/19/2017.
+ * Handles Mouse inputs given from a view.
  */
 public class ViewMouseListener implements MouseListener {
 
@@ -26,22 +26,22 @@ public class ViewMouseListener implements MouseListener {
 
   @Override
   public void mousePressed(MouseEvent e) {
-
+    // Not Needed
   }
 
   @Override
   public void mouseReleased(MouseEvent e) {
-
+    // Not Needed
   }
 
   @Override
   public void mouseEntered(MouseEvent e) {
-
+    // Not Needed
   }
 
   @Override
   public void mouseExited(MouseEvent e) {
-
+    // Not Needed
   }
 
 }
