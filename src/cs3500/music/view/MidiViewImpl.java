@@ -1,5 +1,6 @@
 package cs3500.music.view;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
@@ -99,24 +100,27 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
   @Override
   public void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException {
     long start = this.synth.getMicrosecondPosition();
+    long timePaused = 0;
     for (int beat = 0; beat < info.size(); beat++) {
-      for (List<Integer> l : info.get(beat)) {
-        synchronized (this) {
-          while (_paused) {
-            try {
-              wait();
-            } catch (InterruptedException e) {
-              e.printStackTrace();
-            }
+      long startPause = this.synth.getMicrosecondPosition();
+      synchronized (this) {
+        while (_paused) {
+          try {
+            wait();
+            timePaused += this.synth.getMicrosecondPosition() - startPause;
+          } catch (InterruptedException e) {
+            e.printStackTrace();
           }
 
         }
+      }
+      for (List<Integer> l : info.get(beat)) {
         this.receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE, l.get(1), l.get(1),
                 l.get(1)), -1);
         this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, l.get(1), l.get(2), l.get(3)),
-                start + beat * tempo);
+                start + timePaused + beat * tempo);
         this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, l.get(1), l.get(2), l.get(3)),
-                start + (beat * tempo) + (l.get(4) * tempo));
+                start + timePaused +(beat * tempo) + (l.get(4) * tempo));
       }
       try {
         Thread.sleep(tempo / 1000);
