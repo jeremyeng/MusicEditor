@@ -1,5 +1,7 @@
 package cs3500.music.view;
 
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,16 @@ public class ConsoleView implements IMusicEditorView {
   @Override
   public void update(IReadOnlyMusicEditor model) {
     this.model = model;
+  }
+
+  @Override
+  public void addKeyListener(KeyListener key) {
+    // no need for key listener
+  }
+
+  @Override
+  public void addMouseListener(MouseListener mouse) {
+    // no need for mouse listener
   }
 
   /**

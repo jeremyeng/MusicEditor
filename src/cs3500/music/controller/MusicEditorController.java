@@ -65,18 +65,7 @@ public class MusicEditorController implements IMusicEditorController<Note> {
     kbd.setKeyReleasedMap(keyReleases);
     kbd.setKeyTypedMap(keyTypes);
 
-    if (view instanceof GuiViewFrame) {
-      GuiViewFrame guiView = (GuiViewFrame) view;
-      guiView.addKeyListener(kbd);
-    }
-
-    if (view instanceof CombinedView) {
-      CombinedView combined = (CombinedView) view;
-      combined.addKeyListener(kbd);
-    } else if (view instanceof MidiViewImpl) {
-      MidiViewImpl midiView = (MidiViewImpl) view;
-      midiView.addKeyListener(kbd);
-    }
+    view.addKeyListener(kbd);
 
   }
 
@@ -88,13 +77,7 @@ public class MusicEditorController implements IMusicEditorController<Note> {
     ViewMouseListener mouseListener = new ViewMouseListener();
     mouseListener.setMouseClicksMap(mouseClicks);
 
-    if (view instanceof GuiViewFrame) {
-      GuiViewFrame guiView = (GuiViewFrame) view;
-      guiView.addMouseListener(mouseListener);
-    } else if (view instanceof MidiViewImpl) {
-      MidiViewImpl midiView = (MidiViewImpl) view;
-      midiView.addMouseListener(mouseListener);
-    }
+    view.addMouseListener(mouseListener);
   }
 
 
