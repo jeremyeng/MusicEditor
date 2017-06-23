@@ -53,7 +53,7 @@ public interface IGuiView extends IMusicEditorView {
    * Returns a midi integer representation of a note base on what note on the piano
    * is being clicked.
    *
-   * @return a midi integer representation of what note is being clicked.
+   * @return a midi integer representation of what note is being clicked. -1 if the note is invalid.
    */
   int noteClicked();
 

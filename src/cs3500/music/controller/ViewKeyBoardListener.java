@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 import java.util.Map;
 
 /**
- * A class created to listen for keyboard events.
+ * Handles keyboard inputs passed into it from a view.
  */
 public class ViewKeyBoardListener implements KeyListener {
 

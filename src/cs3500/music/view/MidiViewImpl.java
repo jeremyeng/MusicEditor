@@ -92,7 +92,7 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
 
   @Override
   public void makeVisible() throws InvalidMidiDataException {
-    this.setVisible(false);
+    this.setVisible(true);
     this.playNote(this.model.getMidiInfo(), this.model.getTempo());
   }
 
