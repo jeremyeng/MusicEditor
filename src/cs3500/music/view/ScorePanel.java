@@ -1,9 +1,6 @@
 package cs3500.music.view;
 
-import java.awt.Graphics2D;
-import java.awt.Graphics;
-import java.awt.Dimension;
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -68,7 +65,7 @@ public class ScorePanel extends JPanel {
    * @param g2d the image in which the block is going to be drawn.
    */
   private void drawBlock(List<String> states, int x, int y, Graphics2D g2d) {
-    g2d.drawRect(x, y, SINGLE_NOTE_WIDTH * duration, SINGLE_NOTE_HEIGHT);
+    //g2d.drawRect(x, y, SINGLE_NOTE_WIDTH * duration, SINGLE_NOTE_HEIGHT);
     for (int i = 0; i < this.duration; i++) {
       renderNoteState(states.get(i), x + i * SINGLE_NOTE_WIDTH, y, g2d);
     }
@@ -135,9 +132,12 @@ public class ScorePanel extends JPanel {
   void updateCurrentBeat(int beat) {
     if (! (this.currentBeat + beat < 0 || this.currentBeat + beat > this.duration)) {
       this.currentBeat += beat;
+      this.scrollRectToVisible(new Rectangle(this.getRedLineXPos(),
+              0,
+              1300,
+              this.getHeight()));
       this.repaint();
     }
-
   }
 
   @Override
@@ -149,6 +149,10 @@ public class ScorePanel extends JPanel {
   public Dimension getPreferredSize() {
     return new Dimension(duration * SINGLE_NOTE_WIDTH + GAP_BETWEEN_NOTE_AND_BLOCKS_X + 50,
             combineNoteMap.size() * SINGLE_NOTE_HEIGHT + HIGHEST_NOTE_Y_POSITION + 50);
+  }
+
+  private int getRedLineXPos() {
+    return SCORE_X_POSITION + currentBeat * SINGLE_NOTE_WIDTH;
   }
 
 }

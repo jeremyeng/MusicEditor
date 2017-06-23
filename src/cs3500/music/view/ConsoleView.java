@@ -37,13 +37,13 @@ public class ConsoleView implements IMusicEditorView {
   }
 
   @Override
-  public void addKeyListener(KeyListener keyListener) {
-    //Not required
+  public void addKeyListener(KeyListener key) {
+    // no need for key listener
   }
 
   @Override
-  public void addMouseListener(MouseListener mouseListener) {
-    //Not required
+  public void addMouseListener(MouseListener mouse) {
+    // no need for mouse listener
   }
 
   /**
