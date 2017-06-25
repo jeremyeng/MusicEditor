@@ -1,7 +1,5 @@
 package cs3500.music.controller;
 
-import sun.plugin.com.event.COMEventHandler;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -27,6 +25,8 @@ import cs3500.music.view.MidiViewImpl;
 public class MusicEditorController implements IMusicEditorController<Note> {
   private IMusicEditor<Note> model;
   private IMusicEditorView<Note> view;
+  private long clickDuration = System.nanoTime();
+  private boolean currentlyClicked = false;
 
   /**
    * Constructs an instance of a controller.
@@ -61,6 +61,8 @@ public class MusicEditorController implements IMusicEditorController<Note> {
     keyPresses.put(KeyEvent.VK_HOME, new ToBeginning());
     keyPresses.put(KeyEvent.VK_END, new ToEnd());
     keyPresses.put(KeyEvent.VK_P, new Pause());
+    keyPresses.put(KeyEvent.VK_Q, new LowerTempo());
+    keyPresses.put(KeyEvent.VK_W, new RaiseTempo());
 
     ViewKeyBoardListener kbd = new ViewKeyBoardListener();
     kbd.setKeyPressedMap(keyPresses);
@@ -89,7 +91,9 @@ public class MusicEditorController implements IMusicEditorController<Note> {
   private void configureMouseListener() {
     Map<Integer, Runnable> mouseClicks = new HashMap<>();
 
-    mouseClicks.put(MouseEvent.MOUSE_CLICKED, new PutNote());
+//    mouseClicks.put(MouseEvent.MOUSE_CLICKED, new PutNote());
+    mouseClicks.put(MouseEvent.MOUSE_PRESSED, new ContinuouslyAdvance());
+    mouseClicks.put(MouseEvent.MOUSE_RELEASED, new PutNoteExtended());
 
     ViewMouseListener mouseListener = new ViewMouseListener();
     mouseListener.setMouseClicksMap(mouseClicks);
@@ -208,6 +212,60 @@ public class MusicEditorController implements IMusicEditorController<Note> {
         model.addNote(new Note(noteNumber, 0), guiView.getCurrentBeat(), 1, 60);
         guiView.update(new ReadOnlyMusicEditorModel(model));
         guiView.updateCurrentBeat(1);
+      }
+    }
+  }
+
+  class LowerTempo implements Runnable {
+
+    @Override
+    public void run() {
+      model.setTempo(model.getTempo() - 1000);
+    }
+  }
+
+  class RaiseTempo implements Runnable {
+
+    @Override
+    public void run() {
+      model.setTempo(model.getTempo() + 1000);
+    }
+  }
+
+  class ContinuouslyAdvance implements Runnable {
+
+    @Override
+    public void run() {
+      clickDuration = System.nanoTime();
+      System.out.println("Mouse Pressed!");
+    }
+  }
+
+  class PutNoteExtended implements Runnable {
+
+    @Override
+    public void run() {
+      clickDuration = System.nanoTime() - clickDuration;
+      currentlyClicked = false;
+      int length = (int) ((clickDuration / 1000) / model.getTempo());
+      if (length < 1) {
+        length = 1;
+      }
+      System.out.println(length);
+      if (view instanceof GuiViewFrame) {
+        GuiViewFrame guiView = (GuiViewFrame) view;
+        int noteNumber = guiView.noteClicked();
+        model.addNote(new Note(noteNumber, 0), guiView.getCurrentBeat(), length, 60);
+        guiView.update(new ReadOnlyMusicEditorModel(model));
+        guiView.updateCurrentBeat(length);
+      }
+
+      if (view instanceof CombinedView) {
+        IGuiView guiView = ((CombinedView) view).getGuiView();
+        int noteNumber = guiView.noteClicked();
+        model.addNote(new Note(noteNumber, 0), guiView.getCurrentBeat(), length, 60);
+        guiView.update(new ReadOnlyMusicEditorModel(model));
+        guiView.updateCurrentBeat(length);
       }
     }
   }
