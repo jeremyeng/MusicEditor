@@ -38,9 +38,7 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
   public MidiViewImpl() throws MidiUnavailableException {
     super();
     this.setTitle("Midi");
-    this.setSize(180, 100);
-    JLabel stringLabel = new JLabel("Press \"P\" to pause/resume!");
-    this.add(stringLabel);
+    this.setSize(100, 100);
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     this.setFocusable(true);
     this.synth = MidiSystem.getSynthesizer();
@@ -100,10 +98,12 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
 
   @Override
   public void playNote(List<List<List<Integer>>> info, long tempo) throws InvalidMidiDataException {
+
     long start = this.synth.getMicrosecondPosition();
     long timePaused = 0;
     for (int beat = 0; beat < info.size(); beat++) {
       long startPause = this.synth.getMicrosecondPosition();
+      tempo = model.getTempo();
       synchronized (this) {
         while (_paused) {
           try {
@@ -116,6 +116,7 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
         }
       }
       for (List<Integer> l : info.get(beat)) {
+
         this.receiver.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE, l.get(1), l.get(1),
                 l.get(1)), -1);
         this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, l.get(1), l.get(2), l.get(3)),
@@ -132,7 +133,6 @@ public class MidiViewImpl extends JFrame implements IMidiView<Note> {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-
     }
   }
 
