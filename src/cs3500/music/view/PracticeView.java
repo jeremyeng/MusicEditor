@@ -54,6 +54,7 @@ public class PracticeView extends JFrame implements IPracticeView {
   @Override
   public void updateCurrentBeat(int beat) {
     this.guiView.updateCurrentBeat(beat);
+    this.notesPressed.clear();
   }
 
   @Override
@@ -73,6 +74,7 @@ public class PracticeView extends JFrame implements IPracticeView {
 
   @Override
   public List<Integer> getNotesToClick(int beat) {
+    this.notesPressed.add(this.guiView.noteClicked());
     List<Integer> listToReturn = new ArrayList<>();
     for (Map.Entry<Integer, String> entry : this.model.getAllStatesAtBeat(beat).entrySet()) {
       if (entry.getValue().equals("start") || entry.getValue().equals("continue")) {
@@ -80,7 +82,7 @@ public class PracticeView extends JFrame implements IPracticeView {
       }
     }
     listToReturn.removeAll(this.notesPressed);
-    System.out.println("getnoteclck");
+    System.out.println(listToReturn);
     return listToReturn;
   }
 
