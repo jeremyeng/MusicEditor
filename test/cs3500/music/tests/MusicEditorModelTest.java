@@ -318,4 +318,11 @@ public class MusicEditorModelTest {
             this.model.getMidiInfo().toString());
   }
 
+  @Test
+  public void testGetAllStatesAtBeat() {
+    this.model.addNote(new Note(Pitch.C, 0, 0), 0, 4, 10);
+    this.model.addNote(new Note(Pitch.C, 1, 1), 1, 4, 10);
+    assertEquals("start", this.model.getAllStatesAtBeat(1).get(24));
+  }
+
 }

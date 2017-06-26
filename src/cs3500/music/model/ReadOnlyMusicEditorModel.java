@@ -52,4 +52,9 @@ public class ReadOnlyMusicEditorModel implements IReadOnlyMusicEditor<Note> {
   public String getState() {
     return this.model.getState();
   }
+
+  @Override
+  public Map<Integer, String> getAllStatesAtBeat(int beat) {
+    return this.model.getAllStatesAtBeat(beat);
+  }
 }
