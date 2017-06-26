@@ -136,9 +136,6 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       if (view instanceof CombinedView) {
         ((CombinedView) view).getGuiView().updateCurrentBeat(-1);
       }
-      if (view instanceof PracticeView) {
-        ((PracticeView) view).getGuiView().updateCurrentBeat(-1);
-      }
     }
   }
 
@@ -154,9 +151,6 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       }
       if (view instanceof CombinedView) {
         ((CombinedView) view).getGuiView().updateCurrentBeat(1);
-      }
-      if (view instanceof PracticeView) {
-        ((PracticeView) view).getGuiView().updateCurrentBeat(1);
       }
     }
   }
@@ -291,9 +285,8 @@ public class MusicEditorController implements IMusicEditorController<Note> {
     @Override
     public void run() {
       if (view instanceof IPracticeView) {
-        System.out.print("hihi");
         PracticeView practiceView = (PracticeView) view;
-        practiceView.getNotesToClick(practiceView.getCurrentBeat()).remove(practiceView.noteClicked());
+        practiceView.getNotesToClick(practiceView.getCurrentBeat()).remove(new Integer(practiceView.noteClicked()));
          if (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
            while (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
              practiceView.updateCurrentBeat(1);
