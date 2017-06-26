@@ -69,8 +69,12 @@ public class PracticeView extends JFrame implements IPracticeView {
   @Override
   public List<Integer> getNotesToClick(int beat) {
     List<Integer> listToReturn = new ArrayList<>();
-    listToReturn = this.model.notesPlaying(beat);
-    listToReturn.removeAll(this.notesPressed);
+//    for (Map.Entry<Integer, String> entry : this.model.getAllStatesAtBeat(beat).entrySet()) {
+//      if (entry.getValue().equals("start") || entry.getValue().equals("continue")) {
+//        listToReturn.add(entry.getKey());
+//      }
+//    }
+//    listToReturn.removeAll(this.notesPressed);
     return listToReturn;
   }
 
