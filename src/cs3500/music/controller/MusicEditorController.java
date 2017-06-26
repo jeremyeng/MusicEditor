@@ -281,11 +281,9 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       if (view instanceof IPracticeView) {
         PracticeView practiceView = (PracticeView) view;
         practiceView.getNotesToClick(practiceView.getCurrentBeat()).remove(new Integer(practiceView.noteClicked()));
-        if (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
-          while (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
-            practiceView.updateCurrentBeat(1);
-          }
-        }
+         if (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
+             practiceView.updateCurrentBeat(1);
+         }
       }
     }
   }

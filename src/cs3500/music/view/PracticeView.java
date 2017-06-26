@@ -81,6 +81,7 @@ public class PracticeView extends JFrame implements IPracticeView {
         listToReturn.add(entry.getKey());
       }
     }
+    System.out.println(listToReturn);
     listToReturn.removeAll(this.notesPressed);
     System.out.println(listToReturn);
     return listToReturn;
