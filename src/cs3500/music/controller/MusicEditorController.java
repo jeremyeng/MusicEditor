@@ -89,6 +89,11 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       midiView.addKeyListener(kbd);
     }
 
+    if (view instanceof PracticeView) {
+      PracticeView practiceView = (PracticeView) view;
+      practiceView.addKeyListener(kbd);
+    }
+
   }
 
   private void configureMouseListener() {
@@ -112,7 +117,9 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       combinedView.addMouseListener(mouseListener);
     } else if (view instanceof PracticeView) {
       PracticeView practiceView = (PracticeView) view;
+      //mouseClicks = new HashMap<>();
       mouseClicks.put(MouseEvent.MOUSE_CLICKED, new PracticeClick());
+      mouseListener.setMouseClicksMap(mouseClicks);
       practiceView.addMouseListener(mouseListener);
     }
   }
@@ -131,6 +138,9 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       if (view instanceof CombinedView) {
         ((CombinedView) view).getGuiView().updateCurrentBeat(-1);
       }
+      if (view instanceof PracticeView) {
+        ((PracticeView) view).getGuiView().updateCurrentBeat(-1);
+      }
     }
   }
 
@@ -146,6 +156,9 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       }
       if (view instanceof CombinedView) {
         ((CombinedView) view).getGuiView().updateCurrentBeat(1);
+      }
+      if (view instanceof PracticeView) {
+        ((PracticeView) view).getGuiView().updateCurrentBeat(1);
       }
     }
   }
@@ -281,15 +294,16 @@ public class MusicEditorController implements IMusicEditorController<Note> {
   class PracticeClick implements Runnable {
     @Override
     public void run() {
-//      if (view instanceof PracticeView) {
-//        PracticeView practiceView = (PracticeView) view;
-//        practiceView.getNotesToClick(practiceView.getCurrentBeat()).remove(practiceView.noteClicked());
-//         if (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
-//           while (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
-//             practiceView.updateCurrentBeat(1);
-//           }
-//         }
-//      }
+      if (view instanceof PracticeView) {
+        System.out.print("hihi");
+        PracticeView practiceView = (PracticeView) view;
+        practiceView.getNotesToClick(practiceView.getCurrentBeat()).remove(practiceView.noteClicked());
+         if (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
+           while (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
+             practiceView.updateCurrentBeat(1);
+           }
+         }
+      }
     }
   }
 
