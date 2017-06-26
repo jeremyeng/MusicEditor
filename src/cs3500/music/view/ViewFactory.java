@@ -4,7 +4,7 @@ import javax.sound.midi.MidiUnavailableException;
 
 /**
  * A factory of views, with a single method that takes in a String name for a view
- * (e.g. “console” or “visual” or “midi”), and constructs an instance of the
+ * (e.g. “console” or “visual” or “midi” etc.), and constructs an instance of the
  * appropriate concrete view.
  */
 public class ViewFactory {

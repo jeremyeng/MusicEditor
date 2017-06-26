@@ -14,7 +14,8 @@ import cs3500.music.model.IReadOnlyMusicEditor;
 import cs3500.music.model.Note;
 
 /**
- * Created by Hoyin on 6/25/2017.
+ * A class designed to help the user practice with the notes by requiring
+ * them entering all the keys before advancing to the next beat.
  */
 public class PracticeView extends JFrame implements IPracticeView {
 
@@ -22,6 +23,10 @@ public class PracticeView extends JFrame implements IPracticeView {
   private IReadOnlyMusicEditor<Note> model;
   private List<Integer> notesPressed;
 
+  /**
+   * Constructs a practice view
+   * @param guiview
+   */
   public PracticeView(IGuiView guiview) {
     this.guiView = guiview;
     this.notesPressed = new ArrayList<Integer>();
