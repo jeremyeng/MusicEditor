@@ -17,7 +17,7 @@ public class ViewMouseListener implements MouseListener {
 
   @Override
   public void mouseClicked(MouseEvent e) {
-//    this.mouseClicksMap.get(e.getID()).run();
+    this.mouseClicksMap.get(e.getID()).run();
   }
 
   @Override

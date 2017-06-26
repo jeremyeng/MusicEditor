@@ -30,11 +30,13 @@ public class PracticeView extends JFrame implements IPracticeView {
 
   @Override
   public void makeVisible() throws InvalidMidiDataException, IOException {
+    this.setVisible(true);
     this.guiView.makeVisible();
   }
 
   @Override
   public void update(IReadOnlyMusicEditor model) {
+    this.model = model;
     this.guiView.update(model);
   }
 

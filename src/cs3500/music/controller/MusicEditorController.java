@@ -18,6 +18,7 @@ import cs3500.music.view.GuiViewFrame;
 import cs3500.music.view.IGuiView;
 import cs3500.music.view.IMidiView;
 import cs3500.music.view.IMusicEditorView;
+import cs3500.music.view.IPracticeView;
 import cs3500.music.view.MidiViewImpl;
 import cs3500.music.view.PracticeView;
 
@@ -98,14 +99,12 @@ public class MusicEditorController implements IMusicEditorController<Note> {
 
   private void configureMouseListener() {
     Map<Integer, Runnable> mouseClicks = new HashMap<>();
-    Map<Integer, Runnable> practiceMouseClicks = new HashMap<>();
 
-//    mouseClicks.put(MouseEvent.MOUSE_CLICKED, new PutNote());
     mouseClicks.put(MouseEvent.MOUSE_PRESSED, new ContinuouslyAdvance());
     mouseClicks.put(MouseEvent.MOUSE_RELEASED, new PutNoteExtended());
+    mouseClicks.put(MouseEvent.MOUSE_CLICKED, new PracticeClick());
 
     ViewMouseListener mouseListener = new ViewMouseListener();
-    ViewMouseListener practiceMouseListener = new ViewMouseListener();
     mouseListener.setMouseClicksMap(mouseClicks);
 
     if (view instanceof GuiViewFrame) {
@@ -119,8 +118,6 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       combinedView.addMouseListener(mouseListener);
     } else if (view instanceof PracticeView) {
       PracticeView practiceView = (PracticeView) view;
-      practiceMouseClicks.put(MouseEvent.MOUSE_CLICKED, new PracticeClick());
-      practiceMouseListener.setMouseClicksMap(practiceMouseClicks);
       practiceView.addMouseListener(mouseListener);
     }
   }
@@ -258,7 +255,6 @@ public class MusicEditorController implements IMusicEditorController<Note> {
     @Override
     public void run() {
       clickDuration = System.nanoTime();
-      System.out.println("Mouse Pressed!");
 
     }
   }
@@ -273,7 +269,6 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       if (length < 1) {
         length = 1;
       }
-      System.out.println(length);
       if (view instanceof GuiViewFrame) {
         GuiViewFrame guiView = (GuiViewFrame) view;
         int noteNumber = guiView.noteClicked();
@@ -295,7 +290,7 @@ public class MusicEditorController implements IMusicEditorController<Note> {
   class PracticeClick implements Runnable {
     @Override
     public void run() {
-      if (view instanceof PracticeView) {
+      if (view instanceof IPracticeView) {
         System.out.print("hihi");
         PracticeView practiceView = (PracticeView) view;
         practiceView.getNotesToClick(practiceView.getCurrentBeat()).remove(practiceView.noteClicked());
