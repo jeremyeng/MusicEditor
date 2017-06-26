@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.sound.midi.InvalidMidiDataException;
 
@@ -17,6 +19,7 @@ import cs3500.music.view.IGuiView;
 import cs3500.music.view.IMidiView;
 import cs3500.music.view.IMusicEditorView;
 import cs3500.music.view.MidiViewImpl;
+import cs3500.music.view.PracticeView;
 
 /**
  * Implements the IMusicEditorController interface and facilitates interaction between the model
@@ -107,6 +110,10 @@ public class MusicEditorController implements IMusicEditorController<Note> {
     } else if (view instanceof CombinedView) {
       CombinedView combinedView = (CombinedView) view;
       combinedView.addMouseListener(mouseListener);
+    } else if (view instanceof PracticeView) {
+      PracticeView practiceView = (PracticeView) view;
+      mouseClicks.put(MouseEvent.MOUSE_CLICKED, new PracticeClick());
+      practiceView.addMouseListener(mouseListener);
     }
   }
 
@@ -238,6 +245,7 @@ public class MusicEditorController implements IMusicEditorController<Note> {
     public void run() {
       clickDuration = System.nanoTime();
       System.out.println("Mouse Pressed!");
+
     }
   }
 
@@ -267,6 +275,21 @@ public class MusicEditorController implements IMusicEditorController<Note> {
         guiView.update(new ReadOnlyMusicEditorModel(model));
         guiView.updateCurrentBeat(length);
       }
+    }
+  }
+
+  class PracticeClick implements Runnable {
+    @Override
+    public void run() {
+//      if (view instanceof PracticeView) {
+//        PracticeView practiceView = (PracticeView) view;
+//        practiceView.getNotesToClick(practiceView.getCurrentBeat()).remove(practiceView.noteClicked());
+//         if (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
+//           while (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
+//             practiceView.updateCurrentBeat(1);
+//           }
+//         }
+//      }
     }
   }
 

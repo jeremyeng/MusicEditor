@@ -489,4 +489,8 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     }
     return true;
   }
+
+  public List<Integer> notesPlaying(int beat) {
+    return new ArrayList<>();
+  }
 }

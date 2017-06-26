@@ -109,4 +109,6 @@ public interface IMusicEditor<K> {
    */
   String getState();
 
+  List<Integer> notesPlaying(int beat);
+
 }

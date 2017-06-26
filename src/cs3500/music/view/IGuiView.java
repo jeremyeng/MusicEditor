@@ -57,5 +57,4 @@ public interface IGuiView extends IMusicEditorView {
    */
   int noteClicked();
 
-
 }

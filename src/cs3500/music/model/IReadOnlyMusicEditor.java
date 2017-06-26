@@ -64,4 +64,6 @@ public interface IReadOnlyMusicEditor<K> {
    */
   String getState();
 
+  List<Integer> notesPlaying(int beat);
+
 }
