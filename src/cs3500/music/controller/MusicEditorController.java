@@ -29,8 +29,9 @@ import cs3500.music.view.PracticeView;
 public class MusicEditorController implements IMusicEditorController<Note> {
   private IMusicEditor<Note> model;
   private IMusicEditorView<Note> view;
-  private long clickDuration = System.nanoTime();
-  private boolean currentlyClicked = false;
+  Timer timer = new Timer();
+  TimerTask task = new AdvanceBeatWithTempo();
+  private int beatStart = 0;
 
   /**
    * Constructs an instance of a controller.
@@ -132,9 +133,11 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       if (view instanceof GuiViewFrame) {
         GuiViewFrame guiView = (GuiViewFrame) view;
         guiView.updateCurrentBeat(-1);
+        beatStart = guiView.getCurrentBeat();
       }
       if (view instanceof CombinedView) {
         ((CombinedView) view).getGuiView().updateCurrentBeat(-1);
+        beatStart = ((CombinedView) view).getGuiView().getCurrentBeat();
       }
     }
   }
@@ -148,9 +151,11 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       if (view instanceof GuiViewFrame) {
         GuiViewFrame guiView = (GuiViewFrame) view;
         guiView.updateCurrentBeat(1);
+        beatStart = guiView.getCurrentBeat();
       }
       if (view instanceof CombinedView) {
         ((CombinedView) view).getGuiView().updateCurrentBeat(1);
+        beatStart = ((CombinedView) view).getGuiView().getCurrentBeat();
       }
     }
   }
@@ -207,27 +212,6 @@ public class MusicEditorController implements IMusicEditorController<Note> {
     }
   }
 
-  class PutNote implements Runnable {
-    @Override
-    public void run() {
-      if (view instanceof GuiViewFrame) {
-        GuiViewFrame guiView = (GuiViewFrame) view;
-        int noteNumber = guiView.noteClicked();
-        model.addNote(new Note(noteNumber, 0), guiView.getCurrentBeat(), 1, 60);
-        guiView.update(new ReadOnlyMusicEditorModel(model));
-        guiView.updateCurrentBeat(1);
-      }
-
-      if (view instanceof CombinedView) {
-        IGuiView guiView = ((CombinedView) view).getGuiView();
-        int noteNumber = guiView.noteClicked();
-        model.addNote(new Note(noteNumber, 0), guiView.getCurrentBeat(), 1, 60);
-        guiView.update(new ReadOnlyMusicEditorModel(model));
-        guiView.updateCurrentBeat(1);
-      }
-    }
-  }
-
   class LowerTempo implements Runnable {
 
     @Override
@@ -245,11 +229,25 @@ public class MusicEditorController implements IMusicEditorController<Note> {
   }
 
   class ContinuouslyAdvance implements Runnable {
-
     @Override
     public void run() {
-      clickDuration = System.nanoTime();
+      task = new AdvanceBeatWithTempo();
+      timer.scheduleAtFixedRate(task, 0, model.getTempo() / 1000);
+    }
+  }
 
+  private class AdvanceBeatWithTempo extends TimerTask {
+    public void run() {
+      if (view instanceof GuiViewFrame) {
+        GuiViewFrame guiView = (GuiViewFrame) view;
+        guiView.updateCurrentBeat(1);
+
+      }
+
+      if (view instanceof CombinedView) {
+        IGuiView guiView = ((CombinedView) view).getGuiView();
+        guiView.updateCurrentBeat(1);
+      }
     }
   }
 
@@ -257,27 +255,23 @@ public class MusicEditorController implements IMusicEditorController<Note> {
 
     @Override
     public void run() {
-      clickDuration = System.nanoTime() - clickDuration;
-      currentlyClicked = false;
-      int length = (int) ((clickDuration / 1000) / model.getTempo());
-      if (length < 1) {
-        length = 1;
-      }
+      task.cancel();
+      IGuiView guiView;
+
       if (view instanceof GuiViewFrame) {
-        GuiViewFrame guiView = (GuiViewFrame) view;
-        int noteNumber = guiView.noteClicked();
-        model.addNote(new Note(noteNumber, 0), guiView.getCurrentBeat(), length, 60);
-        guiView.update(new ReadOnlyMusicEditorModel(model));
-        guiView.updateCurrentBeat(length);
+        guiView = (GuiViewFrame) view;
+      } else if (view instanceof CombinedView) {
+        guiView = ((CombinedView) view).getGuiView();
+      } else {
+        return;
       }
 
-      if (view instanceof CombinedView) {
-        IGuiView guiView = ((CombinedView) view).getGuiView();
-        int noteNumber = guiView.noteClicked();
-        model.addNote(new Note(noteNumber, 0), guiView.getCurrentBeat(), length, 60);
-        guiView.update(new ReadOnlyMusicEditorModel(model));
-        guiView.updateCurrentBeat(length);
-      }
+      int noteNumber = guiView.noteClicked();
+      int length = guiView.getCurrentBeat() - beatStart;
+      model.addNote(new Note(noteNumber, 0), beatStart, length, 60);
+      beatStart = guiView.getCurrentBeat();
+      guiView.update(new ReadOnlyMusicEditorModel(model));
+      guiView.updateCurrentBeat(0);
     }
   }
 
@@ -287,11 +281,11 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       if (view instanceof IPracticeView) {
         PracticeView practiceView = (PracticeView) view;
         practiceView.getNotesToClick(practiceView.getCurrentBeat()).remove(new Integer(practiceView.noteClicked()));
-         if (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
-           while (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
-             practiceView.updateCurrentBeat(1);
-           }
-         }
+        if (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
+          while (practiceView.getNotesToClick(practiceView.getCurrentBeat()).size() == 0) {
+            practiceView.updateCurrentBeat(1);
+          }
+        }
       }
     }
   }
