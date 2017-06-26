@@ -64,6 +64,12 @@ public interface IReadOnlyMusicEditor<K> {
    */
   String getState();
 
-  List<Integer> notesPlaying(int beat);
+  /**
+   * Gets the state of all notes at a given beat.
+   * @param beat the beat to get the state of notes at.
+   * @return a map where the keys are integer representations of notes and the values are strings
+   *         representing the state of the note ("start", "continue", "rest")
+   */
+  Map<Integer, String> getAllStatesAtBeat(int beat);
 
 }

@@ -3,6 +3,7 @@ package cs3500.music.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -380,6 +381,19 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     return state;
   }
 
+  @Override
+  public Map<Integer, String> getAllStatesAtBeat(int beat) {
+    if (beat > this.duration) {
+      throw new IllegalArgumentException("beat out of range.");
+    }
+    Map<Integer, String> results = new HashMap<>();
+    Map<Integer, List<String>> combined = this.getCombinedNoteMap();
+    for (int i = 12; i <= 143; i++) {
+      results.put(i, combined.get(i).get(beat));
+    }
+    return results;
+  }
+
   /**
    * Gets the columns of the text view showing the range of pitch-octaves in the piece.
    *
@@ -490,7 +504,4 @@ public class MusicEditorModel implements IMusicEditor<Note> {
     return true;
   }
 
-  public List<Integer> notesPlaying(int beat) {
-    return new ArrayList<>();
-  }
 }

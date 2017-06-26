@@ -54,7 +54,7 @@ public class ReadOnlyMusicEditorModel implements IReadOnlyMusicEditor<Note> {
   }
 
   @Override
-  public List<Integer> notesPlaying(int beat) {
-    return this.model.notesPlaying(beat);
+  public Map<Integer, String> getAllStatesAtBeat(int beat) {
+    return this.model.getAllStatesAtBeat(beat);
   }
 }
