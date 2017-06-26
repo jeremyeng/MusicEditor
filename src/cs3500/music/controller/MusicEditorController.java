@@ -98,12 +98,14 @@ public class MusicEditorController implements IMusicEditorController<Note> {
 
   private void configureMouseListener() {
     Map<Integer, Runnable> mouseClicks = new HashMap<>();
+    Map<Integer, Runnable> practiceMouseClicks = new HashMap<>();
 
 //    mouseClicks.put(MouseEvent.MOUSE_CLICKED, new PutNote());
     mouseClicks.put(MouseEvent.MOUSE_PRESSED, new ContinuouslyAdvance());
     mouseClicks.put(MouseEvent.MOUSE_RELEASED, new PutNoteExtended());
 
     ViewMouseListener mouseListener = new ViewMouseListener();
+    ViewMouseListener practiceMouseListener = new ViewMouseListener();
     mouseListener.setMouseClicksMap(mouseClicks);
 
     if (view instanceof GuiViewFrame) {
@@ -117,9 +119,8 @@ public class MusicEditorController implements IMusicEditorController<Note> {
       combinedView.addMouseListener(mouseListener);
     } else if (view instanceof PracticeView) {
       PracticeView practiceView = (PracticeView) view;
-      //mouseClicks = new HashMap<>();
-      mouseClicks.put(MouseEvent.MOUSE_CLICKED, new PracticeClick());
-      mouseListener.setMouseClicksMap(mouseClicks);
+      practiceMouseClicks.put(MouseEvent.MOUSE_CLICKED, new PracticeClick());
+      practiceMouseListener.setMouseClicksMap(practiceMouseClicks);
       practiceView.addMouseListener(mouseListener);
     }
   }

@@ -25,6 +25,8 @@ public class ViewFactory {
         return new MidiViewImpl();
       case "combined":
         return new CombinedView(new GuiViewFrame(), new MidiViewImpl());
+      case "practice":
+        return new PracticeView(new GuiViewFrame());
       default:
         throw new IllegalArgumentException("Invalid view type!");
     }

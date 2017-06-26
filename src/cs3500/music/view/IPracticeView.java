@@ -9,4 +9,6 @@ public interface IPracticeView extends IMusicEditorView, IGuiView {
 
   List<Integer> getNotesToClick(int beat);
 
+  IGuiView getGuiView();
+
 }
